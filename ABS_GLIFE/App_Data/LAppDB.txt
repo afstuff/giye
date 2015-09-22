@@ -1,0 +1,1 @@
+﻿Data Source=ABS-SERVER;Initial Catalog=ABS_LIFE;User ID=sa;Password=Custodian246;
