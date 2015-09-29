@@ -111,7 +111,8 @@ Partial Class PRG_GP_PROP_POLICY
                 AddMenuItem("", "", "") 'blank link
                 AddMenuItem("Quotation Report", "Print Quotation Schedule", "PRG_LI_GRP_QUOT_SCHEDULE.aspx?opt=QUOT_SCHDLE")
                 AddMenuItem("", "Print Quotation Invoice", "PRG_LI_GRP_QUOT_SCHEDULE.aspx?opt=QUOT_INVOICE")
-                AddMenuItem("", "Print Quotation Slip", "RPT_GRP_QuotationSlip.aspx?opt=QUOT_SLIP")
+                AddMenuItem("", "Quotation Slip Entry", "PRG_LI_GRP_QUOT_ENTRY.aspx")
+                AddMenuItem("", "Print Quotation Slip", "RPT_GRP_QuotationSlipN.aspx?opt=QUOT_SLIP")
                 AddMenuItem("", "", "") 'blank link
                 AddMenuItem("Data Conversion", "Convert Quotation to Policy", "PRG_LI_GRP_POLY_CONVERT.aspx")
                 AddMenuItem("", "", "") 'blank link
