@@ -157,7 +157,7 @@ Partial Class Policy_RPT_GRP_QuotationSlipN
     End Sub
     Private Sub ValidateControls(ByRef ErrorInd As String)
         If (txtProspect.Text = String.Empty) Then
-            lblMsg.Text = "Proposal number must not be empty"
+            lblMsg.Text = "Prospect must not be empty"
             FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
             lblMsg.Visible = True
             ErrorInd = "Y"
@@ -183,5 +183,10 @@ Partial Class Policy_RPT_GRP_QuotationSlipN
         rParams(2) = txtFileNum.Text + "&"
         Session("ReportParams") = rParams
         Response.Redirect("../PrintView.aspx")
+    End Sub
+
+    Protected Sub cmdNew_ASP_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdNew_ASP.Click
+        txtFileNum.Text = ""
+        txtProspect.Text = ""
     End Sub
 End Class

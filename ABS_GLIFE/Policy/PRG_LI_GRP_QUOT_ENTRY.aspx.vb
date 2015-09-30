@@ -81,7 +81,9 @@ Partial Class Policy_PRG_LI_GRP_QUOT_ENTRY
         txtTransDate.Text = ""
         txtRate.Text = ""
         txtPremium.Text = ""
+        txtFileNum.Text = 0
         Me.cmdSave_ASP.Enabled = True
+        cmdDel_ASP.Enabled = False
     End Sub
 
     Private Sub Proc_DoSave()
@@ -119,39 +121,68 @@ Partial Class Policy_PRG_LI_GRP_QUOT_ENTRY
         If Me.txtTotEmolument.Text = "" Then
             Me.lblMsg.Text = "Missing " & Me.lblTotEmolument.Text
             FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+            txtTotEmolument.Focus()
             Exit Sub
         End If
+        If Not IsNumeric(txtTotEmolument.Text) Then
+            Me.lblMsg.Text = "Estimated Total Emolument must be numeric"
+            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+            txtTotEmolument.Focus()
+            Exit Sub
+        End If
+
+
 
         If Me.txtTotNoStaff.Text = "" Then
             Me.lblMsg.Text = "Missing " & Me.lblTotNoStaff.Text
             FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+            txtTotNoStaff.Focus()
+            Exit Sub
+        End If
+        If Not IsNumeric(txtTotNoStaff.Text) Then
+            Me.lblMsg.Text = "Total Number of staff must be numeric"
+            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+            txtTotNoStaff.Focus()
             Exit Sub
         End If
 
         If Me.txtTransDate.Text = "" Then
             Me.lblMsg.Text = "Missing " & Me.lblTransDate.Text
             FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+            txtTransDate.Focus()
             Exit Sub
         End If
 
         If Me.txtRate.Text = "" Then
             Me.lblMsg.Text = "Missing " & Me.lblRate.Text
             FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+            txtRate.Focus()
+            Exit Sub
+        End If
+        If Not IsNumeric(txtRate.Text) Then
+            Me.lblMsg.Text = "Rate must be numeric"
+            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+            txtRate.Focus()
             Exit Sub
         End If
 
         If Me.txtPremium.Text = "" Then
             Me.lblMsg.Text = "Missing " & Me.lblPremium.Text
             FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+            txtPremium.Focus()
             Exit Sub
         End If
-
-
-
+        If Not IsNumeric(txtPremium.Text) Then
+            Me.lblMsg.Text = "Premium must be numeric"
+            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+            txtPremium.Focus()
+            Exit Sub
+        End If
 
         If RTrim(Me.txtTransDate.Text) = "" Or Len(Trim(Me.txtTransDate.Text)) <> 10 Then
             Me.lblMsg.Text = "Missing or Invalid date - " & Me.lblTransDate.Text
             FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+            txtTransDate.Focus()
             Exit Sub
         End If
 
@@ -160,6 +191,7 @@ Partial Class Policy_PRG_LI_GRP_QUOT_ENTRY
         If myarrData.Count <> 3 Then
             Me.lblMsg.Text = "Missing or Invalid " & Me.lblTransDate.Text & ". Expecting full date in ddmmyyyy format ..."
             FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+            txtTransDate.Focus()
             Exit Sub
         End If
         strMyDay = myarrData(0)
@@ -264,7 +296,7 @@ Partial Class Policy_PRG_LI_GRP_QUOT_ENTRY
                     .Rows(0)("TBIL_QUO_TRANS_DATE") = dteStart
                     .Rows(0)("TBIL_QUO_PREMIUM") = RTrim(Me.txtPremium.Text)
 
-                    .Rows(0)("TBIL_QUO_FLAG") = "A"
+                    .Rows(0)("TBIL_QUO_FLAG") = "C"
                     .Rows(0)("TBIL_QUO_OPERID") = CType(myUserIDX, String)
                     .Rows(0)("TBIL_QUO_KEYDTE") = Now
                 End With
@@ -276,7 +308,7 @@ Partial Class Policy_PRG_LI_GRP_QUOT_ENTRY
             Me.lblMsg.Text = ex.Message.ToString
             Exit Sub
         End Try
-
+        Proc_DoNew()
         obj_DT.Dispose()
         obj_DT = Nothing
 
@@ -371,8 +403,6 @@ Partial Class Policy_PRG_LI_GRP_QUOT_ENTRY
     End Sub
 
     Private Sub GetQuotation(ByVal RecId As String)
-        lblMsg.Text = ""
-        lblMsg.Visible = False
         Dim mystrCONN As String = CType(Session("connstr"), String)
         Dim objOLEConn As New OleDbConnection()
         objOLEConn.ConnectionString = mystrCONN
@@ -408,6 +438,7 @@ Partial Class Policy_PRG_LI_GRP_QUOT_ENTRY
                 If Not IsDBNull(objOLEReader("TBIL_QUO_TRANS_DATE")) Then
                     txtTransDate.Text = Format(objOLEReader("TBIL_QUO_TRANS_DATE"), "dd/MM/yyyy")
                 End If
+                cmdDel_ASP.Enabled = True
             End If
         Catch ex As Exception
             Me.lblMsg.Text = ex.Message.ToString
@@ -425,5 +456,85 @@ Partial Class Policy_PRG_LI_GRP_QUOT_ENTRY
             objOLEConn.Close()
         End If
         objOLEConn = Nothing
+    End Sub
+
+    Private Sub Proc_DoDelete()
+        Dim xc As Integer = 0
+
+        If Trim(Me.txtFileNum.Text) = "" Then
+            Me.lblMsg.Text = "Please select a Quotation to delete"
+            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+            Exit Sub
+        End If
+
+        Dim intC As Long = 0
+
+        Dim mystrCONN As String = CType(Session("connstr"), String)
+        Dim objOLEConn As New OleDbConnection(mystrCONN)
+
+        Try
+            'open connection to database
+            objOLEConn.Open()
+        Catch ex As Exception
+            Me.lblMsg.Text = "Unable to connect to database. Reason: " & ex.Message
+            objOLEConn = Nothing
+            Exit Sub
+        End Try
+
+
+        strTable = strTableName
+
+        strREC_ID = Trim(Me.txtFileNum.Text)
+
+        'Delete record
+        'Me.textMessage.Text = "Deleting record... "
+        strSQL = ""
+        strSQL = "DELETE FROM " & strTable
+        strSQL = strSQL & " WHERE TBIL_QUO_REC_ID = '" & RTrim(txtFileNum.Text) & "'"
+        
+        Dim objOLECmd2 As OleDbCommand = New OleDbCommand()
+
+        Try
+            objOLECmd2.Connection = objOLEConn
+            objOLECmd2.CommandType = CommandType.Text
+            objOLECmd2.CommandText = strSQL
+            intC = objOLECmd2.ExecuteNonQuery()
+
+            If intC >= 1 Then
+                Me.lblMsg.Text = "Record deleted successfully."
+                FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "');"
+                Proc_DoNew()
+            Else
+                Me.lblMsg.Text = "Sorry!. Record not deleted..."
+                FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "');"
+            End If
+
+        Catch ex As Exception
+            Me.lblMsg.Text = "Error has occured. Reason: " & ex.Message
+            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "');"
+
+        End Try
+
+
+        objOLECmd2.Dispose()
+        objOLECmd2 = Nothing
+
+
+        If objOLEConn.State = ConnectionState.Open Then
+            objOLEConn.Close()
+        End If
+        objOLEConn = Nothing
+
+        'Me.txtNum.Enabled = True
+        'Me.txtNum.Focus()
+
+    End Sub
+
+    Protected Sub cmdDel_ASP_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdDel_ASP.Click
+        Proc_DoDelete()
+    End Sub
+
+    Protected Sub Validate()
+
     End Sub
 End Class

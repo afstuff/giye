@@ -27,6 +27,46 @@
         {
             width: 119px;
         }
+        .style3
+        {
+            width: 119px;
+            height: 39px;
+        }
+        .style4
+        {
+            height: 39px;
+        }
+        .style5
+        {
+            height: 8px;
+        }
+        .style6
+        {
+            width: 119px;
+            height: 38px;
+        }
+        .style7
+        {
+            height: 38px;
+        }
+        .style8
+        {
+            width: 119px;
+            height: 17px;
+        }
+        .style9
+        {
+            height: 17px;
+        }
+        .style10
+        {
+            width: 119px;
+            height: 24px;
+        }
+        .style11
+        {
+            height: 24px;
+        }
     </style>
 </head>
 <body onload="<%= FirstMsg %>">
@@ -91,58 +131,48 @@ mso-bidi-language:AR-SA">Print Quotation Slip</span></b>&nbsp;</td>
                 </tr>
                 <tr>
                     <td align="center" valign="top" class="td_menu">
-                    <table align="center" border="0" class="tbl_menu_new">
+                    <table align="center" border="0" class="tbl_menu_new" style="height:500px;">
                     <tr>
-                        <td colspan="4">
+                        <td colspan="4" class="style5">
                             <center>
                                 <asp:Label ID="lblMsg" runat="server" Font-Size="13pt" ForeColor="#FF3300"></asp:Label></center>
                         </td>
                     </tr>
                     <tr>
-                        <td align="left" valign="top" class="style2">
-                            &nbsp;</td>
-                        <td align="left" valign="top">
-                            &nbsp;</td>
-                        <td>
-                            &nbsp;</td>
-                        <td>
-                            &nbsp;</td>
+                        <td align="left" valign="top" class="style8">
+                            </td>
+                        <td align="left" valign="top" class="style9">
+                            </td>
+                        <td class="style9">
+                            </td>
+                        <td class="style9">
+                            </td>
                     </tr>
                     <tr>
-                        <td align="left" valign="top" class="style2">
+                        <td align="left" valign="top" class="style6">
                             <asp:Label ID="Label2" runat="server" Text="Prospect: "></asp:Label>
                         </td>
-                        <td align="left" valign="top">
+                        <td align="left" valign="top" class="style7">
                             <asp:TextBox ID="txtProspect" runat="server" Width="269px"></asp:TextBox>
                         </td>
-                        <td>
-                            &nbsp;</td>
-                        <td>
-                            &nbsp;</td>
+                        <td class="style7">
+                            </td>
+                        <td class="style7">
+                            </td>
                     </tr>
                     <tr>
-                        <td align="left" valign="top" class="style2">
-                            &nbsp;</td>
-                        <td align="left" valign="top">
+                        <td align="left" valign="top" class="style10">
+                            </td>
+                        <td align="left" valign="top" class="style11">
                             <asp:TextBox ID="txtFileNum" runat="server" Visible="False"></asp:TextBox>
                         </td>
-                        <td align="left" valign="top">
-                            &nbsp;</td>
-                        <td align="left" valign="top">
-                            &nbsp;</td>
+                        <td align="left" valign="top" class="style11">
+                            </td>
+                        <td align="left" valign="top" class="style11">
+                            </td>
                     </tr>
                     <tr>
                         <td align="left" valign="top" class="style2">
-                            &nbsp;</td>
-                        <td align="left" valign="top">
-                            &nbsp;</td>
-                        <td align="left" valign="top">
-                            &nbsp;</td>
-                        <td align="left" valign="top">
-                            &nbsp;</td>
-                    </tr>
-                    <tr>
-                        <td align="right" valign="top" class="style2">
                             &nbsp;</td>
                         <td align="right" valign="top">
                             <asp:button id="cmdPrint_ASP" CssClass="cmd_butt" runat="server" 
@@ -152,6 +182,16 @@ mso-bidi-language:AR-SA">Print Quotation Slip</span></b>&nbsp;</td>
                             &nbsp;</td>
                         <td align="left" valign="top">
                             &nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td align="right" valign="top" class="style3">
+                            </td>
+                        <td align="right" valign="top" class="style4">
+                            &nbsp;</td>
+                        <td align="left" valign="top" class="style4">
+                            </td>
+                        <td align="left" valign="top" class="style4">
+                            </td>
                     </tr>
                     </table>
                     </td>                                                                                    

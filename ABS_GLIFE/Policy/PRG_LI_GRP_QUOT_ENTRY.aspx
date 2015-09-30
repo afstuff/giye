@@ -14,18 +14,10 @@
     <script language="javascript" type="text/javascript" src="../Script/SJS_02.js"> </script>
             
     <style type="text/css">
-        .style1
-        {
-            width: 252px;
-        }
         .style2
         {
             width: 164px;
             height: 31px;
-        }
-        .style3
-        {
-            width: 174px;
         }
         .style6
         {
@@ -63,6 +55,20 @@
         .style13
         {
             height: 33px;
+        }
+        .style14
+        {
+            height: 28px;
+        }
+        .style15
+        {
+            width: 174px;
+            height: 28px;
+        }
+        .style17
+        {
+            width: 252px;
+            height: 28px;
         }
     </style>
             
@@ -110,7 +116,9 @@
                                             &nbsp;&nbsp;<a href="#" onclick="javascript:JSDO_RETURN('PRG_GP_PROP_POLICY.aspx?menu=GL_QUOTE')">Go to Menu</a>
                                             &nbsp;&nbsp;&nbsp;&nbsp;<asp:button id="cmdNew_ASP" CssClass="cmd_butt" runat="server" text="New Data" OnClientClick="JSNew_ASP();"></asp:button>
 	                                        &nbsp;&nbsp;<asp:button id="cmdSave_ASP" CssClass="cmd_butt" runat="server" text="Save Data"></asp:button>
-		                		        	&nbsp;&nbsp;<asp:Button ID="cmdDelItem_ASP" CssClass="cmd_butt" Enabled="false" Font-Bold="true" Text="Delete Item" OnClientClick="JSDelItem_ASP()" runat="server" />
+		                		        	&nbsp;&nbsp;<asp:Button ID="cmdDel_ASP" CssClass="cmd_butt" Enabled="false" 
+                                                Font-Bold="False" Text="Delete" OnClientClick="return ConfirmDelete()"
+                                                runat="server" />
                                             &nbsp;&nbsp;<asp:button id="cmdPrint_ASP" CssClass="cmd_butt" Enabled="False" Visible="false" runat="server" text="Print"></asp:button>
                                             &nbsp;&nbsp;</td>                                        
                                     </tr>
@@ -131,9 +139,9 @@
                 </tr>
                 <tr>
                     <td align="center" valign="top" class="td_menu">
-                        <table align="center" border="0" class="tbl_menu_new">
+                        <table align="center" border="0" class="tbl_menu_new" style="height:500px;">
                             <tr>
-                                <td align="left" colspan="5" valign="top">
+                                <td align="left" colspan="5" valign="top" class="style14">
                                     <asp:Label ID="lblMsg" ForeColor="Red" Font-Size="Small" runat="server"></asp:Label>
                                 </td>
                             </tr>
@@ -184,7 +192,8 @@
                                                         Text="Transaction Date:" runat="server"></asp:Label></td>
                                                 <td align="left" valign="top" colspan="1" class="style13">                                                    
                                                     <asp:TextBox ID="txtTransDate" MaxLength="10" Width="191px" 
-                                                        runat="server"></asp:TextBox><asp:Label ID="lblDOB_Format" Enabled="false" Text="" runat="server"></asp:Label></td>                                            
+                                                        runat="server"></asp:TextBox><asp:Label ID="lblDOB_Format" Enabled="False" 
+                                                        Text="dd/mm/yyyy" runat="server"></asp:Label></td>                                            
                                                 <td align="left" valign="top" colspan="2" class="style11">
                                                     </td>
                                                 <td align="left" valign="top" colspan="1" class="style13">                                                    
@@ -206,18 +215,18 @@
                                             </tr>
 
                                             <tr>
-                                                <td nowrap align="left" valign="top" class="style3">
+                                                <td nowrap align="left" valign="top" class="style15">
                                                     <asp:Label ID="lblPremium" 
                                                         Text="Premium:" runat="server"></asp:Label>
                                                 </td>
-                                                <td align="left" valign="top" colspan="1">                                                    
+                                                <td align="left" valign="top" colspan="1" class="style14">                                                    
                                                     <asp:TextBox ID="txtPremium" Width="191px" 
                                                         runat="server"></asp:TextBox>
                                                 </td>                                            
-                                                <td align="left" valign="top" colspan="2" class="style1">
-                                                    &nbsp;</td>
-                                                <td align="left" valign="top" colspan="1">                                                    
-                                                    &nbsp;</td>
+                                                <td align="left" valign="top" colspan="2" class="style17">
+                                                    </td>
+                                                <td align="left" valign="top" colspan="1" class="style14">                                                    
+                                                    </td>
                                             </tr>
 
                             <tr>
@@ -249,4 +258,20 @@
 
     </form>
 </body>
+<script language="javascript" type="text/javascript">
+    function ConfirmDelete() {
+        // e.preventDefault();
+        var returnMsg;
+        var result = confirm("Are you sure you want to delete this record?");
+        console.log("Working")
+        if (result) {
+            returnMsg= true;
+        }
+        else {
+            returnMsg= false;
+        }
+        return returnMsg;
+        console.log(returnMsg)
+    }
+</script>
 </html>
