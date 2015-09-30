@@ -88,7 +88,7 @@ Partial Class Policy_PRG_LI_GRP_QUOT_ENTRY
 
     Private Sub Proc_DoSave()
 
-       
+
         Dim strMyYear As String = ""
         Dim strMyMth As String = ""
         Dim strMyDay As String = ""
@@ -243,7 +243,7 @@ Partial Class Policy_PRG_LI_GRP_QUOT_ENTRY
         strSQL = ""
         strSQL = "SELECT TOP 1 * FROM " & strTable
         strSQL = strSQL & " WHERE TBIL_QUO_REC_ID = '" & RTrim(txtFileNum.Text) & "'"
-       
+
         Dim objDA As System.Data.OleDb.OleDbDataAdapter
         objDA = New System.Data.OleDb.OleDbDataAdapter(strSQL, objOLEConn)
         Dim m_cbCommandBuilder As System.Data.OleDb.OleDbCommandBuilder
@@ -285,7 +285,7 @@ Partial Class Policy_PRG_LI_GRP_QUOT_ENTRY
             Else
                 '   Update existing record
 
-            
+
 
                 With obj_DT
                     .Rows(0)("TBIL_QUO_REC_ID") = RTrim(Me.txtFileNum.Text)
@@ -352,6 +352,7 @@ Partial Class Policy_PRG_LI_GRP_QUOT_ENTRY
         strSQL = strSQL & ", TBIL_QUO_REC_ID"
         strSQL = strSQL & " FROM " & strTable
         strSQL = strSQL & " WHERE TBIL_QUO_PROSPECT LIKE '" & RTrim(txtSearch.Value) & "%'"
+        strSQL = strSQL & " AND TBIL_QUO_FLAG <> 'D'"
         strSQL = strSQL & " ORDER BY TBIL_QUO_PROSPECT"
 
 
@@ -424,6 +425,7 @@ Partial Class Policy_PRG_LI_GRP_QUOT_ENTRY
             strSQL = ""
             strSQL = "SELECT TOP 1 * FROM " & strTableName
             strSQL = strSQL & " WHERE TBIL_QUO_REC_ID = '" & RecId & "'"
+            strSQL = strSQL & " AND TBIL_QUO_FLAG <> 'D'"
             objOLEComm.Connection = objOLEConn
             objOLEComm.CommandText = strSQL
             objOLEComm.CommandType = CommandType.Text
@@ -467,16 +469,86 @@ Partial Class Policy_PRG_LI_GRP_QUOT_ENTRY
             Exit Sub
         End If
 
-        Dim intC As Long = 0
+        'Dim intC As Long = 0
+
+        'Dim mystrCONN As String = CType(Session("connstr"), String)
+        'Dim objOLEConn As New OleDbConnection(mystrCONN)
+
+        'Try
+        '    'open connection to database
+        '    objOLEConn.Open()
+        'Catch ex As Exception
+        '    Me.lblMsg.Text = "Unable to connect to database. Reason: " & ex.Message
+        '    objOLEConn = Nothing
+        '    Exit Sub
+        'End Try
+
+
+        'strTable = strTableName
+
+        'strREC_ID = Trim(Me.txtFileNum.Text)
+
+        ''Delete record
+        ''Me.textMessage.Text = "Deleting record... "
+        'strSQL = ""
+        'strSQL = "DELETE FROM " & strTable
+        'strSQL = strSQL & " WHERE TBIL_QUO_REC_ID = '" & RTrim(txtFileNum.Text) & "'"
+
+        'Dim objOLECmd2 As OleDbCommand = New OleDbCommand()
+
+        'Try
+        '    objOLECmd2.Connection = objOLEConn
+        '    objOLECmd2.CommandType = CommandType.Text
+        '    objOLECmd2.CommandText = strSQL
+        '    intC = objOLECmd2.ExecuteNonQuery()
+
+        '    If intC >= 1 Then
+        '        Me.lblMsg.Text = "Record deleted successfully."
+        '        FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "');"
+        '        Proc_DoNew()
+        '    Else
+        '        Me.lblMsg.Text = "Sorry!. Record not deleted..."
+        '        FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "');"
+        '    End If
+
+        'Catch ex As Exception
+        '    Me.lblMsg.Text = "Error has occured. Reason: " & ex.Message
+        '    FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "');"
+
+        'End Try
+
+
+        'objOLECmd2.Dispose()
+        'objOLECmd2 = Nothing
+
+
+        'If objOLEConn.State = ConnectionState.Open Then
+        '    objOLEConn.Close()
+        'End If
+        'objOLEConn = Nothing
+
+        'Me.txtNum.Enabled = True
+        'Me.txtNum.Focus()
+
+
+        Dim myUserIDX As String = ""
+        Try
+            myUserIDX = CType(Session("MyUserIDX"), String)
+        Catch ex As Exception
+            myUserIDX = ""
+        End Try
+
 
         Dim mystrCONN As String = CType(Session("connstr"), String)
-        Dim objOLEConn As New OleDbConnection(mystrCONN)
+        Dim objOLEConn As New OleDbConnection()
+        objOLEConn.ConnectionString = mystrCONN
 
         Try
             'open connection to database
             objOLEConn.Open()
         Catch ex As Exception
             Me.lblMsg.Text = "Unable to connect to database. Reason: " & ex.Message
+            'FirstMsg = "Javascript:alert('" & Me.txtMsg.Text & "')"
             objOLEConn = Nothing
             Exit Sub
         End Try
@@ -484,49 +556,61 @@ Partial Class Policy_PRG_LI_GRP_QUOT_ENTRY
 
         strTable = strTableName
 
-        strREC_ID = Trim(Me.txtFileNum.Text)
-
-        'Delete record
-        'Me.textMessage.Text = "Deleting record... "
         strSQL = ""
-        strSQL = "DELETE FROM " & strTable
+        strSQL = "SELECT TOP 1 * FROM " & strTable
         strSQL = strSQL & " WHERE TBIL_QUO_REC_ID = '" & RTrim(txtFileNum.Text) & "'"
-        
-        Dim objOLECmd2 As OleDbCommand = New OleDbCommand()
+
+        Dim objDA As System.Data.OleDb.OleDbDataAdapter
+        objDA = New System.Data.OleDb.OleDbDataAdapter(strSQL, objOLEConn)
+        Dim m_cbCommandBuilder As System.Data.OleDb.OleDbCommandBuilder
+        m_cbCommandBuilder = New System.Data.OleDb.OleDbCommandBuilder(objDA)
+
+        Dim obj_DT As New System.Data.DataTable
+        Dim intC As Integer = 0
+
 
         Try
-            objOLECmd2.Connection = objOLEConn
-            objOLECmd2.CommandType = CommandType.Text
-            objOLECmd2.CommandText = strSQL
-            intC = objOLECmd2.ExecuteNonQuery()
 
-            If intC >= 1 Then
-                Me.lblMsg.Text = "Record deleted successfully."
-                FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "');"
-                Proc_DoNew()
+            objDA.Fill(obj_DT)
+
+            If obj_DT.Rows.Count = 0 Then
+                Me.lblMsg.Text = "No Record to be Deleted"
             Else
-                Me.lblMsg.Text = "Sorry!. Record not deleted..."
-                FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "');"
+                '   Move D to the flag column
+                With obj_DT
+                    .Rows(0)("TBIL_QUO_FLAG") = "D"
+                    .Rows(0)("TBIL_QUO_OPERID") = CType(myUserIDX, String)
+                    .Rows(0)("TBIL_QUO_KEYDTE") = Now
+                End With
+                'obj_DT.AcceptChanges()
+                intC = objDA.Update(obj_DT)
+                Me.lblMsg.Text = "Record Deleted from Database Successfully."
             End If
-
         Catch ex As Exception
-            Me.lblMsg.Text = "Error has occured. Reason: " & ex.Message
-            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "');"
-
+            Me.lblMsg.Text = ex.Message.ToString
+            Exit Sub
         End Try
+        Proc_DoNew()
+        obj_DT.Dispose()
+        obj_DT = Nothing
 
+        m_cbCommandBuilder.Dispose()
+        m_cbCommandBuilder = Nothing
 
-        objOLECmd2.Dispose()
-        objOLECmd2 = Nothing
-
+        If objDA.SelectCommand.Connection.State = ConnectionState.Open Then
+            objDA.SelectCommand.Connection.Close()
+        End If
+        objDA.Dispose()
+        objDA = Nothing
 
         If objOLEConn.State = ConnectionState.Open Then
             objOLEConn.Close()
         End If
         objOLEConn = Nothing
+        FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "');"
 
-        'Me.txtNum.Enabled = True
-        'Me.txtNum.Focus()
+
+
 
     End Sub
 

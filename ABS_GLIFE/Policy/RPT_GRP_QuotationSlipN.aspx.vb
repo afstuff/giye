@@ -56,6 +56,7 @@ Partial Class Policy_RPT_GRP_QuotationSlipN
         strSQL = strSQL & ", TBIL_QUO_REC_ID"
         strSQL = strSQL & " FROM " & strTable
         strSQL = strSQL & " WHERE TBIL_QUO_PROSPECT LIKE '" & RTrim(txtSearch.Value) & "%'"
+        strSQL = strSQL & " AND TBIL_QUO_FLAG <> 'D'"
         strSQL = strSQL & " ORDER BY TBIL_QUO_PROSPECT"
 
 
@@ -130,6 +131,7 @@ Partial Class Policy_RPT_GRP_QuotationSlipN
             strSQL = ""
             strSQL = "SELECT TOP 1 * FROM " & strTableName
             strSQL = strSQL & " WHERE TBIL_QUO_REC_ID = '" & RecId & "'"
+            strSQL = strSQL & " AND TBIL_QUO_FLAG <> 'D'"
             objOLEComm.Connection = objOLEConn
             objOLEComm.CommandText = strSQL
             objOLEComm.CommandType = CommandType.Text
