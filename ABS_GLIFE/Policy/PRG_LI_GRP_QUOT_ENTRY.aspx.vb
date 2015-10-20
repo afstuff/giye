@@ -82,6 +82,10 @@ Partial Class Policy_PRG_LI_GRP_QUOT_ENTRY
         txtRate.Text = ""
         txtPremium.Text = ""
         txtFileNum.Text = 0
+        cboRate_Per.SelectedIndex = 0
+        txtSumAssured.Text = ""
+        txtPremium.Text = ""
+        txtSAFactor.Text = ""
         Me.cmdSave_ASP.Enabled = True
         cmdDel_ASP.Enabled = False
     End Sub
@@ -166,16 +170,38 @@ Partial Class Policy_PRG_LI_GRP_QUOT_ENTRY
             Exit Sub
         End If
 
-        If Me.txtPremium.Text = "" Then
-            Me.lblMsg.Text = "Missing " & Me.lblPremium.Text
+        'If Me.txtPremium.Text = "" Then
+        '    Me.lblMsg.Text = "Missing " & Me.lblPremium.Text
+        '    FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+        '    txtPremium.Focus()
+        '    Exit Sub
+        'End If
+        'If Not IsNumeric(txtPremium.Text) Then
+        '    Me.lblMsg.Text = "Premium must be numeric"
+        '    FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+        '    txtPremium.Focus()
+        '    Exit Sub
+        'End If
+
+        If txtSAFactor.Text = "" Then
+            Me.lblMsg.Text = "Please enter Sum Assured Factor"
             FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
-            txtPremium.Focus()
+            txtSAFactor.Focus()
             Exit Sub
         End If
-        If Not IsNumeric(txtPremium.Text) Then
-            Me.lblMsg.Text = "Premium must be numeric"
+
+
+        If Not IsNumeric(txtSAFactor.Text) Then
+            Me.lblMsg.Text = "Sum Assured Factor must be numeric"
             FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
-            txtPremium.Focus()
+            txtSAFactor.Focus()
+            Exit Sub
+        End If
+
+        If cboRate_Per.SelectedIndex = 0 Then
+            Me.lblMsg.Text = "Please select rate per"
+            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+            cboRate_Per.Focus()
             Exit Sub
         End If
 
@@ -214,6 +240,11 @@ Partial Class Policy_PRG_LI_GRP_QUOT_ENTRY
         mydteX = Trim(strMyMth) & "/" & Trim(strMyDay) & "/" & Trim(strMyYear)
         mydte = Format(CDate(mydteX), "MM/dd/yyyy")
         dteStart = Format(mydte, "MM/dd/yyyy")
+
+        Dim PremiumAmount As Double
+        PremiumAmount = (CDbl(txtRate.Text) / CDbl(cboRate_Per.SelectedValue)) * CDbl(txtSumAssured.Text)
+        txtPremium.Text = PremiumAmount
+
 
         Dim myUserIDX As String = ""
         Try
@@ -270,6 +301,10 @@ Partial Class Policy_PRG_LI_GRP_QUOT_ENTRY
                 drNewRow("TBIL_QUO_TRANS_DATE") = dteStart
                 drNewRow("TBIL_QUO_PREMIUM") = RTrim(Me.txtPremium.Text)
 
+                drNewRow("TBIL_QUO_SA_FACTOR") = Val(Me.txtSAFactor.Text)
+                drNewRow("TBIL_QUO_SUM_ASSURED") = txtSumAssured.Text
+                drNewRow("TBIL_QUO_RATE_PER") = cboRate_Per.SelectedValue
+
                 drNewRow("TBIL_QUO_FLAG") = "A"
                 drNewRow("TBIL_QUO_OPERID") = CType(myUserIDX, String)
                 drNewRow("TBIL_QUO_KEYDTE") = Now
@@ -295,6 +330,10 @@ Partial Class Policy_PRG_LI_GRP_QUOT_ENTRY
                     .Rows(0)("TBIL_QUO_RATE") = Val(Me.txtRate.Text)
                     .Rows(0)("TBIL_QUO_TRANS_DATE") = dteStart
                     .Rows(0)("TBIL_QUO_PREMIUM") = RTrim(Me.txtPremium.Text)
+
+                    .Rows(0)("TBIL_QUO_SA_FACTOR") = Val(Me.txtSAFactor.Text)
+                    .Rows(0)("TBIL_QUO_SUM_ASSURED") = txtSumAssured.Text
+                    .Rows(0)("TBIL_QUO_RATE_PER") = cboRate_Per.SelectedValue
 
                     .Rows(0)("TBIL_QUO_FLAG") = "C"
                     .Rows(0)("TBIL_QUO_OPERID") = CType(myUserIDX, String)
@@ -433,10 +472,13 @@ Partial Class Policy_PRG_LI_GRP_QUOT_ENTRY
             If objOLEReader.HasRows = True Then
                 objOLEReader.Read()
                 txtProspect.Text = objOLEReader("TBIL_QUO_PROSPECT")
-                txtTotEmolument.Text = objOLEReader("TBIL_QUO_TOT_EMOLUMENT")
+                txtTotEmolument.Text = Format(objOLEReader("TBIL_QUO_TOT_EMOLUMENT"), "Standard")
                 txtTotNoStaff.Text = objOLEReader("TBIL_QUO_NO_OF_STAFF")
                 txtRate.Text = objOLEReader("TBIL_QUO_RATE")
-                txtPremium.Text = objOLEReader("TBIL_QUO_PREMIUM")
+                txtPremium.Text = Format(objOLEReader("TBIL_QUO_PREMIUM"), "Standard")
+                If Not IsDBNull(objOLEReader("TBIL_QUO_SA_FACTOR")) Then txtSAFactor.Text = objOLEReader("TBIL_QUO_SA_FACTOR")
+                If Not IsDBNull(objOLEReader("TBIL_QUO_SUM_ASSURED")) Then txtSumAssured.Text = Format(objOLEReader("TBIL_QUO_SUM_ASSURED"), "Standard")
+                If Not IsDBNull(objOLEReader("TBIL_QUO_RATE_PER")) Then cboRate_Per.Text = objOLEReader("TBIL_QUO_RATE_PER")
                 If Not IsDBNull(objOLEReader("TBIL_QUO_TRANS_DATE")) Then
                     txtTransDate.Text = Format(objOLEReader("TBIL_QUO_TRANS_DATE"), "dd/MM/yyyy")
                 End If
@@ -620,5 +662,22 @@ Partial Class Policy_PRG_LI_GRP_QUOT_ENTRY
 
     Protected Sub Validate()
 
+    End Sub
+
+    Protected Sub txtTotEmolument_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtTotEmolument.TextChanged
+        If txtTotEmolument.Text <> "" Then
+            txtTotEmolument.Text = Format(txtTotEmolument.Text, "Standard")
+            If txtSAFactor.Text <> "" Then
+                txtSumAssured.Text = CDbl(txtTotEmolument.Text) * CDbl(txtSAFactor.Text)
+                txtSumAssured.Text = Format(txtSumAssured.Text, "Standard")
+            End If
+        End If
+    End Sub
+
+    Protected Sub txtSAFactor_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtSAFactor.TextChanged
+        If txtTotEmolument.Text <> "" And txtSAFactor.Text <> "" Then
+            txtSumAssured.Text = CDbl(txtTotEmolument.Text) * CDbl(txtSAFactor.Text)
+            txtSumAssured.Text = Format(txtSumAssured.Text, "Standard")
+        End If
     End Sub
 End Class

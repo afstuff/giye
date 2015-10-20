@@ -42,20 +42,6 @@
         {
             height: 31px;
         }
-        .style11
-        {
-            width: 252px;
-            height: 33px;
-        }
-        .style12
-        {
-            width: 174px;
-            height: 33px;
-        }
-        .style13
-        {
-            height: 33px;
-        }
         .style14
         {
             height: 28px;
@@ -69,6 +55,20 @@
         {
             width: 252px;
             height: 28px;
+        }
+        .style18
+        {
+            width: 174px;
+            height: 32px;
+        }
+        .style19
+        {
+            height: 32px;
+        }
+        .style20
+        {
+            width: 252px;
+            height: 32px;
         }
     </style>
             
@@ -167,7 +167,7 @@
                                                 </td>
                                                 <td align="left" valign="top" class="style10">
                                                     <asp:TextBox ID="txtTotEmolument" 
-                                                        Width="191px" runat="server"></asp:TextBox>
+                                                        Width="150px" runat="server" AutoPostBack="True"></asp:TextBox>
                                                 </td>
                                                 <td align="left" valign="top" class="style2">
                                                 </td>
@@ -176,11 +176,37 @@
                             </tr>
 
                                             <tr>
+                                                <td nowrap align="left" valign="top" class="style6">
+                                                    <asp:Label ID="lblSAFactor" 
+                                                        Text="S A Factor" runat="server"></asp:Label>
+                                                </td>
+                                                <td align="left" valign="top" colspan="1" class="style7">                                                    
+                                                    <asp:TextBox ID="txtSAFactor" 
+                                                        Width="55px" runat="server" AutoPostBack="True"></asp:TextBox>
+                                                </td>                                            
+                                                <td align="left" valign="top" colspan="2" class="style8">&nbsp;</td>
+                                                <td align="left" valign="top" colspan="1" class="style7">                                                    
+                                                    &nbsp;</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td nowrap align="left" valign="top" class="style6"><asp:Label ID="lblTransDate" 
+                                                        Text="Transaction Date:" runat="server"></asp:Label></td>
+                                                <td align="left" valign="top" colspan="1" class="style7">                                                    
+                                                    <asp:TextBox ID="txtTransDate" MaxLength="10" Width="150px" 
+                                                        runat="server"></asp:TextBox><asp:Label ID="lblDOB_Format" Enabled="False" 
+                                                        Text="dd/mm/yyyy" runat="server"></asp:Label></td>                                            
+                                                <td align="left" valign="top" colspan="2" class="style8">&nbsp;</td>
+                                                <td align="left" valign="top" colspan="1" class="style7">                                                    
+                                                    &nbsp;</td>
+                                            </tr>
+
+                                            <tr>
                                                 <td nowrap align="left" valign="top" class="style6"><asp:Label ID="lblTotNoStaff" 
                                                         Text="Total Number of staff:" runat="server"></asp:Label></td>
                                                 <td align="left" valign="top" colspan="1" class="style7">                                                    
                                                     <asp:TextBox ID="txtTotNoStaff" Enabled="true" 
-                                                        Width="109px" runat="server"></asp:TextBox></td>                                            
+                                                        Width="55px" runat="server"></asp:TextBox></td>                                            
                                                 <td align="left" valign="top" colspan="2" class="style8"></td>
                                                 <td align="left" valign="top" colspan="1" class="style7">                                                    
                                                     <asp:TextBox ID="txtFileNum" runat="server" Visible="False"></asp:TextBox>
@@ -188,45 +214,66 @@
                                             </tr>
 
                                             <tr>
-                                                <td nowrap align="left" valign="top" class="style12"><asp:Label ID="lblTransDate" 
-                                                        Text="Transaction Date:" runat="server"></asp:Label></td>
-                                                <td align="left" valign="top" colspan="1" class="style13">                                                    
-                                                    <asp:TextBox ID="txtTransDate" MaxLength="10" Width="191px" 
-                                                        runat="server"></asp:TextBox><asp:Label ID="lblDOB_Format" Enabled="False" 
-                                                        Text="dd/mm/yyyy" runat="server"></asp:Label></td>                                            
-                                                <td align="left" valign="top" colspan="2" class="style11">
+                                                <td nowrap align="left" valign="top" class="style18">
+                                                    <asp:Label ID="lblRate" 
+                                                        Text="Rate:" runat="server"></asp:Label></td>
+                                                <td align="left" valign="top" colspan="1" class="style19">                                                    
+                                                    <asp:TextBox ID="txtRate" 
+                                                        Width="55px" runat="server" style="margin-bottom: 0px"></asp:TextBox>
+                                                </td>                                            
+                                                <td align="left" valign="top" colspan="2" class="style20">
                                                     </td>
-                                                <td align="left" valign="top" colspan="1" class="style13">                                                    
+                                                <td align="left" valign="top" colspan="1" class="style19">                                                    
                                                     </td>
                                             </tr>
 
                                             <tr>
                                                 <td nowrap align="left" valign="top" class="style6">
-                                                    <asp:Label ID="lblRate" 
-                                                        Text="Rate:" runat="server"></asp:Label></td>
+                                                    <asp:Label ID="lblRatePer" 
+                                                        Text="Rate Per" runat="server"></asp:Label>
+                                                </td>
                                                 <td align="left" valign="top" colspan="1" class="style7">                                                    
-                                                    <asp:TextBox ID="txtRate" 
-                                                        Width="189px" runat="server" style="margin-bottom: 0px"></asp:TextBox>
+                                                    <asp:DropDownList ID="cboRate_Per" runat="server" Width="150px">
+                                                        <asp:ListItem Selected="True" Value="*">(Select item)</asp:ListItem>
+                                                        <asp:ListItem Value="100">Per 100</asp:ListItem>
+                                                        <asp:ListItem Value="1000">Per 1000</asp:ListItem>
+                                                        <asp:ListItem Value="1000000">Per 1000000</asp:ListItem>
+                                                    </asp:DropDownList>
                                                 </td>                                            
                                                 <td align="left" valign="top" colspan="2" class="style8">
-                                                    </td>
+                                                    &nbsp;</td>
                                                 <td align="left" valign="top" colspan="1" class="style7">                                                    
-                                                    </td>
+                                                    &nbsp;</td>
                                             </tr>
 
                                             <tr>
                                                 <td nowrap align="left" valign="top" class="style15">
                                                     <asp:Label ID="lblPremium" 
-                                                        Text="Premium:" runat="server"></asp:Label>
+                                                        Text="Premium:" runat="server" Visible="False"></asp:Label>
                                                 </td>
                                                 <td align="left" valign="top" colspan="1" class="style14">                                                    
-                                                    <asp:TextBox ID="txtPremium" Width="191px" 
-                                                        runat="server"></asp:TextBox>
+                                                    <asp:TextBox ID="txtPremium" Width="150px" 
+                                                        runat="server" Enabled="False" Visible="False"></asp:TextBox>
                                                 </td>                                            
                                                 <td align="left" valign="top" colspan="2" class="style17">
                                                     </td>
                                                 <td align="left" valign="top" colspan="1" class="style14">                                                    
                                                     </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td nowrap align="left" valign="top" class="style15">
+                                                    <asp:Label ID="lblBenefitSumAssured" 
+                                                        Text="Benefit / SumAssured" runat="server" Visible="False"></asp:Label>
+                                                </td>
+                                                <td align="left" valign="top" colspan="1" class="style14">                                                    
+                                                    <asp:TextBox ID="txtSumAssured" 
+                                                        Width="150px" runat="server" Enabled="False" Visible="False"></asp:TextBox>
+                                                </td>                                            
+                                                <td align="left" valign="top" colspan="2" class="style17">
+                                                    &nbsp;</td>
+                                                <td align="left" valign="top" colspan="1" class="style14">                                                    
+                                                    &nbsp;</td>
                                             </tr>
 
                             <tr>
