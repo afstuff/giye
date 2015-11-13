@@ -10,9 +10,20 @@
 <head id="Head1" runat="server">
     <title>Group Life Module</title>
     <link rel="Stylesheet" href="../SS_ILIFE.css" type="text/css" />
-    <script language="javascript" type="text/javascript" src="../Script/ScriptJS.js"> </script>
-    <script language="javascript" type="text/javascript" src="../Script/SJS_02.js"> </script>
-            
+        <script type="text/javascript" src="../JQ/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="../JQ/jquery-ui.js"></script>
+
+    <script type="text/javascript" src="../JQ/jquery.js"></script>
+    <script type="text/javascript" src="../JQ/jquery.simplemodal.js"></script>
+
+    <script type="text/javascript" src="../JQ/jquery-ui.css"></script>
+
+    <script language="javascript" type="text/javascript" src="../Script/ScriptJS.js"></script>
+    <script language="javascript" type="text/javascript" src="../Script/SJS_02.js"></script>
+
+    <script language="javascript" type="text/javascript" src="../Script/SJQ.js"></script>    
+
+    <link rel="Stylesheet" href="../SS_ILIFE.css" type="text/css" />
     <style type="text/css">
         .style2
         {
@@ -148,16 +159,50 @@
 
                             <tr>
                                                 <td nowrap align="left" valign="top" class="style6">
-                                                    <asp:Label ID="lblProspect" Enabled="False" Text="Prospect:" runat="server"></asp:Label>
+                                                    <asp:Label ID="lblProspect0" Enabled="False" Text="Prospect ID:" runat="server"></asp:Label>
                                                 </td>
                                                 <td align="left" valign="top" colspan="1" class="style7">
+                                                    <asp:TextBox ID="txtProspectId" runat="server" 
+                                                        Width="155px" style="margin-left: 0px"></asp:TextBox>
+                                                &nbsp;&nbsp; <input type="button" id="cmdAssured_Setup" name="cmdAssured_Setup" value="Setup" onclick="javascript:jsDoPopNew_Full('../Codes/PRG_GP_CUST_DTL.aspx?optid=001&optd=Customer_Details&popup=YES')" />
+                                                 &nbsp;&nbsp; <input type="button" id="btnAssured_Browse" name="btnAssured_Browse" visible="true" value="Browse..." onclick="javascript:ShowPopup('INS_PRO','../WebFormX.aspx?popup=NO','Form1','txtProspectId','txtProspect');" /></td>
+                                                <td align="left" valign="top" colspan="2" class="style8">
+                                                    &nbsp;</td>
+                                                <td align="left" valign="top" colspan="1" class="style7">                                                    
+                                                    &nbsp;</td>
+                            </tr>
+
+                            <tr>
+                                                <td nowrap align="left" valign="top" class="style18">
+                                                    <asp:Label ID="lblProspect" Enabled="False" Text="Prospect:" runat="server"></asp:Label>
+                                                </td>
+                                                <td align="left" valign="top" colspan="1" class="style19">
                                                     <asp:TextBox ID="txtProspect" runat="server" 
                                                         Width="322px" style="margin-left: 0px"></asp:TextBox>
                                                 </td>
-                                                <td align="left" valign="top" colspan="2" class="style8">
+                                                <td align="left" valign="top" colspan="2" class="style20">
                                                     </td>
-                                                <td align="left" valign="top" colspan="1" class="style7">                                                    
+                                                <td align="left" valign="top" colspan="1" class="style19">                                                    
                                                 </td>
+                            </tr>
+
+                            <tr>
+                                                <td align="left" valign="top" colspan="1" class="style9">
+                                                    Trans Type</td>
+                                                <td align="left" valign="top" class="style10">
+                                                    <asp:DropDownList ID="cboTransType" runat="server" Width="150px" 
+                                                        AutoPostBack="True">
+                                                        <asp:ListItem Selected="True" Value="*">(Select item)</asp:ListItem>
+                                                        <asp:ListItem Value="GL">Group Life</asp:ListItem>
+                                                        <asp:ListItem Value="PD">PD</asp:ListItem>
+                                                        <asp:ListItem Value="FU">Funeral</asp:ListItem>
+                                                        <asp:ListItem Value="CI">Critical illness</asp:ListItem>
+                                                    </asp:DropDownList>
+                                                </td>
+                                                <td align="left" valign="top" class="style2">
+                                                    &nbsp;</td>
+                                                <td align="left" valign="top" colspan="2" class="style10">
+                                                    &nbsp;</td>
                             </tr>
 
                             <tr>
@@ -176,17 +221,17 @@
                             </tr>
 
                                             <tr>
-                                                <td nowrap align="left" valign="top" class="style6">
+                                                <td nowrap align="left" valign="top" class="style18">
                                                     <asp:Label ID="lblSAFactor" 
                                                         Text="S A Factor" runat="server"></asp:Label>
                                                 </td>
-                                                <td align="left" valign="top" colspan="1" class="style7">                                                    
+                                                <td align="left" valign="top" colspan="1" class="style19">                                                    
                                                     <asp:TextBox ID="txtSAFactor" 
                                                         Width="55px" runat="server" AutoPostBack="True"></asp:TextBox>
                                                 </td>                                            
-                                                <td align="left" valign="top" colspan="2" class="style8">&nbsp;</td>
-                                                <td align="left" valign="top" colspan="1" class="style7">                                                    
-                                                    &nbsp;</td>
+                                                <td align="left" valign="top" colspan="2" class="style20"></td>
+                                                <td align="left" valign="top" colspan="1" class="style19">                                                    
+                                                    </td>
                                             </tr>
 
                                             <tr>
@@ -249,11 +294,11 @@
                                             <tr>
                                                 <td nowrap align="left" valign="top" class="style15">
                                                     <asp:Label ID="lblPremium" 
-                                                        Text="Premium:" runat="server" Visible="False"></asp:Label>
+                                                        Text="Premium:" runat="server"></asp:Label>
                                                 </td>
                                                 <td align="left" valign="top" colspan="1" class="style14">                                                    
                                                     <asp:TextBox ID="txtPremium" Width="150px" 
-                                                        runat="server" Enabled="False" Visible="False"></asp:TextBox>
+                                                        runat="server" Enabled="False"></asp:TextBox>
                                                 </td>                                            
                                                 <td align="left" valign="top" colspan="2" class="style17">
                                                     </td>
@@ -264,11 +309,11 @@
                                             <tr>
                                                 <td nowrap align="left" valign="top" class="style15">
                                                     <asp:Label ID="lblBenefitSumAssured" 
-                                                        Text="Benefit / SumAssured" runat="server" Visible="False"></asp:Label>
+                                                        Text="Benefit / SumAssured" runat="server"></asp:Label>
                                                 </td>
                                                 <td align="left" valign="top" colspan="1" class="style14">                                                    
                                                     <asp:TextBox ID="txtSumAssured" 
-                                                        Width="150px" runat="server" Enabled="False" Visible="False"></asp:TextBox>
+                                                        Width="150px" runat="server" Enabled="False"></asp:TextBox>
                                                 </td>                                            
                                                 <td align="left" valign="top" colspan="2" class="style17">
                                                     &nbsp;</td>

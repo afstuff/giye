@@ -54,7 +54,7 @@ Partial Class WebFormX
             Case "BRK", "BRK_GL"
                 strR_ID = "001"
                 strTableName = "TBIL_CUST_DETAIL"
-            Case "INS", "INS_GL"
+            Case "INS", "INS_GL", "INS_PRO"
                 strR_ID = "001"
                 strTableName = "TBIL_INS_DETAIL"
             Case Else
@@ -133,7 +133,7 @@ Partial Class WebFormX
                 End If
                 strSQL = strSQL & " ORDER BY TBIL_CUST_ID, RTRIM(ISNULL(TBIL_CUST_DESC,''))"
 
-            Case "INS", "INS_GL"
+            Case "INS", "INS_GL", "INS_PRO"
                 STRPAGE_TITLE = "List of Assured/Insured/Client Codes..."
                 strTableName = "TBIL_INS_DETAIL"
                 strTable = strTableName
@@ -147,6 +147,8 @@ Partial Class WebFormX
                         strSQL = strSQL & " AND TBIL_INSRD_MDLE IN('INV','I')"
                     Case "INS_GL"
                         strSQL = strSQL & " AND TBIL_INSRD_MDLE IN('GRP','G')"
+                    Case "INS_PRO"
+                        strSQL = strSQL & " AND TBIL_INSRD_MDLE IN('PRO','P')"
                 End Select
                 If RTrim(Me.txtSearch.Value) = "Search..." Then
                 ElseIf RTrim(Me.txtSearch.Value) <> "" Then

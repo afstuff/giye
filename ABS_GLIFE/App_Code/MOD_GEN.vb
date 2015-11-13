@@ -1834,6 +1834,9 @@ gnGet_SN_End:
                 pvListItem = New ListItem("Annuity", "ANN")
                 pvcboDDList.Items.Add(pvListItem)
 
+                pvListItem = New ListItem("Prospect", "PRO")
+                pvcboDDList.Items.Add(pvListItem)
+
                 pvcboDDList.Items.Insert(0, New ListItem(pvDefault_Text, pvDefault_Value))
                 pvListItem = Nothing
                 Exit Sub

@@ -38,6 +38,7 @@ Partial Class Policy_PRG_LI_GRP_QUOT_ENTRY
     Dim myarrData() As String
 
     Dim strErrMsg As String
+    Dim dteStart As Date = Now
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         strTableName = "TBIL_GRP_QUOTATION_ENTRIES"
@@ -70,29 +71,7 @@ Partial Class Policy_PRG_LI_GRP_QUOT_ENTRY
     End Sub
 
     Protected Sub cmdSave_ASP_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdSave_ASP.Click
-        Call Proc_DoSave()
-        Me.txtAction.Text = ""
-    End Sub
-
-    Private Sub Proc_DoNew()
-        txtProspect.Text = ""
-        txtTotEmolument.Text = ""
-        txtTotNoStaff.Text = ""
-        txtTransDate.Text = ""
-        txtRate.Text = ""
-        txtPremium.Text = ""
-        txtFileNum.Text = 0
-        cboRate_Per.SelectedIndex = 0
-        txtSumAssured.Text = ""
-        txtPremium.Text = ""
-        txtSAFactor.Text = ""
-        Me.cmdSave_ASP.Enabled = True
-        cmdDel_ASP.Enabled = False
-    End Sub
-
-    Private Sub Proc_DoSave()
-
-
+        Dim Err As String
         Dim strMyYear As String = ""
         Dim strMyMth As String = ""
         Dim strMyDay As String = ""
@@ -116,94 +95,7 @@ Partial Class Policy_PRG_LI_GRP_QUOT_ENTRY
         Dim Dte_Current As Date = Now
         Dim Dte_DOB As Date = Now
 
-        If Me.txtProspect.Text = "" Then
-            Me.lblMsg.Text = "Missing " & Me.lblProspect.Text
-            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
-            Exit Sub
-        End If
 
-        If Me.txtTotEmolument.Text = "" Then
-            Me.lblMsg.Text = "Missing " & Me.lblTotEmolument.Text
-            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
-            txtTotEmolument.Focus()
-            Exit Sub
-        End If
-        If Not IsNumeric(txtTotEmolument.Text) Then
-            Me.lblMsg.Text = "Estimated Total Emolument must be numeric"
-            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
-            txtTotEmolument.Focus()
-            Exit Sub
-        End If
-
-
-
-        If Me.txtTotNoStaff.Text = "" Then
-            Me.lblMsg.Text = "Missing " & Me.lblTotNoStaff.Text
-            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
-            txtTotNoStaff.Focus()
-            Exit Sub
-        End If
-        If Not IsNumeric(txtTotNoStaff.Text) Then
-            Me.lblMsg.Text = "Total Number of staff must be numeric"
-            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
-            txtTotNoStaff.Focus()
-            Exit Sub
-        End If
-
-        If Me.txtTransDate.Text = "" Then
-            Me.lblMsg.Text = "Missing " & Me.lblTransDate.Text
-            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
-            txtTransDate.Focus()
-            Exit Sub
-        End If
-
-        If Me.txtRate.Text = "" Then
-            Me.lblMsg.Text = "Missing " & Me.lblRate.Text
-            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
-            txtRate.Focus()
-            Exit Sub
-        End If
-        If Not IsNumeric(txtRate.Text) Then
-            Me.lblMsg.Text = "Rate must be numeric"
-            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
-            txtRate.Focus()
-            Exit Sub
-        End If
-
-        'If Me.txtPremium.Text = "" Then
-        '    Me.lblMsg.Text = "Missing " & Me.lblPremium.Text
-        '    FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
-        '    txtPremium.Focus()
-        '    Exit Sub
-        'End If
-        'If Not IsNumeric(txtPremium.Text) Then
-        '    Me.lblMsg.Text = "Premium must be numeric"
-        '    FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
-        '    txtPremium.Focus()
-        '    Exit Sub
-        'End If
-
-        If txtSAFactor.Text = "" Then
-            Me.lblMsg.Text = "Please enter Sum Assured Factor"
-            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
-            txtSAFactor.Focus()
-            Exit Sub
-        End If
-
-
-        If Not IsNumeric(txtSAFactor.Text) Then
-            Me.lblMsg.Text = "Sum Assured Factor must be numeric"
-            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
-            txtSAFactor.Focus()
-            Exit Sub
-        End If
-
-        If cboRate_Per.SelectedIndex = 0 Then
-            Me.lblMsg.Text = "Please select rate per"
-            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
-            cboRate_Per.Focus()
-            Exit Sub
-        End If
 
         If RTrim(Me.txtTransDate.Text) = "" Or Len(Trim(Me.txtTransDate.Text)) <> 10 Then
             Me.lblMsg.Text = "Missing or Invalid date - " & Me.lblTransDate.Text
@@ -240,7 +132,33 @@ Partial Class Policy_PRG_LI_GRP_QUOT_ENTRY
         mydteX = Trim(strMyMth) & "/" & Trim(strMyDay) & "/" & Trim(strMyYear)
         mydte = Format(CDate(mydteX), "MM/dd/yyyy")
         dteStart = Format(mydte, "MM/dd/yyyy")
+        Err = ""
+        ValidateFields(Err)
+        If Err = "Y" Then
+            Exit Sub
+        End If
+        Call Proc_DoSave()
+        Me.txtAction.Text = ""
+        txtProspectId.Text = ""
+        txtProspect.Text = ""
+        cboTransType.SelectedIndex = 0
+    End Sub
 
+    Private Sub Proc_DoNew()
+        txtTotEmolument.Text = ""
+        txtTotNoStaff.Text = ""
+        txtTransDate.Text = ""
+        txtRate.Text = ""
+        txtFileNum.Text = 0
+        cboRate_Per.SelectedIndex = 0
+        txtSumAssured.Text = ""
+        txtPremium.Text = ""
+        txtSAFactor.Text = ""
+        Me.cmdSave_ASP.Enabled = True
+        cmdDel_ASP.Enabled = False
+    End Sub
+
+    Private Sub Proc_DoSave()
         Dim PremiumAmount As Double
         PremiumAmount = (CDbl(txtRate.Text) / CDbl(cboRate_Per.SelectedValue)) * CDbl(txtSumAssured.Text)
         txtPremium.Text = PremiumAmount
@@ -273,7 +191,7 @@ Partial Class Policy_PRG_LI_GRP_QUOT_ENTRY
 
         strSQL = ""
         strSQL = "SELECT TOP 1 * FROM " & strTable
-        strSQL = strSQL & " WHERE TBIL_QUO_REC_ID = '" & RTrim(txtFileNum.Text) & "'"
+        strSQL = strSQL & " WHERE TBIL_QUO_PROSPECT_ID = '" & RTrim(txtProspectId.Text) & "' AND TBIL_QUO_TRANS_TYPE='" & Me.cboTransType.SelectedValue & "'"
 
         Dim objDA As System.Data.OleDb.OleDbDataAdapter
         objDA = New System.Data.OleDb.OleDbDataAdapter(strSQL, objOLEConn)
@@ -296,12 +214,22 @@ Partial Class Policy_PRG_LI_GRP_QUOT_ENTRY
                 ' drNewRow("TBIL_POL_ADD_FILE_NO") = RTrim(Me.txtFileNum.Text)
                 drNewRow("TBIL_QUO_PROSPECT") = RTrim(Me.txtProspect.Text)
                 drNewRow("TBIL_QUO_TOT_EMOLUMENT") = RTrim(Me.txtTotEmolument.Text)
-                drNewRow("TBIL_QUO_NO_OF_STAFF") = RTrim(Me.txtTotNoStaff.Text)
+                If Me.txtTotNoStaff.Text = "" Then
+                    drNewRow("TBIL_QUO_NO_OF_STAFF") = 0
+                Else
+                    drNewRow("TBIL_QUO_NO_OF_STAFF") = RTrim(Me.txtTotNoStaff.Text)
+                End If
                 drNewRow("TBIL_QUO_RATE") = Val(Me.txtRate.Text)
                 drNewRow("TBIL_QUO_TRANS_DATE") = dteStart
                 drNewRow("TBIL_QUO_PREMIUM") = RTrim(Me.txtPremium.Text)
+                drNewRow("TBIL_QUO_PROSPECT_ID") = txtProspectId.Text
+                drNewRow("TBIL_QUO_TRANS_TYPE") = RTrim(Me.cboTransType.SelectedValue)
 
-                drNewRow("TBIL_QUO_SA_FACTOR") = Val(Me.txtSAFactor.Text)
+                If txtSAFactor.Text = "" Then
+                    drNewRow("TBIL_QUO_SA_FACTOR") = 0
+                Else
+                    drNewRow("TBIL_QUO_SA_FACTOR") = Val(Me.txtSAFactor.Text)
+                End If
                 drNewRow("TBIL_QUO_SUM_ASSURED") = txtSumAssured.Text
                 drNewRow("TBIL_QUO_RATE_PER") = cboRate_Per.SelectedValue
 
@@ -372,28 +300,79 @@ Partial Class Policy_PRG_LI_GRP_QUOT_ENTRY
     End Sub
 
     Protected Sub cmdSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdSearch.Click
+        'If LTrim(RTrim(Me.txtSearch.Value)) = "Search..." Then
+        'ElseIf LTrim(RTrim(Me.txtSearch.Value)) <> "" Then
+        '    cboSearch.Items.Clear()
+        '    cboSearch.Items.Add("*** Select ***")
+        '    Dim dt As DataTable = SearchHelp().Tables(0)
+        '    cboSearch.DataSource = dt
+        '    cboSearch.DataValueField = "TBIL_QUO_REC_ID"
+        '    cboSearch.DataTextField = "TBIL_QUO_PROSPECT"
+        '    cboSearch.DataBind()
+        'End If
+
         If LTrim(RTrim(Me.txtSearch.Value)) = "Search..." Then
         ElseIf LTrim(RTrim(Me.txtSearch.Value)) <> "" Then
             cboSearch.Items.Clear()
             cboSearch.Items.Add("*** Select ***")
             Dim dt As DataTable = SearchHelp().Tables(0)
             cboSearch.DataSource = dt
-            cboSearch.DataValueField = "TBIL_QUO_REC_ID"
-            cboSearch.DataTextField = "TBIL_QUO_PROSPECT"
+            cboSearch.DataValueField = "MyFld_Value"
+            cboSearch.DataTextField = "MyFld_Text"
             cboSearch.DataBind()
         End If
     End Sub
 
     Protected Function SearchHelp() As DataSet
-        strTable = "TBIL_GRP_QUOTATION_ENTRIES"
-        strSQL = ""
-        strSQL = "SELECT TBIL_QUO_PROSPECT"
-        strSQL = strSQL & ", TBIL_QUO_REC_ID"
-        strSQL = strSQL & " FROM " & strTable
-        strSQL = strSQL & " WHERE TBIL_QUO_PROSPECT LIKE '" & RTrim(txtSearch.Value) & "%'"
-        strSQL = strSQL & " AND TBIL_QUO_FLAG <> 'D'"
-        strSQL = strSQL & " ORDER BY TBIL_QUO_PROSPECT"
+        'strTable = "TBIL_GRP_QUOTATION_ENTRIES"
+        'strSQL = ""
+        'strSQL = "SELECT TBIL_QUO_PROSPECT"
+        'strSQL = strSQL & ", TBIL_QUO_REC_ID"
+        'strSQL = strSQL & " FROM " & strTable
+        'strSQL = strSQL & " WHERE TBIL_QUO_PROSPECT LIKE '" & RTrim(txtSearch.Value) & "%'"
+        'strSQL = strSQL & " AND TBIL_QUO_FLAG <> 'D'"
+        'strSQL = strSQL & " ORDER BY TBIL_QUO_PROSPECT"
 
+
+        'Dim mystrCONN As String = CType(Session("connstr"), String)
+        'Dim objOLEConn As New OleDbConnection()
+        'objOLEConn.ConnectionString = mystrCONN
+
+        'Try
+        '    'open connection to database
+        '    objOLEConn.Open()
+        'Catch ex As Exception
+        '    Me.lblMsg.Text = "Unable to connect to database. Reason: " & ex.Message
+        '    'FirstMsg = "Javascript:alert('" & Me.txtMsg.Text & "')"
+        '    objOLEConn = Nothing
+        '    Exit Function
+        'End Try
+
+        'Try
+
+        '    Dim adapter As OleDbDataAdapter = New OleDbDataAdapter(strSQL, objOLEConn)
+        '    Dim ds As DataSet = New DataSet()
+        '    adapter.Fill(ds)
+        '    'Dim a As Integer = ds.Tables(0).Rows.Count
+        '    Return ds
+        'Catch ex As Exception
+        '    Me.lblMsg.Text = ex.Message.ToString
+        '    Exit Function
+        'End Try
+        'If objOLEConn.State = ConnectionState.Open Then
+        '    objOLEConn.Close()
+        'End If
+        'objOLEConn = Nothing
+
+        strTable = "TBIL_INS_DETAIL"
+        strSQL = strSQL & "SELECT TBIL_INSRD_REC_ID AS MyFld_Rec_ID, TBIL_INSRD_ID AS MyFld_ID, TBIL_INSRD_CODE AS MyFld_Value"
+        strSQL = strSQL & ",RTRIM(ISNULL(TBIL_INSRD_SURNAME,'')) + ' ' + RTRIM(ISNULL(TBIL_INSRD_FIRSTNAME,'')) AS MyFld_Text"
+        strSQL = strSQL & " FROM " & strTable & " "
+        strSQL = strSQL & " WHERE TBIL_INSRD_MDLE IN('PRO','P')"
+        strSQL = strSQL & " AND (TBIL_INSRD_SURNAME LIKE '%" & RTrim(Me.txtSearch.Value) & "%'"
+        strSQL = strSQL & " OR TBIL_INSRD_FIRSTNAME LIKE '%" & RTrim(Me.txtSearch.Value) & "%')"
+        '  strSQL = strSQL & " AND TBIL_QUO_FLAG <> 'D'"
+        'strSQL = strSQL & " ORDER BY TBIL_QUO_PROSPECT"
 
         Dim mystrCONN As String = CType(Session("connstr"), String)
         Dim objOLEConn As New OleDbConnection()
@@ -425,6 +404,7 @@ Partial Class Policy_PRG_LI_GRP_QUOT_ENTRY
         End If
         objOLEConn = Nothing
 
+
     End Function
 
     Protected Sub cboSearch_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboSearch.SelectedIndexChanged
@@ -433,8 +413,10 @@ Partial Class Policy_PRG_LI_GRP_QUOT_ENTRY
             If Me.cboSearch.SelectedIndex = -1 Or Me.cboSearch.SelectedIndex = 0 Or _
             Me.cboSearch.SelectedItem.Value = "" Or Me.cboSearch.SelectedItem.Value = "*" Then
             Else
-                txtFileNum.Text = Me.cboSearch.SelectedItem.Value
-                GetQuotation(cboSearch.SelectedValue.Trim())
+                ' txtFileNum.Text = Me.cboSearch.SelectedItem.Value
+                txtProspectId.Text = Me.cboSearch.SelectedItem.Value
+                txtProspect.Text = Me.cboSearch.SelectedItem.Text
+                GetQuotation(cboSearch.SelectedValue.Trim(), "SearchResult")
             End If
         Catch ex As Exception
             Me.lblMsg.Text = "Error. Reason: " & ex.Message.ToString
@@ -442,7 +424,66 @@ Partial Class Policy_PRG_LI_GRP_QUOT_ENTRY
         End Try
     End Sub
 
-    Private Sub GetQuotation(ByVal RecId As String)
+    Private Sub GetQuotation(ByVal RecId As String, ByVal TransType As String)
+        'Dim mystrCONN As String = CType(Session("connstr"), String)
+        'Dim objOLEConn As New OleDbConnection()
+        'objOLEConn.ConnectionString = mystrCONN
+        'Dim objOLEComm As OleDbCommand = New OleDbCommand()
+
+        'Try
+        '    'open connection to database
+        '    objOLEConn.Open()
+        'Catch ex As Exception
+        '    Me.lblMsg.Text = "Unable to connect to database. Reason: " & ex.Message
+        '    'FirstMsg = "Javascript:alert('" & Me.txtMsg.Text & "')"
+        '    lblMsg.Visible = True
+        '    objOLEConn = Nothing
+        '    Exit Sub
+        'End Try
+
+
+        'Try
+        '    strSQL = ""
+        '    strSQL = "SELECT TOP 1 * FROM " & strTableName
+        '    strSQL = strSQL & " WHERE TBIL_QUO_REC_ID = '" & RecId & "'"
+        '    strSQL = strSQL & " AND TBIL_QUO_FLAG <> 'D'"
+        '    objOLEComm.Connection = objOLEConn
+        '    objOLEComm.CommandText = strSQL
+        '    objOLEComm.CommandType = CommandType.Text
+        '    Dim objOLEReader As OleDbDataReader = objOLEComm.ExecuteReader()
+        '    If objOLEReader.HasRows = True Then
+        '        objOLEReader.Read()
+        '        txtProspect.Text = objOLEReader("TBIL_QUO_PROSPECT")
+        '        txtTotEmolument.Text = Format(objOLEReader("TBIL_QUO_TOT_EMOLUMENT"), "Standard")
+        '        txtTotNoStaff.Text = objOLEReader("TBIL_QUO_NO_OF_STAFF")
+        '        txtRate.Text = objOLEReader("TBIL_QUO_RATE")
+        '        txtPremium.Text = Format(objOLEReader("TBIL_QUO_PREMIUM"), "Standard")
+        '        If Not IsDBNull(objOLEReader("TBIL_QUO_SA_FACTOR")) Then txtSAFactor.Text = objOLEReader("TBIL_QUO_SA_FACTOR")
+        '        If Not IsDBNull(objOLEReader("TBIL_QUO_SUM_ASSURED")) Then txtSumAssured.Text = Format(objOLEReader("TBIL_QUO_SUM_ASSURED"), "Standard")
+        '        If Not IsDBNull(objOLEReader("TBIL_QUO_RATE_PER")) Then cboRate_Per.Text = objOLEReader("TBIL_QUO_RATE_PER")
+        '        If Not IsDBNull(objOLEReader("TBIL_QUO_TRANS_DATE")) Then
+        '            txtTransDate.Text = Format(objOLEReader("TBIL_QUO_TRANS_DATE"), "dd/MM/yyyy")
+        '        End If
+        '        cmdDel_ASP.Enabled = True
+        '    End If
+        'Catch ex As Exception
+        '    Me.lblMsg.Text = ex.Message.ToString
+        '    lblMsg.Visible = True
+        '    Exit Sub
+        'End Try
+
+        'If objOLEComm.Connection.State = ConnectionState.Open Then
+        '    objOLEComm.Connection.Close()
+        'End If
+        ''   objOLEComm.Dispose()
+        'objOLEComm = Nothing
+
+        'If objOLEConn.State = ConnectionState.Open Then
+        '    objOLEConn.Close()
+        'End If
+        'objOLEConn = Nothing
+
+
         Dim mystrCONN As String = CType(Session("connstr"), String)
         Dim objOLEConn As New OleDbConnection()
         objOLEConn.ConnectionString = mystrCONN
@@ -461,10 +502,23 @@ Partial Class Policy_PRG_LI_GRP_QUOT_ENTRY
 
 
         Try
-            strSQL = ""
-            strSQL = "SELECT TOP 1 * FROM " & strTableName
-            strSQL = strSQL & " WHERE TBIL_QUO_REC_ID = '" & RecId & "'"
-            strSQL = strSQL & " AND TBIL_QUO_FLAG <> 'D'"
+
+            If TransType = "SearchResult" Then
+                strSQL = ""
+                strSQL = "SELECT TOP 1 * FROM " & strTableName
+                strSQL = strSQL & " WHERE TBIL_QUO_PROSPECT_ID = '" & RecId & "'"
+                strSQL = strSQL & " AND TBIL_QUO_FLAG <> 'D'"
+            Else
+                strSQL = ""
+                strSQL = "SELECT TOP 1 * FROM " & strTableName
+                strSQL = strSQL & " WHERE TBIL_QUO_PROSPECT_ID = '" & RecId & "' AND TBIL_QUO_TRANS_TYPE='" & TransType & "'"
+                strSQL = strSQL & " AND TBIL_QUO_FLAG <> 'D'"
+            End If
+
+            'strSQL = ""
+            'strSQL = "SELECT TOP 1 * FROM " & strTableName
+            'strSQL = strSQL & " WHERE TBIL_QUO_PROSPECT_ID = '" & RecId & "'"
+            'strSQL = strSQL & " AND TBIL_QUO_FLAG <> 'D'"
             objOLEComm.Connection = objOLEConn
             objOLEComm.CommandText = strSQL
             objOLEComm.CommandType = CommandType.Text
@@ -475,6 +529,7 @@ Partial Class Policy_PRG_LI_GRP_QUOT_ENTRY
                 txtTotEmolument.Text = Format(objOLEReader("TBIL_QUO_TOT_EMOLUMENT"), "Standard")
                 txtTotNoStaff.Text = objOLEReader("TBIL_QUO_NO_OF_STAFF")
                 txtRate.Text = objOLEReader("TBIL_QUO_RATE")
+                cboTransType.SelectedValue = objOLEReader("TBIL_QUO_TRANS_TYPE")
                 txtPremium.Text = Format(objOLEReader("TBIL_QUO_PREMIUM"), "Standard")
                 If Not IsDBNull(objOLEReader("TBIL_QUO_SA_FACTOR")) Then txtSAFactor.Text = objOLEReader("TBIL_QUO_SA_FACTOR")
                 If Not IsDBNull(objOLEReader("TBIL_QUO_SUM_ASSURED")) Then txtSumAssured.Text = Format(objOLEReader("TBIL_QUO_SUM_ASSURED"), "Standard")
@@ -500,6 +555,8 @@ Partial Class Policy_PRG_LI_GRP_QUOT_ENTRY
             objOLEConn.Close()
         End If
         objOLEConn = Nothing
+
+
     End Sub
 
     Private Sub Proc_DoDelete()
@@ -678,6 +735,125 @@ Partial Class Policy_PRG_LI_GRP_QUOT_ENTRY
         If txtTotEmolument.Text <> "" And txtSAFactor.Text <> "" Then
             txtSumAssured.Text = CDbl(txtTotEmolument.Text) * CDbl(txtSAFactor.Text)
             txtSumAssured.Text = Format(txtSumAssured.Text, "Standard")
+        End If
+    End Sub
+
+    Protected Sub cboTransType_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboTransType.SelectedIndexChanged
+        If cboTransType.SelectedIndex <> 0 Then
+            Proc_DoNew()
+            GetQuotation(txtProspectId.Text, cboTransType.SelectedValue.Trim())
+            If cboTransType.SelectedValue <> "GL" Then
+                lblSAFactor.Visible = False
+                lblTotNoStaff.Visible = False
+                txtSAFactor.Visible = False
+                txtTotNoStaff.Visible = False
+                txtSumAssured.Enabled = True
+            Else
+                lblSAFactor.Visible = True
+                lblTotNoStaff.Visible = True
+                txtSAFactor.Visible = True
+                txtTotNoStaff.Visible = True
+                txtSumAssured.Enabled = False
+            End If
+        End If
+    End Sub
+
+    Private Sub ValidateFields(ByRef ErrorInd As String)
+        If Me.txtProspect.Text = "" Then
+            Me.lblMsg.Text = "Missing " & Me.lblProspect.Text
+            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+            ErrorInd = "Y"
+            Exit Sub
+        End If
+
+        If Me.txtTotEmolument.Text = "" Then
+            Me.lblMsg.Text = "Missing " & Me.lblTotEmolument.Text
+            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+            ErrorInd = "Y"
+            txtTotEmolument.Focus()
+            Exit Sub
+        End If
+        If Not IsNumeric(txtTotEmolument.Text) Then
+            Me.lblMsg.Text = "Estimated Total Emolument must be numeric"
+            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+            ErrorInd = "Y"
+            txtTotEmolument.Focus()
+            Exit Sub
+        End If
+
+        If Me.txtTransDate.Text = "" Then
+            Me.lblMsg.Text = "Missing " & Me.lblTransDate.Text
+            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+            ErrorInd = "Y"
+            txtTransDate.Focus()
+            Exit Sub
+        End If
+
+        If Me.txtRate.Text = "" Then
+            Me.lblMsg.Text = "Missing " & Me.lblRate.Text
+            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+            ErrorInd = "Y"
+            txtRate.Focus()
+            Exit Sub
+        End If
+        If Not IsNumeric(txtRate.Text) Then
+            Me.lblMsg.Text = "Rate must be numeric"
+            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+            ErrorInd = "Y"
+            txtRate.Focus()
+            Exit Sub
+        End If
+
+        'If Me.txtPremium.Text = "" Then
+        '    Me.lblMsg.Text = "Missing " & Me.lblPremium.Text
+        '    FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+        '    txtPremium.Focus()
+        '    Exit Sub
+        'End If
+        'If Not IsNumeric(txtPremium.Text) Then
+        '    Me.lblMsg.Text = "Premium must be numeric"
+        '    FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+        '    txtPremium.Focus()
+        '    Exit Sub
+        'End If
+
+        If cboTransType.SelectedValue = "GL" Then
+            If Me.txtTotNoStaff.Text = "" Then
+                Me.lblMsg.Text = "Missing " & Me.lblTotNoStaff.Text
+                FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+                ErrorInd = "Y"
+                txtTotNoStaff.Focus()
+                Exit Sub
+            End If
+            If Not IsNumeric(txtTotNoStaff.Text) Then
+                Me.lblMsg.Text = "Total Number of staff must be numeric"
+                FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+                ErrorInd = "Y"
+                txtTotNoStaff.Focus()
+                Exit Sub
+            End If
+            If txtSAFactor.Text = "" Then
+                Me.lblMsg.Text = "Please enter Sum Assured Factor"
+                FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+                ErrorInd = "Y"
+                txtSAFactor.Focus()
+                Exit Sub
+            End If
+            If Not IsNumeric(txtSAFactor.Text) Then
+                Me.lblMsg.Text = "Sum Assured Factor must be numeric"
+                FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+                ErrorInd = "Y"
+                txtSAFactor.Focus()
+                Exit Sub
+            End If
+        End If
+
+        If cboRate_Per.SelectedIndex = 0 Then
+            Me.lblMsg.Text = "Please select rate per"
+            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+            ErrorInd = "Y"
+            cboRate_Per.Focus()
+            Exit Sub
         End If
     End Sub
 End Class
