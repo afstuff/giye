@@ -41,6 +41,9 @@ Partial Class Policy_PRG_LI_GRP_QUOT_ENTRY
     Dim dteStart As Date = Now
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        'txtProspect.Attributes.Add("disabled", "disabled")
+        'txtProspectId.Attributes.Add("disabled", "disabled")
+
         strTableName = "TBIL_GRP_QUOTATION_ENTRIES"
         STRMENU_TITLE = "Quotation Slip Entry"
 
@@ -137,7 +140,11 @@ Partial Class Policy_PRG_LI_GRP_QUOT_ENTRY
         If Err = "Y" Then
             Exit Sub
         End If
-        Call Proc_DoSave()
+        Err = ""
+        Call Proc_DoSave(Err)
+        If Err = "Y" Then
+            Exit Sub
+        End If
         Me.txtAction.Text = ""
         txtProspectId.Text = ""
         txtProspect.Text = ""
@@ -158,7 +165,7 @@ Partial Class Policy_PRG_LI_GRP_QUOT_ENTRY
         cmdDel_ASP.Enabled = False
     End Sub
 
-    Private Sub Proc_DoSave()
+    Private Sub Proc_DoSave(ByRef ErrorInd As String)
         Dim PremiumAmount As Double
         PremiumAmount = (CDbl(txtRate.Text) / CDbl(cboRate_Per.SelectedValue)) * CDbl(txtSumAssured.Text)
         txtPremium.Text = PremiumAmount
@@ -188,6 +195,49 @@ Partial Class Policy_PRG_LI_GRP_QUOT_ENTRY
 
 
         strTable = strTableName
+
+        If cboTransType.SelectedValue <> "GL" Then
+
+            strSQL = ""
+            strSQL = "SELECT TOP 1 * FROM " & strTable
+            strSQL = strSQL & " WHERE TBIL_QUO_PROSPECT_ID = '" & RTrim(txtProspectId.Text) & "' AND TBIL_QUO_TRANS_TYPE='GL'"
+
+            Dim objDA1 As System.Data.OleDb.OleDbDataAdapter
+            objDA1 = New System.Data.OleDb.OleDbDataAdapter(strSQL, objOLEConn)
+            Dim m_cbCommandBuilder1 As System.Data.OleDb.OleDbCommandBuilder
+            m_cbCommandBuilder1 = New System.Data.OleDb.OleDbCommandBuilder(objDA1)
+
+            Dim obj_DT1 As New System.Data.DataTable
+            'Dim intC As Integer = 0
+            Try
+                objDA1.Fill(obj_DT1)
+                If obj_DT1.Rows.Count = 0 Then
+                    Me.lblMsg.Text = "You must first save Trans Type Group Life., Trans Type Group Life does not exist in database"
+                    FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+                    ErrorInd = "Y"
+                    obj_DT1.Dispose()
+                    obj_DT1 = Nothing
+
+                    m_cbCommandBuilder1.Dispose()
+                    m_cbCommandBuilder1 = Nothing
+
+                    If objDA1.SelectCommand.Connection.State = ConnectionState.Open Then
+                        objDA1.SelectCommand.Connection.Close()
+                    End If
+                    objDA1.Dispose()
+                    objDA1 = Nothing
+                    If objOLEConn.State = ConnectionState.Open Then
+                        objOLEConn.Close()
+                    End If
+                    objOLEConn = Nothing
+                    Exit Sub
+                End If
+            Catch ex As Exception
+                Me.lblMsg.Text = ex.Message.ToString
+                Exit Sub
+            End Try
+        End If
+
 
         strSQL = ""
         strSQL = "SELECT TOP 1 * FROM " & strTable
@@ -287,7 +337,6 @@ Partial Class Policy_PRG_LI_GRP_QUOT_ENTRY
         End If
         objDA.Dispose()
         objDA = Nothing
-
         If objOLEConn.State = ConnectionState.Open Then
             objOLEConn.Close()
         End If

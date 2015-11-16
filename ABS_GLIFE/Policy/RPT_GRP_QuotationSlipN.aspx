@@ -153,7 +153,7 @@ mso-bidi-language:AR-SA">Print Quotation Slip</span></b>&nbsp;</td>
                             <asp:Label ID="Label2" runat="server" Text="Prospect: "></asp:Label>
                         </td>
                         <td align="left" valign="top" class="style7">
-                            <asp:TextBox ID="txtProspect" runat="server" Width="269px"></asp:TextBox>
+                            <asp:TextBox ID="txtProspect" runat="server" Width="269px" Enabled="False"></asp:TextBox>
                         </td>
                         <td class="style7">
                             </td>
