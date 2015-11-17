@@ -12,7 +12,7 @@ Partial Class Policy_RPT_GRP_QuotationSlipN
     Protected strTableName As String
     Dim strTable As String
     Dim strSQL As String
-    Dim rParams As String() = {"nw", "nw", "new", "new", "new", "new", "new", "new", "new"}
+    Dim rParams As String() = {"nw", "nw", "new", "new"}
     Protected PageLinks As String
     Dim strREC_ID As String
     Protected strOPT As String = "0"
@@ -282,10 +282,13 @@ Partial Class Policy_RPT_GRP_QuotationSlipN
         If ErrorInd = "Y" Then
             Exit Sub
         End If
+        Dim url As String = HttpContext.Current.Request.Url.AbsoluteUri
         rParams(0) = "rptQuotationSlip1"
         rParams(1) = "PARAM_RECID="
         rParams(2) = txtFileNum.Text + "&"
+        rParams(3) = url
         Session("ReportParams") = rParams
+
         Response.Redirect("../PrintView.aspx")
     End Sub
 

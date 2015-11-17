@@ -37,4 +37,12 @@ Partial Class PrintView
 
         End Try
     End Sub
+
+    Protected Sub butClsoe_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles butClsoe.Click
+        Dim i As Integer
+        Dim url As String
+        i = rParams.Length() - 1
+        url = rParams(i)
+        Response.Redirect(url)
+    End Sub
 End Class
