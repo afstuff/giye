@@ -159,7 +159,8 @@
 
                             <tr>
                                                 <td nowrap align="left" valign="top" class="style6">
-                                                    <asp:Label ID="lblProspect0" Enabled="False" Text="Prospect ID:" runat="server"></asp:Label>
+                                                    <asp:Label ID="lblProspectId" Enabled="False" Text="Prospect ID:" 
+                                                        runat="server"></asp:Label>
                                                 </td>
                                                 <td align="left" valign="top" colspan="1" class="style7">
                                                     <asp:TextBox ID="txtProspectId" runat="server" 
@@ -365,5 +366,11 @@
         return returnMsg;
         console.log(returnMsg)
     }
+    
+    $(function(){
+    
+    $('').addClass()
+    
+    })
 </script>
 </html>

@@ -41,9 +41,8 @@ Partial Class Policy_PRG_LI_GRP_QUOT_ENTRY
     Dim dteStart As Date = Now
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        'txtProspect.Attributes.Add("disabled", "disabled")
-        'txtProspectId.Attributes.Add("disabled", "disabled")
-
+        txtProspect.Attributes.Add("readonly", "readonly")
+        txtProspectId.Attributes.Add("readonly", "readonly")
         strTableName = "TBIL_GRP_QUOTATION_ENTRIES"
         STRMENU_TITLE = "Quotation Slip Entry"
 
@@ -149,6 +148,11 @@ Partial Class Policy_PRG_LI_GRP_QUOT_ENTRY
         txtProspectId.Text = ""
         txtProspect.Text = ""
         cboTransType.SelectedIndex = 0
+        lblSAFactor.Visible = True
+        lblTotNoStaff.Visible = True
+        txtSAFactor.Visible = True
+        txtTotNoStaff.Visible = True
+        txtSumAssured.Enabled = False
     End Sub
 
     Private Sub Proc_DoNew()
@@ -161,7 +165,7 @@ Partial Class Policy_PRG_LI_GRP_QUOT_ENTRY
         txtSumAssured.Text = ""
         txtPremium.Text = ""
         txtSAFactor.Text = ""
-        Me.cmdSave_ASP.Enabled = True
+        'Me.cmdSave_ASP.Enabled = True
         cmdDel_ASP.Enabled = False
     End Sub
 
@@ -788,7 +792,7 @@ Partial Class Policy_PRG_LI_GRP_QUOT_ENTRY
     End Sub
 
     Protected Sub cboTransType_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboTransType.SelectedIndexChanged
-        If cboTransType.SelectedIndex <> 0 Then
+        If cboTransType.SelectedIndex <> 0 And txtProspectId.Text <> "" Then
             Proc_DoNew()
             GetQuotation(txtProspectId.Text, cboTransType.SelectedValue.Trim())
             If cboTransType.SelectedValue <> "GL" Then
@@ -808,6 +812,13 @@ Partial Class Policy_PRG_LI_GRP_QUOT_ENTRY
     End Sub
 
     Private Sub ValidateFields(ByRef ErrorInd As String)
+        If Me.txtProspectId.Text = "" Then
+            Me.lblMsg.Text = "Missing " & Me.lblProspectId.Text
+            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+            ErrorInd = "Y"
+            Exit Sub
+        End If
+
         If Me.txtProspect.Text = "" Then
             Me.lblMsg.Text = "Missing " & Me.lblProspect.Text
             FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
@@ -904,5 +915,25 @@ Partial Class Policy_PRG_LI_GRP_QUOT_ENTRY
             cboRate_Per.Focus()
             Exit Sub
         End If
+    End Sub
+
+    Protected Sub txtProspectId_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtProspectId.TextChanged
+        'If cboTransType.SelectedIndex <> 0 And txtProspectId.Text <> "" Then
+        '    Proc_DoNew()
+        '    GetQuotation(txtProspectId.Text, cboTransType.SelectedValue.Trim())
+        '    If cboTransType.SelectedValue <> "GL" Then
+        '        lblSAFactor.Visible = False
+        '        lblTotNoStaff.Visible = False
+        '        txtSAFactor.Visible = False
+        '        txtTotNoStaff.Visible = False
+        '        txtSumAssured.Enabled = True
+        '    Else
+        '        lblSAFactor.Visible = True
+        '        lblTotNoStaff.Visible = True
+        '        txtSAFactor.Visible = True
+        '        txtTotNoStaff.Visible = True
+        '        txtSumAssured.Enabled = False
+        '    End If
+        'End If
     End Sub
 End Class
