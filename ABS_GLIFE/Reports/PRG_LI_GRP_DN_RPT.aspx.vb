@@ -229,15 +229,7 @@ Partial Class Reports_PRG_LI_GRP_DN_RPT
 
         Select Case UCase(Trim(myTType))
             Case "DN", "DNNOCOM"
-                If Me.chkExport_Xls.Checked = True Then
-                    'Call Create_Excel_Quot_Schedule()
-                    Exit Sub
-                End If
             Case "CN", "CNNOCOM"
-                If Me.chkExport_Xls.Checked = True Then
-                    'Call Create_Excel_Quot_Invoice()
-                    Exit Sub
-                End If
             Case Else
         End Select
 

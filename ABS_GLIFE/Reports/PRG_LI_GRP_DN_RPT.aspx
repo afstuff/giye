@@ -71,8 +71,7 @@
 
                     <tr>
     	        	    <td nowrap align="left" colspan="1">&nbsp;
-    	        	        <asp:CheckBox ID="chkExport_Xls" Enabled="false" Text="Export to Excel" runat="server" />
-    	        	    </td>
+    	        	        </td>
                         <td align="left" colspan="1" valign="top">&nbsp;
                             <asp:Button ID="BUT_OK" Enabled="true" Font-Bold="true" 
                                 Text="View / Print Report" runat="server" Width="220px" />
