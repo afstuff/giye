@@ -269,11 +269,10 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
                 'If IsDate(objOledr("TBIL_CLM_RPTD_NOTIF_DT")) Then
                 '    txtNotificationDate.Text = Format(CType(objOledr("TBIL_CLM_RPTD_NOTIF_DT"), DateTime), "dd/MM/yyyy")
                 'End If
-
-                txtBasicSumClaimsLC.Text = Format(CType(objOledr("TBIL_POL_PRM_ANN_CONTRIB_LC"), Decimal), "N2")
-                txtBasicSumClaimsFC.Text = Format(CType(objOledr("TBIL_POL_PRM_ANN_CONTRIB_FC"), Decimal), "N2")
-                txtAdditionalSumClaimsLC.Text = Format(CType(objOledr("TBIL_POL_PRM_MTH_CONTRIB_LC"), Decimal), "N2")
-                txtAdditionalSumClaimsFC.Text = Format(CType(objOledr("TBIL_POL_PRM_MTH_CONTRIB_FC"), Decimal), "N2")
+                If Not IsDBNull(objOledr("TBIL_POL_PRM_ANN_CONTRIB_LC")) Then txtBasicSumClaimsLC.Text = Format(CType(objOledr("TBIL_POL_PRM_ANN_CONTRIB_LC"), Decimal), "N2")
+                If Not IsDBNull(objOledr("TBIL_POL_PRM_ANN_CONTRIB_FC")) Then txtBasicSumClaimsFC.Text = Format(CType(objOledr("TBIL_POL_PRM_ANN_CONTRIB_FC"), Decimal), "N2")
+                If Not IsDBNull(objOledr("TBIL_POL_PRM_MTH_CONTRIB_LC")) Then txtAdditionalSumClaimsLC.Text = Format(CType(objOledr("TBIL_POL_PRM_MTH_CONTRIB_LC"), Decimal), "N2")
+                If Not IsDBNull(objOledr("TBIL_POL_PRM_MTH_CONTRIB_FC")) Then txtAdditionalSumClaimsFC.Text = Format(CType(objOledr("TBIL_POL_PRM_MTH_CONTRIB_FC"), Decimal), "N2")
                 txtAssuredAge.Text = (objOledr("TBIL_POLY_ASSRD_AGE").ToString)
 
 

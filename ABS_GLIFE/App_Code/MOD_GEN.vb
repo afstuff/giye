@@ -3432,6 +3432,77 @@ gnUpdate_Trt_Err:
         Return pvbln
 
     End Function
+    Function DoDate_Process(ByVal dateValue As String, ByVal ctrlId As Control) As String()
+        Dim rtnMsg(3) As String
+        Dim rtnMsg_ As String = Nothing
+
+        'Checking fields for empty values
+        If dateValue = "" Then
+            rtnMsg_ = " Field is required!"
+            rtnMsg(0) = rtnMsg_
+            rtnMsg(1) = ctrlId.ID
+            Return rtnMsg
+        Else
+            'Validate date
+            Dim myarrData = Split(dateValue, "/")
+            'If myarrData.Count <> 3 Then
+            If myarrData.Length <> 3 Then
+                rtnMsg_ = " Expecting full date in ddmmyyyy format ..."
+                rtnMsg_ = "Javascript:alert('" & rtnMsg_ & "')"
+                rtnMsg(0) = rtnMsg_
+                rtnMsg(1) = ctrlId.ID
+                Return rtnMsg
+                'Exit Function
+            End If
+            Dim strMyDay = myarrData(0)
+            Dim strMyMth = myarrData(1)
+            Dim strMyYear = myarrData(2)
+
+            strMyDay = CType(Format(Val(strMyDay), "00"), String)
+            strMyMth = CType(Format(Val(strMyMth), "00"), String)
+            strMyYear = CType(Format(Val(strMyYear), "0000"), String)
+
+            'If Val(strMyYear) < 1999 Then
+            '    rtnMsg_ = " year part is less than 1999 ..."
+            '    rtnMsg_ = "Javascript:alert('" & rtnMsg_ & "')"
+            '    rtnMsg(0) = rtnMsg_
+            '    rtnMsg(1) = ctrlId.ID
+            '    Return rtnMsg
+            '    'Exit Function
+            'End If
+
+            Dim strMyDte = Trim(strMyDay) & "/" & Trim(strMyMth) & "/" & Trim(strMyYear)
+            'dateValue = Trim(strMyDte)
+
+
+            Dim blnStatusX = MOD_GEN.gnTest_TransDate(strMyDte)
+            If blnStatusX = False Then
+                rtnMsg_ = " is not a valid date..."
+                rtnMsg_ = "Javascript:alert('" & rtnMsg_ & "');"
+                rtnMsg(0) = rtnMsg_
+                rtnMsg(1) = ctrlId.ID
+                Return rtnMsg
+                'Exit Function
+            Else
+                rtnMsg(2) = CType(strMyDte, String)
+                Return rtnMsg
+            End If
+            dateValue = RTrim(strMyDte)
+            'Exit Sub
+        End If
+
+
+
+        Return rtnMsg
+    End Function
+
+    Public Function DoConvertToDbDateFormat(ByVal dateValue As String) As String
+        Dim dDate = dateValue.Split(CType("/", Char))
+        Dim newDate = dDate(2) + "-" + dDate(1) + "-" + dDate(0)
+        Return newDate
+    End Function
+
+
 
 
     Public Sub PickDate(ByVal PickButton As HtmlInputButton, ByVal DateTextBox As TextBox)
