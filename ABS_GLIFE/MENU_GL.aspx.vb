@@ -301,8 +301,8 @@ Partial Class MENU_GL
                 AddMenuItem("", "Returns to Previous Page", "menu_gl.aspx?menu=home")
                 AddMenuItem("", "UNDER_LINE", "") 'blank link
                 AddMenuItem("", "", "") 'blank link
-                'AddMenuItem("", "MENU CAPTION", "PAGE URL")
-                AddMenuItem("Transactions", "New Claims Reported Entry", "")
+                'AddMenuItem("", "MENU CAPTION", "PAGE URL")Claim Request Entry
+                AddMenuItem("Transactions", "Claim Request Entry", "Claims/PRG_LI_GRP_CLM_ENTRY.aspx")
                 AddMenuItem("", "Claims Additions Entry", "")
                 AddMenuItem("", "Claims Reduction Entry", "")
                 AddMenuItem("", "", "") 'blank link
