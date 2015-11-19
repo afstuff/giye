@@ -6,7 +6,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-      <title>Individual Life Module</title>
+      <title>Group Life Module</title>
      <script type="text/javascript" src="../JQ/jquery-1.10.2.js"></script>
     <script type="text/javascript" src="../JQ/jquery-ui.js"></script>
 
