@@ -173,10 +173,20 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
 
 
     Protected Sub cmdSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdSearch.Click
+        'If LTrim(RTrim(Me.txtSearch.Value)) = "Search..." Then
+        'ElseIf LTrim(RTrim(Me.txtSearch.Value)) <> "" Then
+        '    'Call gnProc_Populate_Box("PRO_ASSURED_HELP_SP", "001", Me.cboSearch, RTrim(Me.txtSearch.Value))
+        '    Call gnProc_Populate_Box("GL_ASSURED_HELP_SP", "001", Me.cboSearch, RTrim(Me.txtSearch.Value))
+        'End If
         If LTrim(RTrim(Me.txtSearch.Value)) = "Search..." Then
         ElseIf LTrim(RTrim(Me.txtSearch.Value)) <> "" Then
-            'Call gnProc_Populate_Box("PRO_ASSURED_HELP_SP", "001", Me.cboSearch, RTrim(Me.txtSearch.Value))
-            Call gnProc_Populate_Box("GL_ASSURED_HELP_SP", "001", Me.cboSearch, RTrim(Me.txtSearch.Value))
+            cboSearch.Items.Clear()
+            cboSearch.Items.Add("* Select Insured *")
+            Dim dt As DataTable = GET_INSURED(txtSearch.Value.Trim()).Tables(0)
+            cboSearch.DataSource = dt
+            cboSearch.DataValueField = "TBIL_POLY_POLICY_NO"
+            cboSearch.DataTextField = "MyFld_Text"
+            cboSearch.DataBind()
         End If
     End Sub
     Sub LoadLossTypeCmb()

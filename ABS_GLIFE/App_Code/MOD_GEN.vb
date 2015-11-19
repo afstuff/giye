@@ -3515,4 +3515,33 @@ gnUpdate_Trt_Err:
         End With
     End Sub
 
+    Public Function GET_INSURED(ByVal sValue As String) As DataSet
+
+        Dim mystrConn As String = CType("Provider=SQLOLEDB;" + gnGET_CONN_STRING(), String)
+        Dim conn As OleDbConnection
+        conn = New OleDbConnection(mystrConn)
+        Dim cmd As OleDbCommand = New OleDbCommand()
+        cmd.Connection = conn
+        cmd.CommandText = "SPGL_GET_INSURED"
+        cmd.CommandType = CommandType.StoredProcedure
+        cmd.Parameters.AddWithValue("@PARAM_01", sValue)
+        cmd.Parameters.AddWithValue("@PARAM_02", sValue)
+        cmd.Parameters.AddWithValue("@PARAM_TYPE", "GRP")
+
+        Try
+            conn.Open()
+            Dim adapter As OleDbDataAdapter = New OleDbDataAdapter()
+            adapter.SelectCommand = cmd
+            Dim ds As DataSet = New DataSet()
+            adapter.Fill(ds)
+            conn.Close()
+            Return ds
+        Catch ex As Exception
+            '_rtnMessage = "Entry failed! " + ex.Message.ToString()
+
+        End Try
+        Return Nothing
+
+    End Function
+
 End Module

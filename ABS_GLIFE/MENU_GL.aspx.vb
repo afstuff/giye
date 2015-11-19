@@ -302,7 +302,7 @@ Partial Class MENU_GL
                 AddMenuItem("", "UNDER_LINE", "") 'blank link
                 AddMenuItem("", "", "") 'blank link
                 'AddMenuItem("", "MENU CAPTION", "PAGE URL")Claim Request Entry
-                AddMenuItem("Transactions", "Claim Request Entry", "Claims/PRG_LI_GRP_CLM_ENTRY.aspx")
+                AddMenuItem("Transactions", "Claim Reported Entry", "Claims/PRG_LI_GRP_CLM_ENTRY.aspx")
                 AddMenuItem("", "Waiver of Premium", "Claims/PRG_LI_GRP_CLM_WAIVER.aspx")
                 AddMenuItem("", "Paid-Up Policies", "Claims/PRG_LI_GRP_PAIDUP_PROCESS.aspx")
                 AddMenuItem("", "Lapse Policies", "Claims/PRG_LI_GRP_LAPSE_PROCESS.aspx")
