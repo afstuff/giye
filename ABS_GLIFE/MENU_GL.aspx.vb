@@ -309,6 +309,7 @@ Partial Class MENU_GL
                 AddMenuItem("", "Policy Cancellation Process", "Claims/PRG_LI_GRP_CANCEL_PROCESS.aspx")
                 AddMenuItem("", "Policy Reactivation Process", "Claims/PRG_LI_GRP_REVIVE_POLICY.aspx")
                 AddMenuItem("", "Maturity Claim Process", "Claims/PRG_LI_GRP_CLM_MATURE.aspx")
+                AddMenuItem("", "Partial Maturity Claim Process", "Claims/PRG_LI_CLM_PART_MATURE.aspx")
                 AddMenuItem("", "Claims Additions Entry", "")
                 AddMenuItem("", "", "")
                 AddMenuItem("", "", "") 'blank link
