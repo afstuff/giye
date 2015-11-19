@@ -303,8 +303,14 @@ Partial Class MENU_GL
                 AddMenuItem("", "", "") 'blank link
                 'AddMenuItem("", "MENU CAPTION", "PAGE URL")Claim Request Entry
                 AddMenuItem("Transactions", "Claim Request Entry", "Claims/PRG_LI_GRP_CLM_ENTRY.aspx")
+                AddMenuItem("", "Waiver of Premium", "Claims/PRG_LI_GRP_CLM_WAIVER.aspx")
+                AddMenuItem("", "Paid-Up Policies", "Claims/PRG_LI_GRP_PAIDUP_PROCESS.aspx")
+                AddMenuItem("", "Lapse Policies", "Claims/PRG_LI_GRP_LAPSE_PROCESS.aspx")
+                AddMenuItem("", "Policy Cancellation Process", "Claims/PRG_LI_GRP_CANCEL_PROCESS.aspx")
+                AddMenuItem("", "Policy Reactivation Process", "Claims/PRG_LI_GRP_REVIVE_POLICY.aspx")
+                AddMenuItem("", "Maturity Claim Process", "Claims/PRG_LI_GRP_CLM_MATURE.aspx")
                 AddMenuItem("", "Claims Additions Entry", "")
-                AddMenuItem("", "Claims Reduction Entry", "")
+                AddMenuItem("", "", "")
                 AddMenuItem("", "", "") 'blank link
                 AddMenuItem("", "Claims Paid Entry", "")
                 AddMenuItem("", "", "") 'blank link

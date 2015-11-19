@@ -178,7 +178,6 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
             'Call gnProc_Populate_Box("PRO_ASSURED_HELP_SP", "001", Me.cboSearch, RTrim(Me.txtSearch.Value))
             Call gnProc_Populate_Box("GL_ASSURED_HELP_SP", "001", Me.cboSearch, RTrim(Me.txtSearch.Value))
         End If
-
     End Sub
     Sub LoadLossTypeCmb()
 
