@@ -63,12 +63,11 @@ Partial Class Claims_PRG_LI_GRP_CLM_MATURE
         conn = New OleDbConnection(mystrConn)
         Dim cmd As OleDbCommand = New OleDbCommand()
         cmd.Connection = conn
-        cmd.CommandText = "SPIL_GET_CLMS_RPTD_MATURITY"
+        ' cmd.CommandText = "SPIL_GET_CLMS_RPTD_MATURITY"
+        cmd.CommandText = "SPGL_GET_CLMS_RPTD_MATURITY"
         cmd.CommandType = CommandType.StoredProcedure
         cmd.Parameters.AddWithValue("@pQUERY_TYPE", pQueryType)
         cmd.Parameters.AddWithValue("@pQUERY_VALUE", pQueryValue)
-
-
         Try
             conn.Open()
             Dim objOledr As OleDbDataReader
@@ -469,6 +468,10 @@ Partial Class Claims_PRG_LI_GRP_CLM_MATURE
     End Sub
 
     Protected Sub cmdSave_ASP_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdSave_ASP.Click
+
+    End Sub
+
+    Protected Sub cmdClaimNoGet_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdClaimNoGet.Click
 
     End Sub
 End Class
