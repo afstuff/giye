@@ -6,7 +6,22 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title></title>
+    <title>Waiver of Premium</title>
+     <script type="text/javascript" src="../JQ/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="../JQ/jquery-ui.js"></script>
+
+    <script type="text/javascript" src="../JQ/jquery.js"></script>
+    <script type="text/javascript" src="../JQ/jquery.simplemodal.js"></script>
+
+    <script type="text/javascript" src="../JQ/jquery-ui.css"></script>
+
+    <script language="javascript" type="text/javascript" src="../Script/ScriptJS.js"></script>
+    <script language="javascript" type="text/javascript" src="../Script/SJS_02.js"></script>
+
+    <script language="javascript" type="text/javascript" src="../Script/SJQ.js"></script>    
+
+    <script src="../Script/WaiverScript.js" type="text/javascript"></script>
+    <link rel="Stylesheet" href="../SS_ILIFE.css" type="text/css" />
     <script language="javascript" type="text/javascript">
 // calling jquery functions once document is ready
     </script>
@@ -35,7 +50,6 @@
     </style>
 
     </head>
-</head>
 <body onload="<%= FirstMsg %>">
     <form id="form1" runat="server">
    <!-- start banner -->
@@ -76,7 +90,7 @@
                                     
                                     <tr>
                                         <td align="center" colspan="4" valign="top">
-                                            &nbsp;&nbsp;<a href="#" onclick="javascript:JSDO_RETURN('MENU_IL.aspx?menu=IL_CLAIM')">Go to Menu</a>
+                                            &nbsp;&nbsp;<a href="#" onclick="javascript:JSDO_RETURN('../MENU_GL.aspx?menu=GL_CLAIM')">Go to Menu</a>
                                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:button id="cmdSave_ASP" CssClass="cmd_butt" runat="server" text="Save Data" OnClientClick="return ValidateOnClient()"></asp:button>
                                             &nbsp;&nbsp;<asp:button id="cmdDelete_ASP" CssClass="cmd_butt" Enabled="false"  runat="server" text="Delete Data" OnClientClick="JSDelete_ASP();"></asp:button>
                                             &nbsp;&nbsp;<asp:button id="cmdPrint_ASP" CssClass="cmd_butt" runat="server" 

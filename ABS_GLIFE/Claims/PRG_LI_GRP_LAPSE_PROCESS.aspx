@@ -77,7 +77,7 @@
                                     
                                     <tr>
                                         <td align="center" colspan="4" valign="top">
-                                            &nbsp;&nbsp;<a href="#" onclick="javascript:JSDO_RETURN('MENU_IL.aspx?menu=IL_CLAIM')">Go to Menu</a>
+                                            &nbsp;&nbsp;<a href="#" onclick="javascript:JSDO_RETURN('../MENU_GL.aspx?menu=GL_CLAIM')">Go to Menu</a>
                                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:Button ID="cmdPrintAll" 
                                                 CssClass="cmd_butt" runat="server" Text="Print List" 
                                                 OnClientClick="return PrintLapsePolicy()" />
