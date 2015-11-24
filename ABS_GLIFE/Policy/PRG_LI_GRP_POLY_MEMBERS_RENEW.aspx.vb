@@ -430,7 +430,7 @@ Partial Class Policy_PRG_LI_GRP_POLY_MEMBERS_RENEW
         strP_ID = RTrim(Me.txtPolNum.Text)
         Session("strP_ID") = strP_ID
         Call Proc_DoGet_Record("POLICY")
-
+        Call GET_POLICYDATE_BY_FILENO(txtFileNum.Text)
     End Sub
 
     Protected Sub cmdGetBatch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdGetBatch.Click
@@ -444,4 +444,73 @@ Partial Class Policy_PRG_LI_GRP_POLY_MEMBERS_RENEW
     Protected Sub cboBatch_Num_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboBatch_Num.SelectedIndexChanged
         txtBatch_Num.Text = cboBatch_Num.SelectedValue.ToString()
     End Sub
+
+    Protected Sub cmdRenewBtn_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdRenewBtn.Click
+        Call DoClaimRenewal(txtPolNum.Text, txtFileNum.Text, txtQuote_Num.Text)
+    End Sub
+
+    Public Sub GET_POLICYDATE_BY_FILENO(ByVal fileNumber As String)
+        Dim mystrConn As String = CType(Session("connstr"), String)
+        Dim conn As OleDbConnection
+        conn = New OleDbConnection(mystrConn)
+        Dim cmd As OleDbCommand = New OleDbCommand()
+        cmd.Connection = conn
+        cmd.CommandText = "SPIL_GRP_POLICYDATE_BY_FILENO"
+        cmd.CommandType = CommandType.StoredProcedure
+        cmd.Parameters.AddWithValue("@TBIL_POL_MEMB_FILE_NO", fileNumber)
+
+        Try
+            conn.Open()
+            Dim objOledr As OleDbDataReader
+            objOledr = cmd.ExecuteReader()
+            If (objOledr.Read()) Then
+                Dim newStartDate As Date = Convert.ToDateTime(objOledr("TBIL_POL_PRM_FROM"))
+                Dim newEndDate As Date = Convert.ToDateTime(objOledr("TBIL_POL_PRM_TO"))
+
+                newStartDate = newStartDate.AddYears(1)
+                newEndDate = newEndDate.AddYears(1)
+                txtStartDate.Text = newStartDate.ToString("dd/MM/yyyy")
+                txtEndDate.Text = newEndDate.ToString("dd/MM/yyyy")
+
+            End If
+
+            conn.Close()
+        Catch ex As Exception
+            _rtnMessage = "Error retrieving data! " + ex.Message
+        End Try
+    End Sub
+
+    Public Sub DoClaimRenewal(ByVal polyNumber As String, ByVal fileNumber As String, ByVal propNumber As String)
+        ', ByVal batchNumber As String       
+        Dim mystrConn As String = CType(Session("connstr"), String)
+        Dim conn As OleDbConnection
+        conn = New OleDbConnection(mystrConn)
+        Dim cmd As OleDbCommand = New OleDbCommand()
+        cmd.Connection = conn
+        cmd.CommandText = "SPIL_GRP_CLAIMRENEWALBY_BATCH_NO"
+        cmd.CommandType = CommandType.StoredProcedure
+        cmd.Parameters.AddWithValue("@TBIL_POL_MEMB_POLY_NO", polyNumber)
+        cmd.Parameters.AddWithValue("@TBIL_POL_MEMB_FILE_NO", fileNumber)
+        cmd.Parameters.AddWithValue("@TBIL_POL_MEMB_PROP_NO", propNumber)
+        'cmd.Parameters.AddWithValue("@TBIL_POL_MEMB_BATCH_NO", batchNumber)
+
+        Try
+            conn.Open()
+            Dim objOledr As OleDbDataReader
+            'objOledr = cmd.ExecuteReader()
+
+            'If objOledr.HasRows Then
+            GridView1.DataSource = cmd.ExecuteReader()
+            GridView1.DataBind()
+            'Else
+            '    _rtnMessage = "Sorry. The system cannot find record with IDs: " + txtPolNum.Text
+            'End If
+
+
+            conn.Close()
+        Catch ex As Exception
+            _rtnMessage = "Error retrieving data! " + ex.Message
+        End Try
+    End Sub
+
 End Class

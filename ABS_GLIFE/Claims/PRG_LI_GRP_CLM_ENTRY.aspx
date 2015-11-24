@@ -190,13 +190,13 @@
                         </tr>
                         <tr>
                             <td align="left" valign="top" class="style1">
-                                <asp:Label ID="lblBasicSumClaimsLC" runat="server" Text="Basic Sum Claimed LC:"></asp:Label>
+                                <asp:Label ID="lblBasicSumClaimsLC" runat="server" Text="B. Sum Claimed LC:"></asp:Label>
                             </td>
                             <td align="left" valign="top" class="style2">
                                 <asp:TextBox ID="txtBasicSumClaimsLC" runat="server" TabIndex="5"></asp:TextBox>
                             </td>
                             <td align="left" valign="top" class="style3">
-                                <asp:Label ID="lblBasicSumClaimsFC" runat="server" Text="Basic Sum Claimed FC:"></asp:Label>
+                                <asp:Label ID="lblBasicSumClaimsFC" runat="server" Text="B. Claimed FC:"></asp:Label>
                             </td>
                             <td align="left" valign="top">
                                 <asp:TextBox ID="txtBasicSumClaimsFC" runat="server" TabIndex="6"></asp:TextBox>
@@ -204,13 +204,13 @@
                         </tr>
                         <tr>
                             <td align="left" valign="top" class="style1">
-                                <asp:Label ID="lblPremPaidLC" runat="server" Text="Premium Paid LC:"></asp:Label>
+                                <asp:Label ID="lblPremPaidLC" runat="server" Text="Prem. Paid LC:"></asp:Label>
                             </td>
                             <td align="left" valign="top" class="style2">
                                 <asp:TextBox ID="txtPremPaidLC" runat="server" TabIndex="7"></asp:TextBox>
                             </td>
                             <td align="left" valign="top" class="style3">
-                                <asp:Label ID="lblPremPaidFC" runat="server" Text="Premium Paid FC:"></asp:Label>
+                                <asp:Label ID="lblPremPaidFC" runat="server" Text="Prem. Paid FC:"></asp:Label>
                             </td>
                             <td align="left" valign="top" class="style2">
                                 <asp:TextBox ID="txtPremPaidFC" runat="server" TabIndex="8"></asp:TextBox>
@@ -218,13 +218,13 @@
                         </tr>
                         <tr>
                             <td align="left" valign="top" class="style1">
-                                <asp:Label ID="lblPremiumLoadedLC" runat="server" Text="Premium Loaded LC:"></asp:Label>
+                                <asp:Label ID="lblPremiumLoadedLC" runat="server" Text="Prem. Loaded LC:"></asp:Label>
                             </td>
                             <td align="left" valign="top" class="style2">
                                 <asp:TextBox ID="txtPremiumLoadedLC" runat="server" TabIndex="7"></asp:TextBox>
                             </td>
                             <td align="left" valign="top" class="style3">
-                                <asp:Label ID="lblPremiumLoadedFC" runat="server" Text="Premium Loaded FC:"></asp:Label>
+                                <asp:Label ID="lblPremiumLoadedFC" runat="server" Text="Prem. Loaded FC:"></asp:Label>
                             </td>
                             <td align="left" valign="top" class="style2">
                                 <asp:TextBox ID="txtPremiumLoadedFC" runat="server" TabIndex="8"></asp:TextBox>

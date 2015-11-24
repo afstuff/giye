@@ -158,6 +158,17 @@
                                     </tr>
 
                                     <tr>
+                                                <td nowrap align="right" valign="top"><asp:Label ID="lblPolicyStart" 
+                                                        Enabled="False" Text="Start Date:" runat="server"></asp:Label></td>
+                                                <td align="left" valign="top" colspan="1">
+                                                    <asp:TextBox ID="txtStartDate" Enabled="false" runat="server"></asp:TextBox></td>
+                                                <td nowrap align="right" valign="top"><asp:Label ID="lblPolicyEnd" Enabled="False" 
+                                                        Text="End Date:" runat="server"></asp:Label></td>
+                                                <td align="left" valign="top" colspan="1">
+                                                    <asp:TextBox ID="txtEndDate" Enabled="false" runat="server"></asp:TextBox></td>
+                                    </tr>
+
+                                    <tr>
                                         <td align="left" colspan="4" valign="top" class="myMenu_Title">Members Details</td>
                                     </tr>
                                     
