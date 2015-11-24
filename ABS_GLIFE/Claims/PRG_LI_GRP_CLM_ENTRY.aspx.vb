@@ -44,6 +44,9 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
     Dim addFc As Decimal
     Dim newDateToDb As Date
 
+    Dim TotTransAmt As Decimal = 0
+    Dim TransAmt As Decimal = 0
+
     Shared _rtnMessage As String
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         'load loss type into combobox
@@ -145,6 +148,315 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
 
     End Function
 
+
+    Private Sub Proc_DataBindGrid()
+        Dim mystrCONN As String = CType(Session("connstr"), String)
+        Dim objOLEConn As New OleDbConnection(mystrCONN)
+
+        Try
+            objOLEConn.Open()
+        Catch ex As Exception
+            Me.lblMsg.Text = ex.Message.ToString
+            objOLEConn = Nothing
+        End Try
+
+        If txtPolicyNumber.Text <> "" Then
+            strF_ID = txtPolicyNumber.Text
+        End If
+
+        strTableName = "TBIL_GRP_POLICY_MEMBERS"
+
+        strSQL = ""
+        strSQL = strSQL & "SELECT *"
+        strSQL = strSQL & " FROM " & strTableName & " "
+        strSQL = strSQL & " WHERE TBIL_POL_MEMB_POLY_NO = '" & RTrim(strF_ID) & "'"
+        'strSQL = strSQL & " WHERE TBIL_POL_MEMB_FILE_NO = '" & RTrim(strF_ID) & "'"
+        'strSQL = strSQL & " AND TBIL_POL_MEMB_PROP_NO = '" & RTrim(strQ_ID) & "'"
+        'strSQL = strSQL & " AND TBIL_POL_MEMB_BATCH_NO = '" & RTrim(Me.txtBatch_Num.Text) & "'"
+        strSQL = strSQL & " AND TBIL_POL_MEMB_MDLE IN('G')"
+        strSQL = strSQL & " AND TBIL_POL_MEMB_FLAG NOT IN('D')" 'do not include deleted items
+        strSQL = strSQL & " ORDER BY TBIL_POL_MEMB_FILE_NO, TBIL_POL_MEMB_BATCH_NO, TBIL_POL_MEMB_SNO"
+
+
+        Try
+            Dim objDA As OleDbDataAdapter = New OleDbDataAdapter(strSQL, objOLEConn)
+            Dim objDS As DataSet = New DataSet()
+            objDA.Fill(objDS, strTable)
+            With GridView1
+                .DataSource = objDS
+                .DataBind()
+            End With
+            objDS.Dispose()
+            objDA.Dispose()
+            objDS = Nothing
+            objDA = Nothing
+        Catch ex As Exception
+            Me.lblMsg.Text = ex.Message.ToString
+        End Try
+        If objOLEConn.State = ConnectionState.Open Then
+            objOLEConn.Close()
+        End If
+        objOLEConn = Nothing
+        objOLEConn = Nothing
+        'Me.cmdDelItem_ASP.Enabled = False
+        Dim P As Integer = 0
+        Dim C As Integer = 0
+
+        C = 0
+        For P = 0 To Me.GridView1.Rows.Count - 1
+            C = C + 1
+        Next
+        'Me.lblResult.Text = "Total Row: " & C.ToString
+
+        'If C >= 1 Then
+        '    Me.cmdDelItem_ASP.Enabled = True
+        '    Me.cmdNext.Enabled = True
+        '    Me.txtBatch_Num.Enabled = False
+        'Else
+        '    Me.cmdNext.Enabled = False
+        '    Me.txtBatch_Num.Enabled = True
+        'End If
+
+    End Sub
+
+    Protected Sub GridView1_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles GridView1.PageIndexChanging
+
+        'Dim row As GridViewRow = GridView1.Rows(e.NewSelectedIndex)
+
+        GridView1.PageIndex = e.NewPageIndex
+        Call Proc_DataBindGrid()
+        lblMsg.Text = "Page " & GridView1.PageIndex + 1 & " of " & Me.GridView1.PageCount
+
+    End Sub
+
+    Protected Sub GridView1_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GridView1.RowDataBound
+
+        If (e.Row.RowType = DataControlRowType.DataRow) Then
+            Dim lblPrice As Label = CType(e.Row.FindControl("lblTransAmt"), Label)
+            TransAmt = (Convert.ToDecimal(DataBinder.Eval(e.Row.DataItem, "TBIL_POL_MEMB_PREM")))
+            TotTransAmt = (TotTransAmt + TransAmt)
+
+        End If
+        If (e.Row.RowType = DataControlRowType.Footer) Then
+            Dim lblTotal As Label = CType(e.Row.FindControl("lbltxtTotal"), Label)
+            lblTotal.Text = String.Format(System.Globalization.CultureInfo.CurrentCulture, "{0:N}", New Object() {TotTransAmt})
+        End If
+
+        'format fields
+        Dim ea As GridViewRowEventArgs = CType(e, GridViewRowEventArgs)
+        If (ea.Row.RowType = DataControlRowType.DataRow) Then
+            Dim drv As Decimal = Convert.ToDecimal(DataBinder.Eval(e.Row.DataItem, "TBIL_POL_MEMB_PREM"))
+
+            If Not Convert.IsDBNull(drv) Then
+                Dim iParsedValue As Decimal = 0
+                If Decimal.TryParse(drv.ToString, iParsedValue) Then
+                    Dim cell As TableCell = ea.Row.Cells(8)
+                    cell.Text = String.Format(System.Globalization.CultureInfo.CurrentCulture, "{0:N}", New Object() {iParsedValue})
+                End If
+            End If
+        End If
+
+    End Sub
+
+    Protected Sub GridView1_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles GridView1.SelectedIndexChanged
+
+        ' Get the currently selected row imports the SelectedRow property.
+        Dim row As GridViewRow = GridView1.SelectedRow
+
+        ' Display the required value from the selected row.
+        Me.txtRecNo.Text = row.Cells(2).Text
+
+        strStatus = Proc_DoOpenRecord(RTrim("FIL"), Me.txtPolicyNumber.Text, Val(RTrim(Me.txtRecNo.Text)))
+
+        Dim lblPrice1 As Label = GridView1.FooterRow.FindControl("lbltxtTotal")
+        txtPremPaidLC.Text = lblPrice1.Text
+        txtPremPaidFC.Text = lblPrice1.Text
+
+        txtPremPaidLC.Enabled = False
+        txtPremPaidFC.Enabled = False
+        txtBasicSumClaimsLC.Enabled = False
+        txtBasicSumClaimsFC.Enabled = False
+        txtAssuredAge.Enabled = False
+        txtMemberName.Enabled = False
+
+
+        lblMsg.Text = "You selected " & Me.txtPolicyNumber.Text & " / " & Me.txtRecNo.Text & "."
+
+
+    End Sub
+
+    Private Function Proc_DoOpenRecord(ByVal FVstrGetType As String, ByVal FVstrRefNum As String, Optional ByVal FVstrRecNo As String = "", Optional ByVal strSearchByWhat As String = "FILE_NUM") As String
+
+        strErrMsg = "false"
+
+        lblMsg.Text = ""
+        If Trim(FVstrRefNum) = "" Then
+            Return strErrMsg
+            Exit Function
+        End If
+
+        Dim mystrCONN As String = CType(Session("connstr"), String)
+        Dim objOLEConn As New OleDbConnection(mystrCONN)
+
+        Try
+            'open connection to database
+            objOLEConn.Open()
+        Catch ex As Exception
+            Me.lblMsg.Text = "Unable to connect to database. Reason: " & ex.Message
+            objOLEConn = Nothing
+            Return strErrMsg
+            Exit Function
+        End Try
+
+
+        strREC_ID = Trim(FVstrRefNum)
+
+        strTable = strTableName = "TBIL_GRP_POLICY_MEMBERS"
+        strSQL = "SELECT TOP 1 * FROM TBIL_GRP_POLICY_MEMBERS WHERE TBIL_POL_MEMB_REC_ID = '" + FVstrRecNo + "'"
+
+        Dim objOLECmd As OleDbCommand = New OleDbCommand(strSQL, objOLEConn)
+        objOLECmd.CommandTimeout = 180
+        objOLECmd.CommandType = CommandType.Text
+        'objOLECmd.CommandType = CommandType.StoredProcedure
+        objOLECmd.Parameters.Add("p01", OleDbType.VarChar, 3).Value = LTrim(RTrim(FVstrGetType))
+        objOLECmd.Parameters.Add("p02", OleDbType.VarChar, 40).Value = strREC_ID
+        objOLECmd.Parameters.Add("p03", OleDbType.VarChar, 18).Value = Val(FVstrRecNo)
+
+        Dim objOLEDR As OleDbDataReader
+
+        objOLEDR = objOLECmd.ExecuteReader()
+        If (objOLEDR.Read()) Then
+            strErrMsg = "true"
+
+            'Me.txtFileNum.Text = RTrim(CType(objOLEDR("TBIL_POL_MEMB_FILE_NO") & vbNullString, String))
+            'Call Proc_DDL_Get(Me.ddlGroup, RTrim(Me.txtGroupNum.Text))
+            Me.txtRecNo.Text = RTrim(CType(objOLEDR("TBIL_POL_MEMB_REC_ID") & vbNullString, String))
+
+            Me.txtAssuredAge.Text = RTrim(CType(objOLEDR("TBIL_POL_MEMB_AGE") & vbNullString, String))
+            Me.txtBasicSumClaimsLC.Text = RTrim(CType(objOLEDR("TBIL_POL_MEMB_TOT_SA") & vbNullString, String))
+            Me.txtBasicSumClaimsFC.Text = RTrim(CType(objOLEDR("TBIL_POL_MEMB_TOT_SA") & vbNullString, String))
+            txtMemberName.Text = RTrim(CType(objOLEDR("TBIL_POL_MEMB_NAME") & vbNullString, String))
+
+            'Me.txtData_Source_SW.Text = RTrim(CType(objOLEDR("TBIL_POL_MEMB_FILE_UPLOAD_SW") & vbNullString, String))
+            'Call gnProc_DDL_Get(Me.cboData_Source, RTrim(Me.txtData_Source_SW.Text))
+
+            'Select Case UCase(Trim(Me.txtData_Source_SW.Text))
+            '    Case "M"
+            '        'tr_file_upload.Visible = False
+            '        Me.cmdFile_Upload.Enabled = False
+            '    Case "U"
+            '        'tr_file_upload.Visible = True
+            '        Me.cmdFile_Upload.Enabled = False
+            '    Case Else
+            '        'tr_file_upload.Visible = False
+            '        Me.cmdFile_Upload.Enabled = False
+            'End Select
+
+            'Me.txtFile_Upload.Text = RTrim(CType(objOLEDR("TBIL_POL_MEMB_FILE_UPLOAD_NAME") & vbNullString, String))
+
+            'Me.txtBatch_Num.Text = RTrim(objOLEDR("TBIL_POL_MEMB_BATCH_NO") & vbNullString)
+            ''Me.txtBatch_Num.Enabled = False
+            'Me.cboBatch_Num.Enabled = False
+
+            'Me.txtMember_SN.Text = Val(RTrim(CType(objOLEDR("TBIL_POL_MEMB_SNO") & vbNullString, String)))
+
+            'Me.txtGender.Text = RTrim(CType(objOLEDR("TBIL_POL_MEMB_CAT") & vbNullString, String))
+            'Call gnProc_DDL_Get(Me.cboGender, RTrim(Me.txtGender.Text))
+
+            'If IsDate(objOLEDR("TBIL_POL_MEMB_BDATE")) Then
+            '    Me.txtMember_DOB.Text = Format(CType(objOLEDR("TBIL_POL_MEMB_BDATE"), DateTime), "dd/MM/yyyy")
+            'End If
+            'Me.txtDOB_ANB.Text = Val(objOLEDR("TBIL_POL_MEMB_AGE") & vbNullString)
+
+            'If IsDate(objOLEDR("TBIL_POL_MEMB_FROM_DT")) Then
+            '    Me.txtStart_Date.Text = Format(CType(objOLEDR("TBIL_POL_MEMB_FROM_DT"), DateTime), "dd/MM/yyyy")
+            'End If
+            'If IsDate(objOLEDR("TBIL_POL_MEMB_TO_DT")) Then
+            '    Me.txtEnd_Date.Text = Format(CType(objOLEDR("TBIL_POL_MEMB_TO_DT"), DateTime), "dd/MM/yyyy")
+            'End If
+
+            'Me.txtPrem_Period_Yr.Text = RTrim(CType(objOLEDR("TBIL_POL_MEMB_TENOR") & vbNullString, String))
+            'Me.txtDesignation_Name.Text = RTrim(CType(objOLEDR("TBIL_POL_MEMB_DESIG") & vbNullString, String))
+            'Me.txtMember_Name.Text = RTrim(CType(objOLEDR("TBIL_POL_MEMB_NAME") & vbNullString, String))
+
+            'If Val(RTrim(CType(objOLEDR("TBIL_POL_MEMB_SA_FACTOR") & vbNullString, String))) <> 0 Then
+            '    Me.txtPrem_SA_Factor.Text = RTrim(CType(objOLEDR("TBIL_POL_MEMB_SA_FACTOR") & vbNullString, String))
+            'End If
+
+            'Me.txtTotal_Emolument.Text = RTrim(CType(objOLEDR("TBIL_POL_MEMB_TOT_EMOLUMENT") & vbNullString, String))
+            'Me.txtSum_Assured.Text = RTrim(CType(objOLEDR("TBIL_POL_MEMB_TOT_SA") & vbNullString, String))
+
+            'Me.txtMedical_YN.Text = RTrim(CType(objOLEDR("TBIL_POL_MEMB_MEDICAL_YN") & vbNullString, String))
+            'Call gnProc_DDL_Get(Me.cboMedical_YN, RTrim(Me.txtMedical_YN.Text))
+
+            'Call gnProc_DDL_Get(Me.cboPrem_Rate_Code, RTrim(Me.txtPrem_Rate_Code.Text))
+
+            'Me.txtPrem_Rate.Text = RTrim(CType(objOLEDR("TBIL_POL_MEMB_RATE") & vbNullString, String))
+            'Me.txtPrem_Rate_Per.Text = RTrim(CType(objOLEDR("TBIL_POL_MEMB_RATE_PER") & vbNullString, String))
+            'Me.txtPrem_Amt.Text = RTrim(CType(objOLEDR("TBIL_POL_MEMB_PREM") & vbNullString, String))
+            'Me.txtPrem_Amt_Prorata.Text = RTrim(CType(objOLEDR("TBIL_POL_MEMB_PRO_RATE_PREM") & vbNullString, String))
+            'Me.txtLoad_amt.Text = RTrim(CType(objOLEDR("TBIL_POL_MEMB_LOAD") & vbNullString, String))
+
+            'Me.lblFileNum.Enabled = False
+            ''Call DisableBox(Me.txtFileNum)
+            ''Me.chkFileNum.Enabled = False
+            'Me.txtFileNum.Enabled = False
+            'Me.txtQuote_Num.Enabled = False
+            'Me.txtPolNum.Enabled = False
+
+            'Me.cmdNew_ASP.Enabled = True
+            ''Me.cmdDelete_ASP.Enabled = True
+            'Me.cmdNext.Enabled = True
+
+            'If RTrim(CType(objOLEDR("TBIL_POLY_PROPSL_ACCPT_STATUS") & vbNullString, String)) = "A" Then
+            '    Me.chkFileNum.Enabled = False
+            '    Me.lblFileNum.Enabled = False
+            '    Me.txtFileNum.Enabled = False
+            '    Me.cmdFileNum.Enabled = False
+            '    Me.cmdSave_ASP.Enabled = False
+            '    Me.cmdDelete_ASP.Enabled = False
+            'End If
+
+            strOPT = "2"
+            Me.lblMsg.Text = "Status: Data Modification"
+
+        Else
+            'Me.lblFileNum.Enabled = True
+            'Call DisableBox(Me.txtFileNum)
+            'Me.chkFileNum.Enabled = True
+            'Me.chkFileNum.Checked = False
+            'Me.txtFileNum.Enabled = True
+            'Me.txtQuote_Num.Enabled = True
+            'Me.txtPolNum.Enabled = True
+
+            'Me.cmdDelete_ASP.Enabled = False
+            'Me.cmdNext.Enabled = False
+
+            strOPT = "1"
+            Me.lblMsg.Text = "Status: New Entry..."
+
+        End If
+
+
+        ' dispose of open objects
+        objOLECmd.Dispose()
+        objOLECmd = Nothing
+
+        If objOLEDR.IsClosed = False Then
+            objOLEDR.Close()
+        End If
+        objOLEDR = Nothing
+
+        If objOLEConn.State = ConnectionState.Open Then
+            objOLEConn.Close()
+        End If
+        objOLEConn = Nothing
+
+        Return strErrMsg
+
+    End Function
+
+
     Public Function GetAllProductCodeList() As DataSet
 
         Dim mystrConn As String = CType(Session("connstr"), String)
@@ -195,12 +507,12 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
         Dim dt As DataTable = ds.Tables(0)
         Dim dr As DataRow = dt.NewRow()
 
-        dr("TBIL_COD_SHORT_DESC") = "-- Selecct --"
+        dr("TBIL_COD_LONG_DESC") = "-- Selecct --"
         dr("TBIL_COD_ITEM") = ""
         dt.Rows.InsertAt(dr, 0)
 
         DdnLossType.DataSource = dt
-        DdnLossType.DataTextField = "TBIL_COD_SHORT_DESC"
+        DdnLossType.DataTextField = "TBIL_COD_LONG_DESC"
         DdnLossType.DataValueField = "TBIL_COD_ITEM"
         DdnLossType.DataBind()
 
@@ -214,16 +526,16 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
         txtPolicyStartDate.Text = ""
         txtPolicyEndDate.Text = ""
         txtNotificationDate.Text = ""
-        txtClaimsEffectiveDate.Text = ""
+        txtDateOfDeath.Text = ""
         txtBasicSumClaimsLC.Text = ""
         txtBasicSumClaimsFC.Text = ""
-        txtAdditionalSumClaimsLC.Text = ""
-        txtAdditionalSumClaimsFC.Text = ""
+        txtPremPaidLC.Text = ""
+        txtPremPaidFC.Text = ""
         txtAssuredAge.Text = ""
         DdnLossType.SelectedIndex = 0
-        DdnClaimType.SelectedIndex = 0
+        'DdnClaimType.SelectedIndex = 0
         DdnSysModule.SelectedIndex = 0
-        txtProductDec.Text = ""
+        txtClaimDec.Text = ""
 
     End Sub
 
@@ -236,6 +548,7 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
             Else
                 Dim cboValue As String = cboSearch.SelectedItem.Value
                 strStatus = GetPolicyDetailsByNumber(cboValue.Trim())
+                Proc_DataBindGrid()
             End If
         Catch ex As Exception
             lblMsg.Text = "Error. Reason: " & ex.Message.ToString
@@ -275,19 +588,13 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
                     txtPolicyEndDate.Text = Format(CType(objOledr("TBIL_POL_PRM_TO"), DateTime), "dd/MM/yyyy")
                 End If
 
-                'If IsDate(objOledr("TBIL_CLM_RPTD_NOTIF_DT")) Then
-                '    txtNotificationDate.Text = Format(CType(objOledr("TBIL_CLM_RPTD_NOTIF_DT"), DateTime), "dd/MM/yyyy")
-                'End If
-                If Not IsDBNull(objOledr("TBIL_POL_PRM_ANN_CONTRIB_LC")) Then txtBasicSumClaimsLC.Text = Format(CType(objOledr("TBIL_POL_PRM_ANN_CONTRIB_LC"), Decimal), "N2")
-                If Not IsDBNull(objOledr("TBIL_POL_PRM_ANN_CONTRIB_FC")) Then txtBasicSumClaimsFC.Text = Format(CType(objOledr("TBIL_POL_PRM_ANN_CONTRIB_FC"), Decimal), "N2")
-                If Not IsDBNull(objOledr("TBIL_POL_PRM_MTH_CONTRIB_LC")) Then txtAdditionalSumClaimsLC.Text = Format(CType(objOledr("TBIL_POL_PRM_MTH_CONTRIB_LC"), Decimal), "N2")
-                If Not IsDBNull(objOledr("TBIL_POL_PRM_MTH_CONTRIB_FC")) Then txtAdditionalSumClaimsFC.Text = Format(CType(objOledr("TBIL_POL_PRM_MTH_CONTRIB_FC"), Decimal), "N2")
-                txtAssuredAge.Text = (objOledr("TBIL_POLY_ASSRD_AGE").ToString)
+                If cboSearch.SelectedIndex > 0 Then
+                    Dim name As String = cboSearch.SelectedItem.Text.ToString
+                    Dim nameArr As String() = name.Split("-")
 
-
-                If IsDate(objOledr("TBIL_POLICY_EFF_DT")) Then
-                    txtClaimsEffectiveDate.Text = Format(CType(objOledr("TBIL_POLICY_EFF_DT"), DateTime), "dd/MM/yyyy")
+                    lblGrpName.Text = "Name: " + nameArr(0)
                 End If
+
                 _rtnMessage = "Policy record retrieved!"
             Else
                 _rtnMessage = "Unable to retrieve record. Invalid CLAIMS NUMBER!"
@@ -308,7 +615,7 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
         conn = New OleDbConnection(mystrConn)
         Dim cmd As OleDbCommand = New OleDbCommand()
         cmd.Connection = conn
-        cmd.CommandText = "SPIL_CLAIMSNUM_SEARCH_FRM_TABLE"
+        cmd.CommandText = "SPIL_GRP_CLAIMSNUM_SEARCH_FRM_TABLE"
         cmd.CommandType = CommandType.StoredProcedure
         cmd.Parameters.AddWithValue("@tbil_clm_rptd_clm_no", claimNumber)
 
@@ -319,36 +626,39 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
             If (objOledr.Read()) Then
                 strErrMsg = "true"
 
-                txtPolicyNumber.Text = RTrim(CType(objOledr("TBIL_CLM_RPTD_POLY_NO") & vbNullString, String))
-                txtUWY.Text = CType(objOledr("TBIL_CLM_RPTD_UNDW_YR") & vbNullString, String)
-                txtProductCode.Text = CType(objOledr("TBIL_CLM_RPTD_PRDCT_CD") & vbNullString, String)
+                txtPolicyNumber.Text = RTrim(CType(objOledr("TBIL_GRP_CLM_RPTD_POLY_NO") & vbNullString, String))
+                txtUWY.Text = CType(objOledr("TBIL_GRP_CLM_RPTD_UNDW_YR") & vbNullString, String)
+                txtProductCode.Text = CType(objOledr("TBIL_GRP_CLM_RPTD_PRDCT_CD") & vbNullString, String)
                 'txtProductCode0.Text = CType(objOledr("TBIL_PRDCT_DTL_DESC") & vbNullString, String)
 
 
-                If IsDate(objOledr("TBIL_CLM_RPTD_POLY_FROM_DT")) Then
-                    txtPolicyStartDate.Text = Format(CType(objOledr("TBIL_CLM_RPTD_POLY_FROM_DT"), DateTime), "dd/MM/yyyy")
+                If IsDate(objOledr("TBIL_GRP_CLM_RPTD_POLY_FROM_DT")) Then
+                    txtPolicyStartDate.Text = Format(CType(objOledr("TBIL_GRP_CLM_RPTD_POLY_FROM_DT"), DateTime), "dd/MM/yyyy")
                 End If
-                If IsDate(objOledr("TBIL_CLM_RPTD_POLY_TO_DT")) Then
-                    txtPolicyEndDate.Text = Format(CType(objOledr("TBIL_CLM_RPTD_POLY_TO_DT"), DateTime), "dd/MM/yyyy")
-                End If
-
-                If IsDate(objOledr("TBIL_CLM_RPTD_NOTIF_DT")) Then
-                    txtNotificationDate.Text = Format(CType(objOledr("TBIL_CLM_RPTD_NOTIF_DT"), DateTime), "dd/MM/yyyy")
-                End If
-                If IsDate(objOledr("TBIL_CLM_RPTD_LOSS_DT")) Then
-                    txtClaimsEffectiveDate.Text = Format(CType(objOledr("TBIL_CLM_RPTD_LOSS_DT"), DateTime), "dd/MM/yyyy")
+                If IsDate(objOledr("TBIL_GRP_CLM_RPTD_POLY_TO_DT")) Then
+                    txtPolicyEndDate.Text = Format(CType(objOledr("TBIL_GRP_CLM_RPTD_POLY_TO_DT"), DateTime), "dd/MM/yyyy")
                 End If
 
-                txtBasicSumClaimsLC.Text = Format(CType(objOledr("TBIL_CLM_RPTD_BASIC_LOSS_AMT_LC"), Decimal), "N2")
-                txtBasicSumClaimsFC.Text = Format(CType(objOledr("TBIL_CLM_RPTD_BASIC_LOSS_AMT_FC"), Decimal), "N2")
-                txtAdditionalSumClaimsLC.Text = Format(CType(objOledr("TBIL_CLM_RPTD_ADDCOV_LOSS_AMT_LC"), Decimal), "N2")
-                txtAdditionalSumClaimsFC.Text = Format(CType(objOledr("TBIL_CLM_RPTD_ADDCOV_LOSS_AMT_FC"), Decimal), "N2")
+                If IsDate(objOledr("TBIL_GRP_CLM_RPTD_NOTIF_DT")) Then
+                    txtNotificationDate.Text = Format(CType(objOledr("TBIL_GRP_CLM_RPTD_NOTIF_DT"), DateTime), "dd/MM/yyyy")
+                End If
+                If IsDate(objOledr("TBIL_GRP_CLM_RPTD_DATEOFDEATH_DT")) Then
+                    txtDateOfDeath.Text = Format(CType(objOledr("TBIL_GRP_CLM_RPTD_DATEOFDEATH_DT"), DateTime), "dd/MM/yyyy")
+                End If
 
-                txtAssuredAge.Text = CType(Convert.ToInt16(objOledr("TBIL_CLM_RPTD_ASSRD_AGE").ToString), String)
-                DdnClaimType.SelectedValue = CType(objOledr("TBIL_CLM_RPTD_CLM_TYPE") & vbNullString, String)
-                DdnSysModule.SelectedValue = CType(objOledr("TBIL_CLM_RPTD_MDLE") & vbNullString, String)
-                DdnLossType.SelectedValue = CType(objOledr("TBIL_CLM_RPTD_LOSS_TYPE") & vbNullString, String)
-                txtProductDec.Text = CType(objOledr("TBIL_CLM_RPTD_DESC") & vbNullString, String)
+                txtBasicSumClaimsLC.Text = Format(CType(objOledr("TBIL_GRP_CLM_RPTD_BASIC_LOSS_AMT_LC"), Decimal), "N2")
+                txtBasicSumClaimsFC.Text = Format(CType(objOledr("TBIL_GRP_CLM_RPTD_BASIC_LOSS_AMT_FC"), Decimal), "N2")
+                txtPremPaidLC.Text = Format(CType(objOledr("TBIL_GRP_CLM_RPTD_PREMIUM_PAID_AMT_LC"), Decimal), "N2")
+                txtPremPaidFC.Text = Format(CType(objOledr("TBIL_GRP_CLM_RPTD_PREMIUM_PAID_AMT_FC"), Decimal), "N2")
+                txtPremiumLoadedLC.Text = Format(CType(objOledr("TBIL_GRP_CLM_RPTD_PREMIUM_LOADED_LC"), Decimal), "N2")
+                txtPremiumLoadedFC.Text = Format(CType(objOledr("TBIL_GRP_CLM_RPTD_PREMIUM_LOADED_FC"), Decimal), "N2")
+                txtMemberName.Text = CType(objOledr("TBIL_GRP_CLM_RPTD_MEMBERNAME") & vbNullString, String)
+
+                txtAssuredAge.Text = CType(Convert.ToInt16(objOledr("TBIL_GRP_CLM_RPTD_ASSRD_AGE").ToString), String)
+                DdnSysModule.SelectedValue = CType(objOledr("TBIL_GRP_CLM_RPTD_MDLE") & vbNullString, String)
+                DdnLossType.SelectedValue = CType(objOledr("TBIL_GRP_CLM_RPTD_LOSS_TYPE") & vbNullString, String)
+                txtClaimDec.Text = CType(objOledr("TBIL_GRP_CLM_RPTD_DESC") & vbNullString, String)
+                txtRemark.Text = CType(objOledr("TBIL_GRP_CLM_RPTD_REMARK") & vbNullString, String)
 
                 _rtnMessage = "Claims record retrieved!"
 
@@ -380,16 +690,16 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
         txtPolicyStartDate.Text = ""
         txtPolicyEndDate.Text = ""
         txtNotificationDate.Text = ""
-        txtClaimsEffectiveDate.Text = ""
+        txtDateOfDeath.Text = ""
         txtBasicSumClaimsFC.Text = ""
         txtBasicSumClaimsLC.Text = ""
-        txtAdditionalSumClaimsLC.Text = ""
-        txtAdditionalSumClaimsFC.Text = ""
+        txtPremPaidLC.Text = ""
+        txtPremPaidFC.Text = ""
         txtAssuredAge.Text = ""
         DdnSysModule.SelectedIndex = 0
-        DdnClaimType.SelectedIndex = 0
+        'DdnClaimType.SelectedIndex = 0
         DdnLossType.SelectedIndex = 0
-        txtProductDec.Text = ""
+        txtClaimDec.Text = ""
 
     End Sub
 
@@ -406,38 +716,43 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
 
     Private Function AddNewClaimsRequest(ByVal systemModule As String, ByVal polNumber As String, ByVal claimNo As String, ByVal uwy As String, _
                        ByVal productCode As String, ByVal lossType As String, ByVal polStartDate As DateTime, _
-                       ByVal polEndDate As DateTime, ByVal notificationDate As DateTime, ByVal claimEffectiveDate As DateTime, ByVal basicSumClc As Decimal, _
-                       ByVal basicSumCfc As Decimal, ByVal addSumClc As Decimal, ByVal addSumCfc As Decimal, _
-                       ByVal claimDescription As String, ByVal assuredAge As Int16, ByVal lossType2 As String, ByVal flag As String, ByVal dDate As DateTime, ByVal userId As String) As String
+                       ByVal polEndDate As DateTime, ByVal notificationDate As DateTime, ByVal dateOfDeath As DateTime, ByVal basicSumClc As Decimal, _
+                       ByVal basicSumCfc As Decimal, ByVal premiumPaidLc As Decimal, ByVal premiumPaidFc As Decimal, ByVal premiumLoadedLc As Decimal, ByVal premiumLoadedFc As Decimal, _
+                       ByVal claimDescription As String, ByVal claimRemark As String, ByVal memberName As String, ByVal assuredAge As Int16, _
+                       ByVal flag As String, ByVal dDate As DateTime, ByVal userId As String) As String
 
         Dim mystrConn As String = CType(Session("connstr"), String)
         Dim conn As OleDbConnection
         conn = New OleDbConnection(mystrConn)
         Dim cmd As OleDbCommand = New OleDbCommand()
         cmd.Connection = conn
-        cmd.CommandText = "SPIL_INS_CLAIMSREQUEST_"
+        cmd.CommandText = "SPIL_GRP_INS_CLAIMSREQUEST_"
         cmd.CommandType = CommandType.StoredProcedure
-        cmd.Parameters.AddWithValue("@TBIL_CLM_RPTD_MDLE", systemModule)
-        cmd.Parameters.AddWithValue("@TBIL_CLM_RPTD_POLY_NO", polNumber)
-        cmd.Parameters.AddWithValue("@TBIL_CLM_RPTD_CLM_NO", claimNo)
-        cmd.Parameters.AddWithValue("@TBIL_CLM_RPTD_UNDW_YR", uwy)
-        cmd.Parameters.AddWithValue("@TBIL_CLM_RPTD_PRDCT_CD", productCode)
-        cmd.Parameters.AddWithValue("@TBIL_CLM_RPTD_CLM_TYPE", lossType)
-        cmd.Parameters.AddWithValue("@TBIL_CLM_RPTD_POLY_FROM_DT", polStartDate)
-        cmd.Parameters.AddWithValue("@TBIL_CLM_RPTD_POLY_TO_DT", polEndDate)
-        cmd.Parameters.AddWithValue("@TBIL_CLM_RPTD_LOSS_DT", claimEffectiveDate)
-        cmd.Parameters.AddWithValue("@TBIL_CLM_RPTD_NOTIF_DT", notificationDate)
-        cmd.Parameters.AddWithValue("@TBIL_CLM_RPTD_BASIC_LOSS_AMT_LC", basicSumClc)
-        cmd.Parameters.AddWithValue("@TBIL_CLM_RPTD_BASIC_LOSS_AMT_FC", basicSumCfc)
-        cmd.Parameters.AddWithValue("@TBIL_CLM_RPTD_ADDCOV_LOSS_AMT_LC", addSumClc)
-        cmd.Parameters.AddWithValue("@TBIL_CLM_RPTD_ADDCOV_LOSS_AMT_FC", addSumCfc)
-        cmd.Parameters.AddWithValue("@TBIL_CLM_RPTD_DESC", claimDescription)
-        cmd.Parameters.AddWithValue("@TBIL_CLM_RPTD_ASSRD_AGE", assuredAge)
-        cmd.Parameters.AddWithValue("@TBIL_CLM_RPTD_LOSS_TYPE", lossType2)
 
-        cmd.Parameters.AddWithValue("@TBIL_CLM_RPTD_FLAG", flag)
-        cmd.Parameters.AddWithValue("@TBIL_CLM_RPTD_KEYDTE", dDate)
-        cmd.Parameters.AddWithValue("@TBIL_CLM_RPTD_OPERID", userId)
+        cmd.Parameters.AddWithValue("@TBIL_GRP_CLM_RPTD_MDLE", systemModule)
+        cmd.Parameters.AddWithValue("@TBIL_GRP_CLM_RPTD_POLY_NO", polNumber)
+        cmd.Parameters.AddWithValue("@TBIL_GRP_CLM_RPTD_CLM_NO", claimNo)
+        cmd.Parameters.AddWithValue("@TBIL_GRP_CLM_RPTD_UNDW_YR", uwy)
+        cmd.Parameters.AddWithValue("@TBIL_GRP_CLM_RPTD_PRDCT_CD", productCode)
+        cmd.Parameters.AddWithValue("@TBIL_GRP_CLM_RPTD_POLY_FROM_DT", Convert.ToDateTime(polStartDate))
+        cmd.Parameters.AddWithValue("@TBIL_GRP_CLM_RPTD_POLY_TO_DT", Convert.ToDateTime(polEndDate))
+        cmd.Parameters.AddWithValue("@TBIL_GRP_CLM_RPTD_NOTIF_DT", Convert.ToDateTime(notificationDate))
+        cmd.Parameters.AddWithValue("@TBIL_GRP_CLM_RPTD_DATEOFDEATH_DT", Convert.ToDateTime(dateOfDeath))
+        cmd.Parameters.AddWithValue("@TBIL_GRP_CLM_RPTD_BASIC_LOSS_AMT_LC", basicSumClc)
+        cmd.Parameters.AddWithValue("@TBIL_GRP_CLM_RPTD_BASIC_LOSS_AMT_FC", basicSumCfc)
+        cmd.Parameters.AddWithValue("@TBIL_GRP_CLM_RPTD_PREMIUM_PAID_AMT_LC", premiumPaidLc)
+        cmd.Parameters.AddWithValue("@TBIL_GRP_CLM_RPTD_PREMIUM_PAID_AMT_FC", premiumPaidFc)
+        cmd.Parameters.AddWithValue("@TBIL_GRP_CLM_RPTD_PREMIUM_LOADED_LC", premiumLoadedLc)
+        cmd.Parameters.AddWithValue("@TBIL_GRP_CLM_RPTD_PREMIUM_LOADED_FC", premiumLoadedFc)
+        cmd.Parameters.AddWithValue("@TBIL_GRP_CLM_RPTD_MEMBERNAME", memberName)
+        cmd.Parameters.AddWithValue("@TBIL_GRP_CLM_RPTD_ASSRD_AGE", Convert.ToInt16(assuredAge))
+        cmd.Parameters.AddWithValue("@TBIL_GRP_CLM_RPTD_LOSS_TYPE", lossType)
+        cmd.Parameters.AddWithValue("@TBIL_GRP_CLM_RPTD_DESC", claimDescription)
+        cmd.Parameters.AddWithValue("@TBIL_GRP_CLM_RPTD_REMARK", claimRemark)
+
+        'cmd.Parameters.AddWithValue("@TBIL_GRP_CLM_RPTD_FLAG", flag)
+        cmd.Parameters.AddWithValue("@TBIL_GRP_CLM_RPTD_KEYDTE", dDate)
+        cmd.Parameters.AddWithValue("@TBIL_GRP_CLM_RPTD_OPERID", userId)
 
         Try
             conn.Open()
@@ -452,7 +767,6 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
             For Each dr As DataRow In dt.Rows
                 Dim msg = dr("Msg").ToString()
                 If msg = 1 Then
-                    '_rtnMessage = "Entry Successful, with CLAIM NUMBER: " + claimNo + " generated!"
                     _rtnMessage = "Entry Successful!"
                 Else
                     _rtnMessage = "Entry failed, record already exist!"
@@ -467,12 +781,13 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
 
     End Function
 
-    Private Function ChangeClaims(ByVal systemModule As String, ByVal polNumber As String, ByVal claimNo As String, ByVal uwy As String, _
+    Private Function ChangeClaims(ByVal systemModule As String, ByVal polNumber As String, ByVal uwy As String, _
                      ByVal productCode As String, ByVal claimsType As String, ByVal polStartDate As DateTime, _
                      ByVal polEndDate As DateTime, ByVal notificationDate As DateTime, ByVal claimEffectiveDate As DateTime, ByVal basicSumClc As Decimal, _
                      ByVal basicSumCfc As Decimal, ByVal addSumClc As Decimal, ByVal addSumCfc As Decimal, _
                      ByVal claimDescription As String, ByVal assuredAge As Int16, ByVal lossType2 As String, ByVal flag As String, ByVal dDate As DateTime, ByVal userId As String) As String
 
+        'ByVal claimNo As String,
         Dim mystrConn As String = CType(Session("connstr"), String)
         Dim conn As OleDbConnection
         conn = New OleDbConnection(mystrConn)
@@ -482,7 +797,7 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
         cmd.CommandType = CommandType.StoredProcedure
         cmd.Parameters.AddWithValue("@TBIL_CLM_RPTD_MDLE", systemModule)
         cmd.Parameters.AddWithValue("@TBIL_CLM_RPTD_POLY_NO", polNumber)
-        cmd.Parameters.AddWithValue("@TBIL_CLM_RPTD_CLM_NO", claimNo)
+        'cmd.Parameters.AddWithValue("@TBIL_CLM_RPTD_CLM_NO", claimNo)
         cmd.Parameters.AddWithValue("@TBIL_CLM_RPTD_UNDW_YR", uwy)
         cmd.Parameters.AddWithValue("@TBIL_CLM_RPTD_PRDCT_CD", productCode)
         cmd.Parameters.AddWithValue("@TBIL_CLM_RPTD_CLM_TYPE", claimsType)
@@ -542,6 +857,13 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
             lblMsg.Text = ""
         End If
 
+        If txtClaimsNo.Text = "" Then
+            lblMsg.Text = "Claim Number cannot be empty!"
+            FirstMsg = "Javascript:alert('" + lblMsg.Text + "')"
+            Exit Sub
+        End If
+
+
         If txtNotificationDate.Text <> "" Then
             Dim ctrlId As Control = FindControl("txtNotificationDate")
             str = MOD_GEN.DoDate_Process(txtNotificationDate.Text, ctrlId)
@@ -563,25 +885,25 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
             Exit Sub
         End If
 
-        If txtClaimsEffectiveDate.Text <> "" Then
-            Dim ctrlId As Control = FindControl("txtClaimsEffectiveDate")
-            str = MOD_GEN.DoDate_Process(txtClaimsEffectiveDate.Text, ctrlId)
+        If txtDateOfDeath.Text <> "" Then
+            Dim ctrlId As Control = FindControl("lblDateOfDeath")
+            str = MOD_GEN.DoDate_Process(txtDateOfDeath.Text, ctrlId)
 
             If str(2) = Nothing Then
-                Dim errMsg = str(0).Insert(18, " Claims Effective Date, ")
+                Dim errMsg = str(0).Insert(18, " Date Of Death, ")
                 lblMsg.Text = errMsg.Replace("Javascript:alert('", "").Replace("');", "")
                 FirstMsg = errMsg
-                txtClaimsEffectiveDate.Focus()
+                txtDateOfDeath.Focus()
                 Exit Sub
 
             Else
-                txtClaimsEffectiveDate.Text = str(2).ToString()
+                txtDateOfDeath.Text = str(2).ToString()
             End If
         Else
-            lblMsg.Text = "Claims Effective Date field is required!"
-            FirstMsg = lblMsg.Text
-            txtClaimsEffectiveDate.Focus()
-            Exit Sub
+            'lblMsg.Text = "Date of death field is required!"
+            'FirstMsg = lblMsg.Text
+            'txtDateOfDeath.Focus()
+            'Exit Sub
         End If
 
         If txtPolicyStartDate.Text <> "" Then
@@ -645,21 +967,21 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
             basicFc = Convert.ToDecimal((txtBasicSumClaimsFC.Text).Replace(",", ""))
         End If
 
-        If txtAdditionalSumClaimsLC.Text = "" Then
+        If txtPremPaidLC.Text = "" Then
             lblMsg.Text = "Additional Sum Claimed LC field is required!"
-            txtAdditionalSumClaimsLC.Focus()
+            txtPremPaidLC.Focus()
             Exit Sub
         Else
-            addLc = Convert.ToDecimal((txtAdditionalSumClaimsLC.Text).Replace(",", ""))
+            addLc = Convert.ToDecimal((txtPremPaidLC.Text).Replace(",", ""))
 
         End If
 
-        If txtAdditionalSumClaimsFC.Text = "" Then
+        If txtPremPaidFC.Text = "" Then
             lblMsg.Text = "Additional Sum Claimed FC field is required!"
-            txtAdditionalSumClaimsFC.Focus()
+            txtPremPaidFC.Focus()
             Exit Sub
         Else
-            addFc = Convert.ToDecimal((txtAdditionalSumClaimsFC.Text).Replace(",", ""))
+            addFc = Convert.ToDecimal((txtPremPaidFC.Text).Replace(",", ""))
 
         End If
 
@@ -669,17 +991,27 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
             Exit Sub
         End If
 
-        If DdnSysModule.SelectedIndex = 0 Then
-            lblMsg.Text = "System Module field is required!"
-            DdnSysModule.Focus()
-            Exit Sub
+        If txtPremiumLoadedLC.Text = "" Then
+            txtPremiumLoadedLC.Text = "0.00"
+            txtPremiumLoadedFC.Text = "0.00"
         End If
 
-        If DdnClaimType.SelectedIndex = 0 Then
-            lblMsg.Text = "Claims Type field is required!"
-            DdnClaimType.Focus()
-            Exit Sub
+        If txtPremiumLoadedFC.Text = "" Then
+            txtPremiumLoadedLC.Text = "0.00"
+            txtPremiumLoadedFC.Text = "0.00"
         End If
+
+        'If DdnSysModule.SelectedIndex = 0 Then
+        '    lblMsg.Text = "System Module field is required!"
+        '    DdnSysModule.Focus()
+        '    Exit Sub
+        'End If
+
+        'If DdnClaimType.SelectedIndex = 0 Then
+        '    lblMsg.Text = "Claims Type field is required!"
+        '    DdnClaimType.Focus()
+        '    Exit Sub
+        'End If
 
         If DdnLossType.SelectedIndex = 0 Then
             lblMsg.Text = "Loss Type field is required!"
@@ -688,34 +1020,24 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
         End If
 
 
-        If txtProductDec.Text = "" Then
+        If txtClaimDec.Text = "" Then
             lblMsg.Text = "Product Description field is required!"
-            txtProductDec.Focus()
+            txtClaimDec.Focus()
             Exit Sub
         End If
 
-        Dim newNotifDate As Date = Convert.ToDateTime(DoConvertToDbDateFormat(txtNotificationDate.Text))
-        Dim newClaimsEffDate As Date = Convert.ToDateTime(DoConvertToDbDateFormat(txtClaimsEffectiveDate.Text))
+        'Dim newNotifDate As Date = Convert.ToDateTime(DoConvertToDbDateFormat(txtNotificationDate.Text))
+        'Dim newClaimsEffDate As Date = Convert.ToDateTime(DoConvertToDbDateFormat(txtDateOfDeath.Text))
 
+        'If newNotifDate < Convert.ToDateTime(DoConvertToDbDateFormat(txtPolicyStartDate.Text)) _
+        'Or newNotifDate > Convert.ToDateTime(DoConvertToDbDateFormat(txtPolicyEndDate.Text)) Then
+        '    Dim errMsg = "Notification date should be within policy start and end date!"
+        '    lblMsg.Text = errMsg.Replace("Javascript:alert('", "").Replace("');", "")
+        '    FirstMsg = errMsg
+        '    txtPolicyEndDate.Focus()
+        '    Exit Sub
+        'End If
 
-
-        If newNotifDate < Convert.ToDateTime(DoConvertToDbDateFormat(txtPolicyStartDate.Text)) _
-        Or newNotifDate > Convert.ToDateTime(DoConvertToDbDateFormat(txtPolicyEndDate.Text)) Then
-            Dim errMsg = "Notification date should be within policy start and end date!"
-            lblMsg.Text = errMsg.Replace("Javascript:alert('", "").Replace("');", "")
-            FirstMsg = errMsg
-            txtPolicyEndDate.Focus()
-            Exit Sub
-        End If
-
-        If newClaimsEffDate < Convert.ToDateTime(DoConvertToDbDateFormat(txtPolicyStartDate.Text)) _
-       Or newClaimsEffDate > Convert.ToDateTime(DoConvertToDbDateFormat(txtPolicyEndDate.Text)) Then
-            Dim errMsg = "Claims Effective date should be within policy start and end date!"
-            lblMsg.Text = errMsg.Replace("Javascript:alert('", "").Replace("');", "")
-            FirstMsg = errMsg
-            txtPolicyEndDate.Focus()
-            Exit Sub
-        End If
 
         Dim mystrCONN As String = CType(Session("connstr"), String)
         Dim objOLEConn As New OleDbConnection()
@@ -735,147 +1057,36 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
         Dim obj_DT As New System.Data.DataTable
         Dim intC As Integer = 0
 
-        If txtAction.Text = "New" Then
-            Dim flag As String = "A"
-            Dim dateAdded As DateTime = Now
-            Dim operatorId As String = CType(Session("MyUserIDX"), String)
+        'If txtAction.Text = "New" Then
+        Dim flag As String = "A"
+        Dim dateAdded As DateTime = Now
+        Dim operatorId As String = CType(Session("MyUserIDX"), String)
 
 
+        Dim rtn As String = AddNewClaimsRequest( _
+        Convert.ToString(DdnSysModule.SelectedItem.Value), Convert.ToString(txtPolicyNumber.Text), _
+        Convert.ToString(txtClaimsNo.Text), Convert.ToString(txtUWY.Text), _
+        Convert.ToString(txtProductCode.Text), Convert.ToString(DdnLossType.SelectedItem.Value), _
+        Convert.ToDateTime(MOD_GEN.DoConvertToDbDateFormat(txtPolicyStartDate.Text)), _
+        Convert.ToDateTime(MOD_GEN.DoConvertToDbDateFormat(txtPolicyEndDate.Text)), _
+        Convert.ToDateTime(MOD_GEN.DoConvertToDbDateFormat(txtNotificationDate.Text)), _
+        Convert.ToDateTime(MOD_GEN.DoConvertToDbDateFormat(txtDateOfDeath.Text)), _
+        Convert.ToDecimal(txtBasicSumClaimsLC.Text), Convert.ToDecimal(txtBasicSumClaimsFC.Text), _
+        Convert.ToDecimal(txtPremPaidLC.Text), Convert.ToDecimal(txtPremPaidFC.Text), Convert.ToDecimal(txtPremiumLoadedLC.Text), _
+        Convert.ToDecimal(txtPremiumLoadedFC.Text), Convert.ToString(txtClaimDec.Text), Convert.ToString(txtRemark.Text), _
+        Convert.ToString(txtMemberName.Text), Convert.ToInt16(txtAssuredAge.Text), flag, dateAdded, operatorId)
 
-
-            lblMsg.Text = AddNewClaimsRequest(Convert.ToString(DdnSysModule.SelectedValue.ToString), _
-                                          Convert.ToString(txtPolicyNumber.Text), Convert.ToString(txtClaimsNo.Text), _
-                                          Convert.ToString(txtUWY.Text), txtProductCode.Text, DdnClaimType.SelectedValue, _
-                                          Convert.ToDateTime(MOD_GEN.DoConvertToDbDateFormat(txtPolicyStartDate.Text)), _
-                                          Convert.ToDateTime(MOD_GEN.DoConvertToDbDateFormat(txtPolicyEndDate.Text)), _
-                                          Convert.ToDateTime(MOD_GEN.DoConvertToDbDateFormat(txtClaimsEffectiveDate.Text)), _
-                                          Convert.ToDateTime(MOD_GEN.DoConvertToDbDateFormat(txtNotificationDate.Text)), _
-                                          Convert.ToDecimal(basicLc), Convert.ToDecimal(basicFc), _
-                                          Convert.ToDecimal(addLc), Convert.ToDecimal(addFc), _
-                                          Convert.ToString(txtProductDec.Text), Convert.ToInt16(txtAssuredAge.Text), _
-                                          Convert.ToString(DdnLossType.SelectedValue), flag, dateAdded, operatorId)
-
-            FirstMsg = "javascript:alert('" + lblMsg.Text + "');"
-
-
-
-            'Dim drNewRow As System.Data.DataRow
-            'drNewRow = obj_DT.NewRow()
-            'drNewRow("TBIL_POL_ADD_FILE_NO") = RTrim(Me.txtFileNum.Text)
-            'drNewRow("TBIL_CLM_RPTD_MDLE") = DdnSysModule.SelectedValue.ToString
-            'drNewRow("TBIL_CLM_RPTD_POLY_NO") = txtPolicyNumber.Text
-            'drNewRow("TBIL_CLM_RPTD_CLM_NO") = txtClaimsNo.Text
-            'drNewRow("TBIL_CLM_RPTD_UNDW_YR") = txtUWY.Text
-            'drNewRow("TBIL_CLM_RPTD_PRDCT_CD") = txtProductCode.Text
-            'drNewRow("TBIL_CLM_RPTD_CLM_TYPE") = DdnClaimType.SelectedValue
-            'drNewRow("TBIL_CLM_RPTD_POLY_FROM_DT") = Convert.ToDateTime(MOD_GEN.DoConvertToDbDateFormat(txtPolicyStartDate.Text))
-            'drNewRow("TBIL_CLM_RPTD_POLY_TO_DT") = Convert.ToDateTime(MOD_GEN.DoConvertToDbDateFormat(txtPolicyEndDate.Text))
-            'drNewRow("TBIL_CLM_RPTD_NOTIF_DT") = Convert.ToDateTime(MOD_GEN.DoConvertToDbDateFormat(txtNotificationDate.Text))
-            'drNewRow("TBIL_CLM_RPTD_LOSS_DT") = Convert.ToDateTime(MOD_GEN.DoConvertToDbDateFormat(txtClaimsEffectiveDate.Text))
-            'drNewRow("TBIL_CLM_RPTD_BASIC_LOSS_AMT_LC") = Convert.ToDecimal(basicLc)
-            'drNewRow("TBIL_CLM_RPTD_BASIC_LOSS_AMT_FC") = Convert.ToDecimal(basicFc)
-            'drNewRow("TBIL_CLM_RPTD_ADDCOV_LOSS_AMT_LC") = Convert.ToDecimal(addLc)
-
-
-            'drNewRow("TBIL_CLM_RPTD_ADDCOV_LOSS_AMT_FC") = Convert.ToDecimal(addFc)
-            'drNewRow("TBIL_CLM_RPTD_DESC") = txtProductDec.Text
-            'drNewRow("TBIL_CLM_RPTD_ASSRD_AGE") = Convert.ToInt16(txtAssuredAge.Text)
-            'drNewRow("TBIL_CLM_RPTD_LOSS_TYPE") = Convert.ToString(DdnLossType.SelectedValue)
-            'drNewRow("TBIL_QUO_FLAG") = flag
-            'drNewRow("TBIL_QUO_OPERID") = operatorId
-            'drNewRow("TBIL_QUO_KEYDTE") = dateAdded
-            'obj_DT.Rows.Add(drNewRow)
-            'obj_DT.AcceptChanges()
-            'intC = objDA.Update(obj_DT)
-
-            'drNewRow = Nothing
-
+        If True Then
+            rtn = "Entry Successful!"
             Me.lblMsg.Text = "New Record Saved to Database Successfully."
-
         Else
-            Dim flag As String = "C"
-            Dim dateAdded As DateTime = Now
-            Dim operatorId As String = CType(Session("MyUserIDX"), String)
-            lblMsg.Text = ChangeClaims(Convert.ToString(DdnSysModule.SelectedValue.ToString), _
-                                          Convert.ToString(txtPolicyNumber.Text), Convert.ToString(txtClaimsNo.Text), _
-                                          Convert.ToString(txtUWY.Text), txtProductCode.Text, DdnClaimType.SelectedValue, _
-                                          Convert.ToDateTime(MOD_GEN.DoConvertToDbDateFormat(txtPolicyStartDate.Text)), _
-                                          Convert.ToDateTime(MOD_GEN.DoConvertToDbDateFormat(txtPolicyEndDate.Text)), _
-                                          Convert.ToDateTime(MOD_GEN.DoConvertToDbDateFormat(txtClaimsEffectiveDate.Text)), _
-                                          Convert.ToDateTime(MOD_GEN.DoConvertToDbDateFormat(txtNotificationDate.Text)), _
-                                          Convert.ToDecimal(basicLc), Convert.ToDecimal(basicFc), _
-                                          Convert.ToDecimal(addLc), Convert.ToDecimal(addFc), _
-                                          Convert.ToString(txtProductDec.Text), Convert.ToInt16(txtAssuredAge.Text), _
-                                          Convert.ToString(DdnLossType.SelectedValue), flag, dateAdded, operatorId)
-
-            FirstMsg = "javascript:alert('" + lblMsg.Text + "');"
-
-
-            'strSQL = ""
-            'strSQL = "SELECT TOP 1 * FROM " & strTable
-            'strSQL = strSQL & " WHERE TBIL_CLM_RPTD_POLY_NO = '" & RTrim(txtPolicyNumber.Text) & "' "
-            ''strSQL = strSQL & " AND TBIL_CLM_RPTD_MDLE='G'"
-
-            'objDA = New System.Data.OleDb.OleDbDataAdapter(strSQL, objOLEConn)
-            'Dim m_cbCommandBuilder As System.Data.OleDb.OleDbCommandBuilder
-            'm_cbCommandBuilder = New System.Data.OleDb.OleDbCommandBuilder(objDA)
-            'Try
-
-            'objDA.Fill(obj_DT)
-
-            '    If obj_DT.Rows.Count = 1 Then
-            '        With obj_DT
-            '            .Rows(0)("TBIL_CLM_RPTD_MDLE") = DdnSysModule.SelectedValue.ToString
-            '            .Rows(0)("TBIL_CLM_RPTD_POLY_NO") = txtPolicyNumber.Text
-            '            .Rows(0)("TBIL_CLM_RPTD_CLM_NO") = txtClaimsNo.Text
-            '            .Rows(0)("TBIL_CLM_RPTD_UNDW_YR") = txtUWY.Text
-            '            .Rows(0)("TBIL_CLM_RPTD_PRDCT_CD") = txtProductCode.Text
-            '            .Rows(0)("TBIL_CLM_RPTD_CLM_TYPE") = DdnClaimType.SelectedValue
-            '            .Rows(0)("TBIL_CLM_RPTD_POLY_FROM_DT") = Convert.ToDateTime(MOD_GEN.DoConvertToDbDateFormat(txtPolicyStartDate.Text))
-            '            .Rows(0)("TBIL_CLM_RPTD_POLY_TO_DT") = Convert.ToDateTime(MOD_GEN.DoConvertToDbDateFormat(txtPolicyEndDate.Text))
-            '            .Rows(0)("TBIL_CLM_RPTD_NOTIF_DT") = Convert.ToDateTime(MOD_GEN.DoConvertToDbDateFormat(txtNotificationDate.Text))
-            '            .Rows(0)("TBIL_CLM_RPTD_LOSS_DT") = Convert.ToDateTime(MOD_GEN.DoConvertToDbDateFormat(txtClaimsEffectiveDate.Text))
-            '            .Rows(0)("TBIL_CLM_RPTD_BASIC_LOSS_AMT_LC") = Convert.ToDecimal(basicLc)
-            '            .Rows(0)("TBIL_CLM_RPTD_BASIC_LOSS_AMT_FC") = Convert.ToDecimal(basicFc)
-            '            .Rows(0)("TBIL_CLM_RPTD_ADDCOV_LOSS_AMT_LC") = Convert.ToDecimal(addLc)
-
-
-            '            .Rows(0)("TBIL_CLM_RPTD_ADDCOV_LOSS_AMT_FC") = Convert.ToDecimal(addFc)
-            '            .Rows(0)("TBIL_CLM_RPTD_DESC") = txtProductDec.Text
-            '            .Rows(0)("TBIL_CLM_RPTD_ASSRD_AGE") = Convert.ToInt16(txtAssuredAge.Text)
-            '            .Rows(0)("TBIL_CLM_RPTD_LOSS_TYPE") = Convert.ToString(DdnLossType.SelectedValue)
-            '            .Rows(0)("TBIL_QUO_FLAG") = flag
-            '            .Rows(0)("TBIL_QUO_OPERID") = operatorId
-            '            .Rows(0)("TBIL_QUO_KEYDTE") = dateAdded
-            '        End With
-            '        intC = objDA.Update(obj_DT)
-            '        Me.lblMsg.Text = "Record Saved to Database Successfully."
-            '        m_cbCommandBuilder.Dispose()
-            '        m_cbCommandBuilder = Nothing
-            '    End If
-
-            'Catch ex As Exception
-            '    Me.lblMsg.Text = ex.Message.ToString
-            '    Exit Sub
-            'End Try
+            Me.lblMsg.Text = "Record Update Successfully."
         End If
+
+        FirstMsg = "javascript:alert('" + lblMsg.Text + "');"
+
+
         ClearFormControls()
-        'obj_DT.Dispose()
-        'obj_DT = Nothing
-
-        'If objDA.SelectCommand.Connection.State = ConnectionState.Open Then
-        '    objDA.SelectCommand.Connection.Close()
-        'End If
-        'objDA.Dispose()
-        'objDA = Nothing
-        'If objOLEConn.State = ConnectionState.Open Then
-        '    objOLEConn.Close()
-        'End If
-        'objOLEConn = Nothing
-        'FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "');"
-
-
-
 
     End Sub
 
@@ -883,7 +1094,7 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
         If txtAction.Text = "New" Then
             DdnLossType.SelectedIndex = 0
             DdnSysModule.SelectedIndex = 0
-            DdnClaimType.SelectedIndex = 0
+            'DdnClaimType.SelectedIndex = 0
             txtPolicyNumber.Text = ""
             txtClaimsNo.Text = ""
             txtUWY.Text = ""
@@ -891,14 +1102,14 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
             'txtProductCode0.Text = ""
             txtPolicyStartDate.Text = ""
             txtPolicyEndDate.Text = ""
-            txtClaimsEffectiveDate.Text = ""
+            txtDateOfDeath.Text = ""
             txtNotificationDate.Text = ""
             txtBasicSumClaimsFC.Text = ""
             txtBasicSumClaimsLC.Text = ""
-            txtAdditionalSumClaimsLC.Text = ""
-            txtAdditionalSumClaimsFC.Text = ""
+            txtPremPaidLC.Text = ""
+            txtPremPaidFC.Text = ""
             txtAssuredAge.Text = ""
-            txtProductDec.Text = ""
+            txtClaimDec.Text = ""
         End If
     End Sub
 
@@ -908,6 +1119,12 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
         'Checking fields for empty values
         If txtPolicyNumber.Text = "" Then
             lblMsg.Text = ""
+        End If
+
+        If txtPremiumLoadedLC.Text <> txtPremiumLoadedFC.Text Then
+            lblMsg.Text = "Premium Loaded value not consistent!"
+            FirstMsg = lblMsg.Text
+            txtPremPaidLC.Focus()
         End If
 
         If txtNotificationDate.Text <> "" Then
@@ -927,19 +1144,19 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
 
         End If
 
-        If txtClaimsEffectiveDate.Text <> "" Then
-            Dim ctrlId As Control = FindControl("txtClaimsEffectiveDate")
-            str = MOD_GEN.DoDate_Process(txtClaimsEffectiveDate.Text, ctrlId)
+        If txtDateOfDeath.Text <> "" Then
+            Dim ctrlId As Control = FindControl("txtDateOfDeath")
+            str = MOD_GEN.DoDate_Process(txtDateOfDeath.Text, ctrlId)
 
             If str(2) = Nothing Then
                 Dim errMsg = str(0).Insert(18, " Claims Effective Date, ")
                 lblMsg.Text = errMsg.Replace("Javascript:alert('", "").Replace("');", "")
                 FirstMsg = errMsg
-                txtClaimsEffectiveDate.Focus()
+                txtDateOfDeath.Focus()
                 Exit Sub
 
             Else
-                txtClaimsEffectiveDate.Text = str(2).ToString()
+                txtDateOfDeath.Text = str(2).ToString()
             End If
 
         End If
@@ -997,21 +1214,21 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
             basicFc = Convert.ToDecimal((txtBasicSumClaimsFC.Text).Replace(",", ""))
         End If
 
-        If txtAdditionalSumClaimsLC.Text = "" Then
+        If txtPremPaidLC.Text = "" Then
             lblMsg.Text = "Additional Sum Claimed LC field is required!"
-            txtAdditionalSumClaimsLC.Focus()
+            txtPremPaidLC.Focus()
             Exit Sub
         Else
-            addLc = Convert.ToDecimal((txtAdditionalSumClaimsLC.Text).Replace(",", ""))
+            addLc = Convert.ToDecimal((txtPremPaidLC.Text).Replace(",", ""))
 
         End If
 
-        If txtAdditionalSumClaimsFC.Text = "" Then
+        If txtPremPaidFC.Text = "" Then
             lblMsg.Text = "Additional Sum Claimed FC field is required!"
-            txtAdditionalSumClaimsFC.Focus()
+            txtPremPaidFC.Focus()
             Exit Sub
         Else
-            addFc = Convert.ToDecimal((txtAdditionalSumClaimsFC.Text).Replace(",", ""))
+            addFc = Convert.ToDecimal((txtPremPaidFC.Text).Replace(",", ""))
 
         End If
 
@@ -1027,11 +1244,11 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
             Exit Sub
         End If
 
-        If DdnClaimType.SelectedIndex = 0 Then
-            lblMsg.Text = "Claims Type field is required!"
-            DdnClaimType.Focus()
-            Exit Sub
-        End If
+        'If DdnClaimType.SelectedIndex = 0 Then
+        '    lblMsg.Text = "Claims Type field is required!"
+        '    DdnClaimType.Focus()
+        '    Exit Sub
+        'End If
 
         If DdnLossType.SelectedIndex = 0 Then
             lblMsg.Text = "Loss Type field is required!"
@@ -1040,9 +1257,9 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
         End If
 
 
-        If txtProductDec.Text = "" Then
+        If txtClaimDec.Text = "" Then
             lblMsg.Text = "Product Description field is required!"
-            txtProductDec.Focus()
+            txtClaimDec.Focus()
             Exit Sub
         End If
 
@@ -1052,17 +1269,17 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
             Dim flag As String = "D"
             Dim dateAdded As DateTime = Now
             Dim operatorId As String = CType(Session("MyUserIDX"), String)
-
+            ' Convert.ToString(txtClaimsNo.Text),
             lblMsg.Text = ChangeClaims(Convert.ToString(DdnSysModule.SelectedValue.ToString), _
-                                          Convert.ToString(txtPolicyNumber.Text), Convert.ToString(txtClaimsNo.Text), _
+                                          Convert.ToString(txtPolicyNumber.Text), _
                                           Convert.ToString(txtUWY.Text), txtProductCode.Text, DdnLossType.SelectedValue, _
                                           Convert.ToDateTime(MOD_GEN.DoConvertToDbDateFormat(txtPolicyStartDate.Text)), _
                                           Convert.ToDateTime(MOD_GEN.DoConvertToDbDateFormat(txtPolicyEndDate.Text)), _
-                                          Convert.ToDateTime(MOD_GEN.DoConvertToDbDateFormat(txtClaimsEffectiveDate.Text)), _
+                                          Convert.ToDateTime(MOD_GEN.DoConvertToDbDateFormat(txtDateOfDeath.Text)), _
                                           Convert.ToDateTime(MOD_GEN.DoConvertToDbDateFormat(txtNotificationDate.Text)), _
                                           Convert.ToDecimal(basicLc), Convert.ToDecimal(basicFc), _
                                           Convert.ToDecimal(addLc), Convert.ToDecimal(addFc), _
-                                          Convert.ToString(txtProductDec.Text), Convert.ToInt16(txtAssuredAge.Text), _
+                                          Convert.ToString(txtClaimDec.Text), Convert.ToInt16(txtAssuredAge.Text), _
                                           Convert.ToString(DdnLossType.SelectedValue), flag, dateAdded, operatorId)
 
 
@@ -1073,4 +1290,47 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
         Dim newDate = dDate(2) + "-" + dDate(1) + "-" + dDate(0)
         Return newDate
     End Function
+
+    Protected Sub searchBtn_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles searchBtn.Click
+
+        If txtPolicyNumber.Text <> "" And txtSvalue.Text <> "" Then
+            DoFilter(txtPolicyNumber.Text, txtSvalue.Text, DdnFilter.SelectedIndex)
+        End If
+
+    End Sub
+
+    Public Sub DoFilter(ByVal polyNumber As String, ByVal memberName As String, ByVal sType As Integer)
+        'Dim rtnString As String
+        Dim mystrConn As String = CType(Session("connstr"), String)
+        Dim conn As OleDbConnection
+        conn = New OleDbConnection(mystrConn)
+        Dim cmd As OleDbCommand = New OleDbCommand()
+        cmd.Connection = conn
+        cmd.CommandText = "SPIL_GRP_CLAIMSMEMBER_SEARCH"
+        cmd.CommandType = CommandType.StoredProcedure
+        cmd.Parameters.AddWithValue("@TBIL_POL_MEMB_POLY_NO", polyNumber)
+        cmd.Parameters.AddWithValue("@TBIL_POL_MEMB_NAME", memberName)
+        cmd.Parameters.AddWithValue("@sType", sType)
+
+        Try
+            conn.Open()
+            'Dim objOledr As OleDbDataReader
+            'objOledr = cmd.ExecuteReader()
+
+            GridView1.DataSource = cmd.ExecuteReader()
+            GridView1.DataBind()
+
+            conn.Close()
+        Catch ex As Exception
+            _rtnMessage = "Error retrieving data! " + ex.Message
+        End Try
+    End Sub
+
+    Protected Sub DdnFilter_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles DdnFilter.SelectedIndexChanged
+
+        If DdnFilter.SelectedIndex = 0 Then
+            txtSvalue.Text = ""
+        End If
+
+    End Sub
 End Class

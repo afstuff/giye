@@ -8,3 +8,8 @@ C:\James Stuff\VS2008 VERSION\CustodianGroupLife\CustodianGroupLife.Repositories
 C:\James Stuff\VS2008 VERSION\CustodianGroupLife\CustodianGroupLife.Repositories\obj\Debug\ResolveAssemblyReference.cache
 C:\James Stuff\VS2008 VERSION\CustodianGroupLife\CustodianGroupLife.Repositories\obj\Debug\CustodianGroupLife.Repositories.dll
 C:\James Stuff\VS2008 VERSION\CustodianGroupLife\CustodianGroupLife.Repositories\obj\Debug\CustodianGroupLife.Repositories.pdb
+C:\AFRIK\giye\CustodianGroupLife.Repositories\bin\Debug\CustodianGroupLife.Repositories.dll
+C:\AFRIK\giye\CustodianGroupLife.Repositories\bin\Debug\CustodianGroupLife.Repositories.pdb
+C:\AFRIK\giye\CustodianGroupLife.Repositories\obj\Debug\ResolveAssemblyReference.cache
+C:\AFRIK\giye\CustodianGroupLife.Repositories\obj\Debug\CustodianGroupLife.Repositories.dll
+C:\AFRIK\giye\CustodianGroupLife.Repositories\obj\Debug\CustodianGroupLife.Repositories.pdb
