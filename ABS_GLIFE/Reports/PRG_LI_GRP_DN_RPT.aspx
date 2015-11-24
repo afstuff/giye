@@ -34,7 +34,10 @@
                                     onfocus="if (this.value == 'Search...') {this.value = '';}"
                                     onblur="if (this.value == '') {this.value = 'Search...';}" />
                                 &nbsp;<asp:Button ID="cmdSearch" Text="Search" runat="server" />
-    	                        &nbsp;<asp:DropDownList ID="cboSearch" AutoPostBack="true" Width="500px" runat="server"></asp:DropDownList>
+    	                        &nbsp;<asp:DropDownList ID="cboSearch" AutoPostBack="true" Width="500px" 
+                                    runat="server" AppendDataBoundItems="True">
+                                    <asp:ListItem Value="*">** Select Insured **</asp:ListItem>
+                                </asp:DropDownList>
                         </td>	                
 	                </tr>
 

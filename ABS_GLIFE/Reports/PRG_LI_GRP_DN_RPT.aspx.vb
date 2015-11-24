@@ -86,9 +86,11 @@ Partial Class Reports_PRG_LI_GRP_DN_RPT
             Case "DN", "DNNOCOM"
                 STRMENU_TITLE = UCase("+++ Debit Note Print +++ ")
                 BufferStr = ""
+                lblTrans_Num.Text = "Enter Debit Note"
             Case "CN", "CNNOCOM"
                 STRMENU_TITLE = UCase("+++ Credit Note Print +++ ")
                 BufferStr = ""
+                lblTrans_Num.Text = "Enter Credit Note"
             Case Else
                 STRMENU_TITLE = UCase("+++ Debit Note / Credit Note Print +++ ")
                 BufferStr = ""
@@ -358,9 +360,25 @@ Partial Class Reports_PRG_LI_GRP_DN_RPT
     End Sub
 
     Protected Sub cmdSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdSearch.Click
+        'If LTrim(RTrim(Me.txtSearch.Value)) = "Search..." Then
+        'ElseIf LTrim(RTrim(Me.txtSearch.Value)) <> "" Then
+        '    Call gnProc_Populate_Box("GL_ASSURED_HELP_SP", "001", Me.cboSearch, RTrim(Me.txtSearch.Value))
+        'End If
+
         If LTrim(RTrim(Me.txtSearch.Value)) = "Search..." Then
         ElseIf LTrim(RTrim(Me.txtSearch.Value)) <> "" Then
-            Call gnProc_Populate_Box("GL_ASSURED_HELP_SP", "001", Me.cboSearch, RTrim(Me.txtSearch.Value))
+            cboSearch.Items.Clear()
+            cboSearch.Items.Add("* Select Insured *")
+            Dim dt As DataTable = GET_INSURED_DCNOTE(txtSearch.Value.Trim(), UCase(Trim(myTType))).Tables(0)
+
+            Dim dr As DataRow = dt.NewRow()
+            'dr(0) = "* Select Insured *"
+            'dr(1) = "*"
+            'dt.Rows.InsertAt(dr, 0)
+            cboSearch.DataSource = dt
+            cboSearch.DataValueField = "TBIL_POL_PRM_DCN_TRANS_NO"
+            cboSearch.DataTextField = "MyFld_Text"
+            cboSearch.DataBind()
         End If
 
     End Sub
