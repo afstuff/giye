@@ -108,6 +108,13 @@ Partial Class PRG_GP_PROP_POLICY
                 'AddMenuItem("", "Delete Quotation", "PRG_LI_INDV_POLY_PERSNAL.aspx?optid=DEL")
                 AddMenuItem("", "Delete Quotation", "")
                 'AddMenuItem("", "UNDER_LINE", "") 'blank link
+
+                ' AddMenuItem("", "", "") 'blank link
+                'AddMenuItem("Quotation Report", "Print Quotation Schedule", "PRG_LI_GRP_QUOT_SCHEDULE.aspx?opt=QUOT_SCHDLE")
+                'AddMenuItem("", "Print Quotation Invoice", "PRG_LI_GRP_QUOT_SCHEDULE.aspx?opt=QUOT_INVOICE")
+                'AddMenuItem("", "Quotation Slip Entry", "PRG_LI_GRP_QUOT_ENTRY.aspx")
+
+
                 AddMenuItem("", "", "") 'blank link
                 AddMenuItem("Quotation Report", "Print Quotation Schedule", "PRG_LI_GRP_QUOT_SCHEDULE.aspx?opt=QUOT_SCHDLE")
                 AddMenuItem("", "Print Quotation Invoice", "PRG_LI_GRP_QUOT_SCHEDULE.aspx?opt=QUOT_INVOICE")

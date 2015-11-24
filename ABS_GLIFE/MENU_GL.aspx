@@ -35,6 +35,7 @@
             
             <asp:LinkButton ID="LNK_UND" Enabled="true" runat="server" Text="Underwriting" PostBackUrl="MENU_GL.aspx?menu=GL_UND"></asp:LinkButton>&nbsp;
             <asp:LinkButton ID="LNK_ENDORSE" Enabled="true" runat="server" Text="Endorsement" PostBackUrl="MENU_GL.aspx?menu=GL_ENDORSE"></asp:LinkButton>&nbsp;
+            <asp:LinkButton ID="LINK_RENEWAL" Enabled="true" runat="server" Text="Renewal" PostBackUrl="MENU_GL.aspx?menu=GL_RENEWAL"></asp:LinkButton>&nbsp;
             <asp:LinkButton ID="LNK_PROCESS" Enabled="true" runat="server" Text="Processing" PostBackUrl="MENU_GL.aspx?menu=GL_PROCESS"></asp:LinkButton>&nbsp;
             <asp:LinkButton ID="LNK_CLP" Enabled="true" runat="server" Text="Claims" PostBackUrl="MENU_GL.aspx?menu=GL_CLAIM"></asp:LinkButton>&nbsp;
             <asp:LinkButton ID="LNK_REINS" Enabled="true" runat="server" Text="Reinsurance" PostBackUrl="MENU_GL.aspx?menu=GL_REINS"></asp:LinkButton>&nbsp;

@@ -707,7 +707,7 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
         If txtClaimsNo.Text <> "" Then
             ClearFormControls()
             lblMsg.Text = GetClaimsDetailsByNumber(txtClaimsNo.Text.Trim())
-            FirstMsg = "javascript:alert('" + lblMsg.Text + "');"
+            'FirstMsg = "javascript:alert('" + lblMsg.Text + "');"
         Else
             lblMsg.Text = "Claims number field cannot be empty!"
             FirstMsg = "javascript:alert('" + lblMsg.Text + "');"
@@ -1025,19 +1025,6 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
             txtClaimDec.Focus()
             Exit Sub
         End If
-
-        'Dim newNotifDate As Date = Convert.ToDateTime(DoConvertToDbDateFormat(txtNotificationDate.Text))
-        'Dim newClaimsEffDate As Date = Convert.ToDateTime(DoConvertToDbDateFormat(txtDateOfDeath.Text))
-
-        'If newNotifDate < Convert.ToDateTime(DoConvertToDbDateFormat(txtPolicyStartDate.Text)) _
-        'Or newNotifDate > Convert.ToDateTime(DoConvertToDbDateFormat(txtPolicyEndDate.Text)) Then
-        '    Dim errMsg = "Notification date should be within policy start and end date!"
-        '    lblMsg.Text = errMsg.Replace("Javascript:alert('", "").Replace("');", "")
-        '    FirstMsg = errMsg
-        '    txtPolicyEndDate.Focus()
-        '    Exit Sub
-        'End If
-
 
         Dim mystrCONN As String = CType(Session("connstr"), String)
         Dim objOLEConn As New OleDbConnection()

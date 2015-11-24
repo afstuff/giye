@@ -95,13 +95,10 @@
                                     <tr>
                                         <td align="center" colspan="4" valign="top" style="height: 26px">
                                             &nbsp;&nbsp;<a href="#" onclick="javascript:JSDO_RETURN('PRG_GP_PROP_POLICY.aspx?menu=GL_QUOTE')">Go to Menu</a>
-                                            &nbsp;&nbsp;<asp:Button ID="cmdPrev" CssClass="cmd_butt" Enabled="false" Text="«..Previous" runat="server" />
-                                            &nbsp;&nbsp;<asp:button id="cmdNew_ASP" CssClass="cmd_butt" Visible="false" runat="server" text="New Data" OnClientClick="JSNew_ASP();"></asp:button>
-	                                        &nbsp;&nbsp;<asp:button id="cmdSave_ASP" CssClass="cmd_butt" Visible="false" Enabled="false" runat="server" text="Save Data"></asp:button>
-		                		        	&nbsp;&nbsp;<asp:Button ID="cmdDelItem_ASP" CssClass="cmd_butt" Enabled="false" Text="Delete Item" OnClientClick="JSDelItem_ASP()" runat="server" />
-                                            &nbsp;&nbsp;<asp:button id="cmdPrint_ASP" CssClass="cmd_butt" Enabled="true" Visible="true" runat="server" text="Print"></asp:button>
-                                            &nbsp;&nbsp;<asp:Button ID="cmdNext" CssClass="cmd_butt" Enabled="false" Text="Next..»" runat="server" />
-                                        </td>                                        
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:button id="cmdRenewBtn" 
+                                                CssClass="cmd_butt" Visible="true" Enabled="true" runat="server" text="RENEW" 
+                                                Font-Bold="True"></asp:button>
+		                		        	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>                                        
                                     </tr>
                     </table>                    
                 </td>
@@ -114,7 +111,9 @@
     <div id="div_content" align="center">
         <table class="tbl_cont" align="center">
                 <tr>
-                    <td nowrap class="myheader">Members Information</td>
+                    <td nowrap class="myheader">
+                       Group Life Renewal Issues
+                    </td>
                 </tr>
                 <tr>
                     <td align="center" valign="top" class="td_menu">
@@ -130,7 +129,7 @@
                                                 <td align="left" valign="top" colspan="1"><asp:TextBox ID="txtFileNum" Enabled="false" Width="230px" runat="server"></asp:TextBox></td>
                                                 <td align="right" valign="top"><asp:Label ID="lblPolNum" Text="Policy Number:" Enabled="true" runat="server"></asp:Label></td>
                                                 <td align="left" valign="top" colspan="1"><asp:TextBox ID="txtPolNum" Enabled="true" Width="250px" runat="server"></asp:TextBox>
-                                                    &nbsp;<asp:Button ID="cmdGetPol" Enabled="false" Text="Go" runat="server" />
+                                                    &nbsp;<asp:Button ID="cmdGetPol" Enabled="true" Text="Go" runat="server" />
                                                 </td>
                             </tr>
                         
