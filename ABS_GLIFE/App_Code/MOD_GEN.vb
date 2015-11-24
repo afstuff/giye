@@ -1954,7 +1954,7 @@ gnGet_SN_End:
 
         Dim objOLECmd As OleDbCommand = New OleDbCommand(pvstrSQL, objOLEConn)
         Select Case UCase(RTrim(pvCODE))
-            Case "IL_ASSURED_HELP_SP"                
+            Case "IL_ASSURED_HELP_SP"
                 objOLECmd.Parameters.Clear()
                 objOLECmd.CommandType = Data.CommandType.StoredProcedure
                 objOLECmd.Parameters.Add("p01", OleDbType.VarChar, 3).Value = RTrim("I")
@@ -3497,8 +3497,11 @@ gnUpdate_Trt_Err:
     End Function
 
     Public Function DoConvertToDbDateFormat(ByVal dateValue As String) As String
-        Dim dDate = dateValue.Split(CType("/", Char))
-        Dim newDate = dDate(2) + "-" + dDate(1) + "-" + dDate(0)
+        Dim newDate = String.Empty
+        If dateValue <> String.Empty Then
+            Dim dDate = dateValue.Split(CType("/", Char))
+            newDate = dDate(2) + "-" + dDate(1) + "-" + dDate(0)
+        End If
         Return newDate
     End Function
 

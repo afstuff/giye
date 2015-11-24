@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "ABS_GLIFE", "..\ABS_GLIFE", "{0903B32C-BAE4-4BA4-986A-5E7E7972E7D8}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "ABS_GLIFE", ".", "{0903B32C-BAE4-4BA4-986A-5E7E7972E7D8}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFramework = "3.5"
 		ProjectReferences = "{1D0DD8B1-BCD3-4F14-A739-F494BF20A748}|CustodianGroupLife.Data.dll;{037974EC-DF31-4F67-87D1-9FC813FF1A65}|CustodianGroupLife.Model.dll;{A0449BEB-B782-4960-9CD6-155750C3CBA3}|CustodianGroupLife.Repositories.dll;"
@@ -19,7 +19,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "ABS_GLIFE", "..\ABS_GLIFE",
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "45495"
+		VWDPort = "6403"
 		DefaultWebSiteLanguage = "Visual Basic"
 	EndProjectSection
 EndProject

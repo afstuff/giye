@@ -311,9 +311,12 @@ Partial Class MENU_GL
                 AddMenuItem("", "Maturity Claim Process", "Claims/PRG_LI_GRP_CLM_MATURE.aspx")
                 AddMenuItem("", "Partial Maturity Claim Process", "Claims/PRG_LI_CLM_PART_MATURE.aspx")
                 AddMenuItem("", "Claims Additions Entry", "")
-                AddMenuItem("", "", "")
-                AddMenuItem("", "", "") 'blank link
+                'AddMenuItem("", "", "")
+                'AddMenuItem("", "", "") 'blank link
                 AddMenuItem("", "Claims Paid Entry", "")
+
+
+                AddMenuItem("", "", "")
                 AddMenuItem("", "", "") 'blank link
                 AddMenuItem("Reports", "Claims Reported Report", "")
                 AddMenuItem("", "Claims Paid Report", "")
@@ -353,6 +356,16 @@ Partial Class MENU_GL
                 AddMenuItem("", "", "") 'blank link
                 AddMenuItem("", "UNDER_LINE", "") 'blank link
                 AddMenuItem("", "Returns to Previous Page", "menu_gl.aspx?menu=home")
+
+            Case "GL_RENEWAL"
+                STRMENU_TITLE = "+++ Renewal Menu +++ "
+                AddMenuItem("", "Returns to Previous Page", "menu_gl.aspx?menu=home")
+                AddMenuItem("", "", "")
+                AddMenuItem("", "", "") 'blank link
+                'AddMenuItem("", "", "")
+                AddMenuItem("Renewals", "Pre-Renewal Processing", "")
+                AddMenuItem("", "Renew Scheme", "./policy/PRG_LI_GRP_POLY_MEMBERS_RENEW.aspx") 'blank link
+
 
         End Select
 
