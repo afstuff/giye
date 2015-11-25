@@ -23,7 +23,7 @@ namespace CustodianGroupLife.Data
     public class hashHelper
     {
 
-       public static MyErrorListing errmsgs = new MyErrorListing();
+        public static MyErrorListing errmsgs = new MyErrorListing();
 
         public static string CreateSalt(int size)
         {
@@ -39,7 +39,7 @@ namespace CustodianGroupLife.Data
         public static string CreatePasswordHash(string pwd, string salt)
         {
             string saltAndPwd = String.Concat(pwd, salt);
-            string hashedPwd = 
+            string hashedPwd =
                   FormsAuthentication.HashPasswordForStoringInConfigFile(
                                                        saltAndPwd, "SHA1");
             return hashedPwd;
@@ -107,7 +107,7 @@ namespace CustodianGroupLife.Data
             {
                 myDate = Convert.ToDateTime(dte);
             }
-            catch 
+            catch
             {
                 throw new Exception("Invalid Date! Please check Format");
             }
@@ -135,11 +135,11 @@ namespace CustodianGroupLife.Data
             return ky;
         }
 
-    /// <summary>
-    /// Converts date string in dd/mm/yyyy format to a yyyymmdd format.
-    /// </summary>
-    /// <param name="dte"> date string in dd/mm/yyyy format</param>
-    /// <returns>returns a date string 'yyyymmdd'</returns>
+        /// <summary>
+        /// Converts date string in dd/mm/yyyy format to a yyyymmdd format.
+        /// </summary>
+        /// <param name="dte"> date string in dd/mm/yyyy format</param>
+        /// <returns>returns a date string 'yyyymmdd'</returns>
         public static string removeDateSeperators(String dte)
         {
             //split to constituents
@@ -236,7 +236,7 @@ namespace CustodianGroupLife.Data
                     }
                     break;
                 case "02":
-                    if (double.Parse(strDteYY)%4 == 0)
+                    if (double.Parse(strDteYY) % 4 == 0)
                     {
                         if ((double.Parse(strDteDD) > 29))
                         {
@@ -332,13 +332,13 @@ namespace CustodianGroupLife.Data
         public static Double DateDiff(String _startdate, String _enddate)
         {
             TimeSpan ts = Convert.ToDateTime(removeDateSeperators(_enddate)) - Convert.ToDateTime(removeDateSeperators((_startdate)));
-            return ts.TotalDays;   
+            return ts.TotalDays;
         }
 
         public static void postFromExcel(String _uploadpath, String _filename, String _username, String _batchno,
             String _minRange, String _maxRange, String _tenor, String _connstring,
             String _prem_sa_factor, String _filenum, String _quote_num, String _poly_num, String _prem_Rate_TypeNum,
-            String _prem_rate_per, String _prem_rate_code, String _product_Num,ref List<String> _err_msg, 
+            String _prem_rate_per, String _prem_rate_code, String _product_Num, ref List<String> _err_msg,
             ref int _risk_days, ref int _days_diff, string _genstart_date, string _genend_date,
             string _dtestart, string _dteend, string _memjoin_date, string _data_source_sw, string _prem_Rate, string _entry_Date)
         {
@@ -371,7 +371,7 @@ namespace CustodianGroupLife.Data
             double dblTotal_Salary = 0;
             double dblTotal_SA = 0;
             double dblFree_Cover_Limit = 0;
-            
+
             DateTime my_Dte_DOB = DateTime.Now;
             DateTime my_Dte_Start = DateTime.Now;
             DateTime my_Dte_End = DateTime.Now;
@@ -418,14 +418,14 @@ namespace CustodianGroupLife.Data
             if (_entry_Date == String.Empty)
                 entry_date = "getdate()";
             else
-                entry_date = "'"+ _entry_Date + "'";
+                entry_date = "'" + _entry_Date + "'";
 
             OleDbConnection myole_con = null;
             OleDbCommand myole_cmd = null;
             mystr_con = _connstring;
             myole_con = new OleDbConnection(mystr_con);
             // remove the 'provider' attribute from the connection string becsuse it is for connection to oledb providers but not for sqlclient
-            string[] connParts = {};
+            string[] connParts = { };
             connParts = _connstring.Split(';');
 
             string mySQLClientConn = connParts[1] + ';' + connParts[2] + ';' + connParts[3] + ';' + connParts[4] + ';';
@@ -440,8 +440,8 @@ namespace CustodianGroupLife.Data
             string wksheetName = "[MEMBERS$]"; // _filename.ToString(); // _criteria.Substring(3, _criteria.Length - 3);
             //string transtype = _criteria.Substring(0, 3);
 
-           // dte = DateTime.Parse(_txtDateIn, cu);
-           // string transdate = hashHelper.removeDateSeperators(dte);
+            // dte = DateTime.Parse(_txtDateIn, cu);
+            // string transdate = hashHelper.removeDateSeperators(dte);
 
             //string uploadedfilefpath = Server.MapPath(@"~\Docs\monthtransactions.xls");
             string uploadedfilepath = _uploadpath + _filename;
@@ -519,7 +519,7 @@ namespace CustodianGroupLife.Data
                                     //goto MyLoop_Start;
 
                                     break;
-                                    
+
                                 }
                                 if ((nRow > nROW_MAX))
                                 {
@@ -540,9 +540,9 @@ namespace CustodianGroupLife.Data
                                 my_Member_Name = dr["Member_name"].ToString();
                                 // Validate DOB
 
-                                my_DOB =  dr["DOB"].ToString().Substring(0,10);
+                                my_DOB = dr["DOB"].ToString().Substring(0, 10);
                                 my_Start_Date = String.Format("{0:dd/MM/yyyy}", dr["Start_Date"].ToString());
-                                my_End_Date = String.Format("{0:dd/MM/yyyy}", dr["End_Date"].ToString()) ;
+                                my_End_Date = String.Format("{0:dd/MM/yyyy}", dr["End_Date"].ToString());
                                 my_AGE = dr["Age"].ToString();
                                 my_Gender = dr["Gender"].ToString();
                                 my_Designation = dr["Designation"].ToString();
@@ -559,15 +559,15 @@ namespace CustodianGroupLife.Data
                                 string[] myarrData = my_DOB.Split('/');
                                 if ((myarrData.Length != 3))
                                 {
-                                   strGen_Msg = (" * Row: "
-                                                + (nRow.ToString() + (" - Incomplete date of birth - " + my_DOB.ToString())));
-                                   if (ftime == "Y")
-                                   {
-                                       ftime = "N";
-                                       _err_msg = ErrRoutine(strGen_Msg);
-                                   }
+                                    strGen_Msg = (" * Row: "
+                                                 + (nRow.ToString() + (" - Incomplete date of birth - " + my_DOB.ToString())));
+                                    if (ftime == "Y")
+                                    {
+                                        ftime = "N";
+                                        _err_msg = ErrRoutine(strGen_Msg);
+                                    }
                                     else
-                                       _err_msg.Add(ErrRoutine(strGen_Msg).ToString());
+                                        _err_msg.Add(ErrRoutine(strGen_Msg).ToString());
 
                                     continue;
 
@@ -582,7 +582,7 @@ namespace CustodianGroupLife.Data
                                 strMyDte = (strMyDay.Trim() + ("/"
                                             + (strMyMth.Trim() + ("/" + strMyYear.Trim()))));
 
-                                
+
                                 if ((!gnTest_TransDate(strMyDte)))
                                 {
                                     strGen_Msg = (" * Row: "
@@ -599,182 +599,183 @@ namespace CustodianGroupLife.Data
                                     //goto MyLoop_888;
                                 }
 
-                                 try
-                                 {
-                                     dobtest = removeDateSeperators(strMyDte);
-                                     if (dobtest.Substring(0, 5) != "ERROR")
-                                         my_DOB = dobtest;
-                                     else
-                                         throw new Exception();
+                                try
+                                {
+                                    dobtest = removeDateSeperators(strMyDte);
+                                    if (dobtest.Substring(0, 5) != "ERROR")
+                                        my_DOB = dobtest;
+                                    else
+                                        throw new Exception();
 
-                                     string datetoday = removeDateSeperators(DateTime.Now.Date);
-                                     string sAge = ExecuteAdHocQry("SELECT * FROM CiFn_ValidateDOB('" + dobtest + "','"+datetoday+ "')", _connstring);
-                                     my_AGE = sAge;
-                                 }
-                                 catch(Exception e) {
-                                     //throw new Exception("Invalid Date Of Birth");
-                                                         strGen_Msg = (" * Row: "
-                                    + (nRow.ToString() + (" - Invalid date of birth - " + strMyDte.ToString())));
-                                                         if (ftime == "Y")
-                                                         {
-                                                             ftime = "N";
-                                                             _err_msg = ErrRoutine(strGen_Msg);
-                                                         }
-                                                         else
-                                                             _err_msg.Add(ErrRoutine(strGen_Msg).ToString());
-                                                         continue;
+                                    string datetoday = removeDateSeperators(DateTime.Now.Date);
+                                    string sAge = ExecuteAdHocQry("SELECT * FROM CiFn_ValidateDOB('" + dobtest + "','" + datetoday + "')", _connstring);
+                                    my_AGE = sAge;
+                                }
+                                catch (Exception e)
+                                {
+                                    //throw new Exception("Invalid Date Of Birth");
+                                    strGen_Msg = (" * Row: "
+               + (nRow.ToString() + (" - Invalid date of birth - " + strMyDte.ToString())));
+                                    if (ftime == "Y")
+                                    {
+                                        ftime = "N";
+                                        _err_msg = ErrRoutine(strGen_Msg);
+                                    }
+                                    else
+                                        _err_msg.Add(ErrRoutine(strGen_Msg).ToString());
+                                    continue;
 
-//                                     goto MyLoop_888;
+                                    //                                     goto MyLoop_888;
 
-                                 }
+                                }
 
 
                                 //test start date
 
-                                 myarrData = my_Start_Date.Split('/');
-                                 if ((myarrData.Length != 3))
-                                 {
-                                     strGen_Msg = (" * Row: "
-                                                  + (nRow.ToString() + (" - Incomplete start date - " + my_Start_Date.ToString())));
-                                     if (ftime == "Y")
-                                     {
-                                         ftime = "N";
-                                         _err_msg = ErrRoutine(strGen_Msg);
-                                     }
-                                     else
-                                         _err_msg.Add(ErrRoutine(strGen_Msg).ToString());
-                                     continue;
+                                myarrData = my_Start_Date.Split('/');
+                                if ((myarrData.Length != 3))
+                                {
+                                    strGen_Msg = (" * Row: "
+                                                 + (nRow.ToString() + (" - Incomplete start date - " + my_Start_Date.ToString())));
+                                    if (ftime == "Y")
+                                    {
+                                        ftime = "N";
+                                        _err_msg = ErrRoutine(strGen_Msg);
+                                    }
+                                    else
+                                        _err_msg.Add(ErrRoutine(strGen_Msg).ToString());
+                                    continue;
 
-//                                     goto MyLoop_888;
-                                 }
+                                    //                                     goto MyLoop_888;
+                                }
 
-                                 strMyDay = myarrData[0];
-                                 strMyMth = myarrData[1];
-                                 strMyYear = myarrData[2].Substring(0, 4);
-                                 strMyDay = double.Parse(strMyDay).ToString("00");
-                                 strMyMth = double.Parse(strMyMth).ToString("00");
-                                 strMyYear = double.Parse(strMyYear).ToString("0000");
-                                 strMyDte = (strMyDay.Trim() + ("/"
-                                             + (strMyMth.Trim() + ("/" + strMyYear.Trim()))));
-
-
-                                 if ((!gnTest_TransDate(strMyDte)))
-                                 {
-                                     strGen_Msg = (" * Row: "
-                                                 + (nRow.ToString() + (" - Invalid start date - " + strMyDte.ToString())));
-
-                                     if (ftime == "Y")
-                                     {
-                                         ftime = "N";
-                                         _err_msg = ErrRoutine(strGen_Msg);
-                                     }
-                                     else
-                                         _err_msg.Add(ErrRoutine(strGen_Msg).ToString());
-                                     continue;
-                                      //goto MyLoop_888;
-                                 }
-
-                                 try
-                                 {
-
-                                     startdatetest = removeDateSeperators(strMyDte);
-                                     if (startdatetest.Substring(0, 5) != "ERROR")
-                                         my_Start_Date = startdatetest;
-                                     else
-                                         throw new Exception();
-
-                                 }
-                                 catch (Exception e)
-                                 {
-                                     //throw new Exception("Invalid Date Of Birth");
-                                     strGen_Msg = (" * Row: "
-                                    + (nRow.ToString() + (" - Invalid Start Date - " + strMyDte.ToString())));
-                                     if (ftime == "Y")
-                                     {
-                                         ftime = "N";
-                                         _err_msg = ErrRoutine(strGen_Msg);
-                                     }
-                                     else
-                                         _err_msg.Add(ErrRoutine(strGen_Msg).ToString());
-                                     continue;
-
-                                     //goto MyLoop_888;
-
-                                 }
+                                strMyDay = myarrData[0];
+                                strMyMth = myarrData[1];
+                                strMyYear = myarrData[2].Substring(0, 4);
+                                strMyDay = double.Parse(strMyDay).ToString("00");
+                                strMyMth = double.Parse(strMyMth).ToString("00");
+                                strMyYear = double.Parse(strMyYear).ToString("0000");
+                                strMyDte = (strMyDay.Trim() + ("/"
+                                            + (strMyMth.Trim() + ("/" + strMyYear.Trim()))));
 
 
-                                 //test end date
+                                if ((!gnTest_TransDate(strMyDte)))
+                                {
+                                    strGen_Msg = (" * Row: "
+                                                + (nRow.ToString() + (" - Invalid start date - " + strMyDte.ToString())));
 
-                                 myarrData = my_End_Date.Split('/');
-                                 if ((myarrData.Length != 3))
-                                 {
-                                     strGen_Msg = (" * Row: "
-                                                  + (nRow.ToString() + (" - Incomplete end date - " + my_End_Date.ToString())));
-                                     if (ftime == "Y")
-                                     {
-                                         ftime = "N";
-                                         _err_msg = ErrRoutine(strGen_Msg);
-                                     }
-                                     else
-                                         _err_msg.Add(ErrRoutine(strGen_Msg).ToString());
-                                     continue;
+                                    if (ftime == "Y")
+                                    {
+                                        ftime = "N";
+                                        _err_msg = ErrRoutine(strGen_Msg);
+                                    }
+                                    else
+                                        _err_msg.Add(ErrRoutine(strGen_Msg).ToString());
+                                    continue;
+                                    //goto MyLoop_888;
+                                }
 
-                                     //goto MyLoop_888;
-                                 }
+                                try
+                                {
 
-                                 strMyDay = myarrData[0];
-                                 strMyMth = myarrData[1];
-                                 strMyYear = myarrData[2].Substring(0, 4);
-                                 strMyDay = double.Parse(strMyDay).ToString("00");
-                                 strMyMth = double.Parse(strMyMth).ToString("00");
-                                 strMyYear = double.Parse(strMyYear).ToString("0000");
-                                 strMyDte = (strMyDay.Trim() + ("/"
-                                             + (strMyMth.Trim() + ("/" + strMyYear.Trim()))));
+                                    startdatetest = removeDateSeperators(strMyDte);
+                                    if (startdatetest.Substring(0, 5) != "ERROR")
+                                        my_Start_Date = startdatetest;
+                                    else
+                                        throw new Exception();
+
+                                }
+                                catch (Exception e)
+                                {
+                                    //throw new Exception("Invalid Date Of Birth");
+                                    strGen_Msg = (" * Row: "
+                                   + (nRow.ToString() + (" - Invalid Start Date - " + strMyDte.ToString())));
+                                    if (ftime == "Y")
+                                    {
+                                        ftime = "N";
+                                        _err_msg = ErrRoutine(strGen_Msg);
+                                    }
+                                    else
+                                        _err_msg.Add(ErrRoutine(strGen_Msg).ToString());
+                                    continue;
+
+                                    //goto MyLoop_888;
+
+                                }
 
 
-                                 if ((!gnTest_TransDate(strMyDte)))
-                                 {
-                                     strGen_Msg = (" * Row: "
-                                                 + (nRow.ToString() + (" - Invalid end date - " + strMyDte.ToString())));
-                                     if (ftime == "Y")
-                                     {
-                                         ftime = "N";
-                                         _err_msg = ErrRoutine(strGen_Msg);
-                                     }
-                                     else
-                                         _err_msg.Add(ErrRoutine(strGen_Msg).ToString());
-                                     continue;
+                                //test end date
 
-                                     //goto MyLoop_888;
-                                 }
+                                myarrData = my_End_Date.Split('/');
+                                if ((myarrData.Length != 3))
+                                {
+                                    strGen_Msg = (" * Row: "
+                                                 + (nRow.ToString() + (" - Incomplete end date - " + my_End_Date.ToString())));
+                                    if (ftime == "Y")
+                                    {
+                                        ftime = "N";
+                                        _err_msg = ErrRoutine(strGen_Msg);
+                                    }
+                                    else
+                                        _err_msg.Add(ErrRoutine(strGen_Msg).ToString());
+                                    continue;
 
-                                 try
-                                 {
+                                    //goto MyLoop_888;
+                                }
 
-                                     enddatetest = removeDateSeperators(strMyDte);
-                                     if (enddatetest.Substring(0, 5) != "ERROR")
-                                         my_End_Date = enddatetest;
-                                     else
-                                         throw new Exception();
+                                strMyDay = myarrData[0];
+                                strMyMth = myarrData[1];
+                                strMyYear = myarrData[2].Substring(0, 4);
+                                strMyDay = double.Parse(strMyDay).ToString("00");
+                                strMyMth = double.Parse(strMyMth).ToString("00");
+                                strMyYear = double.Parse(strMyYear).ToString("0000");
+                                strMyDte = (strMyDay.Trim() + ("/"
+                                            + (strMyMth.Trim() + ("/" + strMyYear.Trim()))));
 
-                                 }
-                                 catch (Exception e)
-                                 {
-                                     //throw new Exception("Invalid Date Of Birth");
-                                     strGen_Msg = (" * Row: "
-                                    + (nRow.ToString() + (" - Invalid End Date - " + strMyDte.ToString())));
-                                     if (ftime == "Y")
-                                     {
-                                         ftime = "N";
-                                         _err_msg = ErrRoutine(strGen_Msg);
-                                     }
-                                     else
-                                         _err_msg.Add(ErrRoutine(strGen_Msg).ToString());
-                                     continue;
 
-//                                     goto MyLoop_888;
+                                if ((!gnTest_TransDate(strMyDte)))
+                                {
+                                    strGen_Msg = (" * Row: "
+                                                + (nRow.ToString() + (" - Invalid end date - " + strMyDte.ToString())));
+                                    if (ftime == "Y")
+                                    {
+                                        ftime = "N";
+                                        _err_msg = ErrRoutine(strGen_Msg);
+                                    }
+                                    else
+                                        _err_msg.Add(ErrRoutine(strGen_Msg).ToString());
+                                    continue;
 
-                                 }
+                                    //goto MyLoop_888;
+                                }
+
+                                try
+                                {
+
+                                    enddatetest = removeDateSeperators(strMyDte);
+                                    if (enddatetest.Substring(0, 5) != "ERROR")
+                                        my_End_Date = enddatetest;
+                                    else
+                                        throw new Exception();
+
+                                }
+                                catch (Exception e)
+                                {
+                                    //throw new Exception("Invalid Date Of Birth");
+                                    strGen_Msg = (" * Row: "
+                                   + (nRow.ToString() + (" - Invalid End Date - " + strMyDte.ToString())));
+                                    if (ftime == "Y")
+                                    {
+                                        ftime = "N";
+                                        _err_msg = ErrRoutine(strGen_Msg);
+                                    }
+                                    else
+                                        _err_msg.Add(ErrRoutine(strGen_Msg).ToString());
+                                    continue;
+
+                                    //                                     goto MyLoop_888;
+
+                                }
 
 
                                 my_Total_SA = 0;
@@ -839,97 +840,101 @@ namespace CustodianGroupLife.Data
                                     my_Staff_Num = "STF_" + my_SNo.ToString();
                                 }
 
-                                    switch (_prem_Rate_TypeNum)
-                                    {
-                                        case "F":
-                                            dblPrem_Rate = double.Parse(_prem_Rate);
-                                            dblPrem_Rate_Per = int.Parse(_prem_rate_per);
-                                            break;
-                                        case "N":
-                                            dblPrem_Rate = double.Parse("0.00");
+                                switch (_prem_Rate_TypeNum)
+                                {
+                                    case "F":
+                                        dblPrem_Rate = double.Parse(_prem_Rate);
+                                        dblPrem_Rate_Per = int.Parse(_prem_rate_per);
+                                        break;
+                                    case "N":
+                                        dblPrem_Rate = double.Parse("0.00");
+                                        dblPrem_Rate_Per = int.Parse("0");
+                                        break;
+                                    case "T":
+                                        myRetValue = gnGET_RATE("GET_GL_PREMIUM_RATE", "GRP", _prem_rate_code, _product_Num, myTerm, my_AGE, "", ref _prem_rate_per, String.Empty, _connstring);
+                                        if ((myRetValue.TrimStart().Substring(0, 3) == "ERR"))
+                                        {
+                                            dblPrem_Rate = double.Parse("0.0");
                                             dblPrem_Rate_Per = int.Parse("0");
-                                            break;
-                                        case "T":
-                                            myRetValue = gnGET_RATE("GET_GL_PREMIUM_RATE", "GRP", _prem_rate_code, _product_Num, myTerm, my_AGE, "", ref _prem_rate_per, String.Empty, _connstring);
-                                            if ((myRetValue.TrimStart().Substring(0, 3) == "ERR"))
-                                            {
-                                                dblPrem_Rate = double.Parse("0.0");
-                                                dblPrem_Rate_Per = int.Parse("0");
-                                            }
-                                            else
-                                            {
-                                                // Me.txtPrem_Rate.Text = myRetValue.ToString
-                                                dblPrem_Rate = double.Parse(myRetValue);
-                                            }
-                                            break;
-                                    }
+                                        }
+                                        else
+                                        {
+                                            // Me.txtPrem_Rate.Text = myRetValue.ToString
+                                            dblPrem_Rate = double.Parse(myRetValue);
+                                        }
+                                        break;
+                                }
 
-                                    if (((dblTotal_SA != 0) && ((dblPrem_Rate != 0 && (dblPrem_Rate_Per != 0)))))
+                                if (((dblTotal_SA != 0) && ((dblPrem_Rate != 0 && (dblPrem_Rate_Per != 0)))))
+                                {
+                                    dblPrem_Amt = (dblTotal_SA
+                                                * (dblPrem_Rate / dblPrem_Rate_Per));
+                                    dblPrem_Amt_ProRata = dblPrem_Amt;
+                                }
+
+                                //_risk_days = Convert.ToInt16(DateDiff(_genstart_date, _genend_date) + 0);
+                                _days_diff = _risk_days;
+                                //_days_diff = Convert.ToInt16(DateDiff(_dtestart, _dteend));
+                                if (((Convert.ToDateTime(_memjoin_date) > Convert.ToDateTime(_genstart_date)) && ((dblPrem_Amt != 0) && (_days_diff != 0))))
+                                {
+                                    //Convert.ToDecimal(((dblPrem_Amt / _risk_days)
+                                    //            * _days_diff)).ToString("#,##0.00");
+
+                                    dblPrem_Amt_ProRata = Convert.ToDouble(((dblPrem_Amt / _risk_days)
+                                                    * _days_diff));
+
+                                }
+
+
+                                //insert into DB
+                                commandSQL.CommandText = "INSERT INTO TBIL_GRP_POLICY_MEMBERS values ("
+                                    + "'" + _filenum + "' "
+                                    + ",'G'"
+                                    + ",'" + _quote_num + "' "
+                                    + ",null" // null passed into policy num deliberately. The original sproc used for inserts does not contain any. 
+                                    + ",'" + _batchno + "' "
+                                    + ",'" + my_Staff_Num + "' "
+                                    + ",'" + my_SNo.Trim() + "' "
+                                    + ",null "    //transdate = null
+                                    + ",'Q' "
+                                    + ",null " //category
+                                    + ",'" + my_DOB.ToString() + "' "
+                                    + ",'" + my_AGE.ToString() + "' "
+                                    + ",'" + my_Start_Date.ToString() + "' "
+                                    + ",'" + my_End_Date.ToString() + "' "
+                                    + ",null"  //tenor
+                                    + ",'" + my_Designation.ToString() + "' "
+                                    + ",'" + my_Member_Name.ToString() + "' "
+                                    + ",'" + my_SA_Factor.ToString() + "' "
+                                    + ",'" + my_Total_Salary.ToString() + "' "
+                                    + ",'" + my_Total_SA.ToString() + "' "
+                                    + ",'" + my_Medical_YN.ToString() + "' "
+                                     + ",2005 " // rate code default
+                                    + ",'" + dblPrem_Rate.ToString() + "' "
+                                    + ",'" + dblPrem_Rate_Per.ToString() + "' "
+                                    + ",'" + dblPrem_Amt.ToString() + "' "
+                                    + ",'" + dblPrem_Amt_ProRata.ToString() + "' "
+                                    + ",'" + dblLoad_Amt + "' "
+                                    + ",'" + _data_source_sw + "' "
+                                    + ",'" + _filename.ToString() + "' "
+                                    + ",null "
+                                    + ",'A' "
+                                    + ",'" + _username.Trim() + "' "
+                                    + ", " + entry_date
+
+                                    + " )";
+
+                                try
+                                {
+                                    r = commandSQL.ExecuteNonQuery();
+
+                                    if ((r >= 1))
                                     {
-                                        dblPrem_Amt = (dblTotal_SA
-                                                    * (dblPrem_Rate / dblPrem_Rate_Per));
-                                        dblPrem_Amt_ProRata = dblPrem_Amt;
+                                        my_intCNT = my_intCNT + 1;
                                     }
-
-                                    //_risk_days = Convert.ToInt16(DateDiff(_genstart_date, _genend_date) + 0);
-                                    _days_diff = _risk_days;
-                                    //_days_diff = Convert.ToInt16(DateDiff(_dtestart, _dteend));
-                                    if (((Convert.ToDateTime(_memjoin_date) > Convert.ToDateTime(_genstart_date)) && ((dblPrem_Amt != 0) && (_days_diff != 0))))
+                                    else
                                     {
-                                        //Convert.ToDecimal(((dblPrem_Amt / _risk_days)
-                                        //            * _days_diff)).ToString("#,##0.00");
-
-                                        dblPrem_Amt_ProRata = Convert.ToDouble(((dblPrem_Amt / _risk_days)
-                                                        * _days_diff));
-
-                                    }
-
-                                    
-                                    //insert into DB
-                                    commandSQL.CommandText = "INSERT INTO TBIL_GRP_POLICY_MEMBERS values ("
-                                        + "'" + _filenum + "' "
-                                        + ",'G'"
-                                        + ",'" + _quote_num + "' "
-                                        + ",null" // null passed into policy num deliberately. The original sproc used for inserts does not contain any. 
-                                        + ",'" + _batchno + "' "
-                                        + ",'" + my_Staff_Num + "' "
-                                        + ",'" + my_SNo.Trim() + "' "
-                                        + ",null "    //transdate = null
-                                        + ",'Q' "
-                                        + ",null " //category
-                                        + ",'" + my_DOB.ToString() + "' "
-                                        + ",'" + my_AGE.ToString() + "' "
-                                        + ",'" + my_Start_Date.ToString() + "' "
-                                        + ",'" + my_End_Date.ToString() + "' "
-                                        + ",null"  //tenor
-                                        + ",'" + my_Designation.ToString() + "' "
-                                        + ",'" + my_Member_Name.ToString() + "' "
-                                        + ",'" + my_SA_Factor.ToString() + "' "
-                                        + ",'" + my_Total_Salary.ToString() + "' "
-                                        + ",'" + my_Total_SA.ToString() + "' "
-                                        + ",'" + my_Medical_YN.ToString() + "' "
-                                        + ",'" + dblPrem_Rate.ToString() + "' "
-                                        + ",'" + dblPrem_Rate_Per.ToString() + "' "
-                                        + ",'" + dblPrem_Amt.ToString() + "' "
-                                        + ",'" + dblPrem_Amt_ProRata.ToString() + "' "
-                                        + ",'" + dblLoad_Amt + "' "
-                                        + ",'" + _data_source_sw + "' "
-                                        + ",'" + _filename.ToString() + "' "
-                                        + ",null "
-                                        + ",'A' "
-                                        + ",'" + _username.Trim() + "' "
-                                        + ", " + entry_date
-
-                                        + " )";
-
-                                    try {
-                                           r = commandSQL.ExecuteNonQuery();
-
-                                        if ((r >= 1)) {
-                                            my_intCNT = my_intCNT + 1;
-                                    }
-                                    else {
-                                        strGen_Msg = (" * Error!. Row: " 
+                                        strGen_Msg = (" * Error!. Row: "
                                                     + (nRow.ToString() + " record not save... "));
                                         if (ftime == "Y")
                                         {
@@ -940,11 +945,12 @@ namespace CustodianGroupLife.Data
                                             _err_msg.Add(ErrRoutine(strGen_Msg).ToString());
                                         continue;
 
-//                                            goto MyLoop_888;
+                                        //                                            goto MyLoop_888;
                                     }
                                 }
-                                catch (Exception ex) {
-                                    strGen_Msg = (" * Error while saving Row: " 
+                                catch (Exception ex)
+                                {
+                                    strGen_Msg = (" * Error while saving Row: "
                                                 + (nRow.ToString() + " record... "));
                                     if (ftime == "Y")
                                     {
@@ -955,17 +961,17 @@ namespace CustodianGroupLife.Data
                                         _err_msg.Add(ErrRoutine(strGen_Msg).ToString());
                                     continue;
 
-//                                    goto MyLoop_888;
+                                    //                                    goto MyLoop_888;
 
                                 }
 
-                                } //while read end
-                            }
-                        
+                            } //while read end
+                        }
+
                         catch (Exception h)
                         {
                             strGen_Msg = (" * General System Error : "
-                                        + (h.ToString() ));
+                                        + (h.ToString()));
                             if (ftime == "Y")
                             {
                                 ftime = "N";
@@ -975,7 +981,7 @@ namespace CustodianGroupLife.Data
                             }
                             else
                                 _err_msg.Add(ErrRoutine(strGen_Msg).ToString());
-                            
+
                             goto MyLoop_End_2;
                             //throw new Exception("ERROR!: " + "may not be setup. Pls Check this number against a valid name and setup it up as a member");
                         }
@@ -1035,7 +1041,7 @@ namespace CustodianGroupLife.Data
         }
         protected static List<String> ErrRoutine(String msg)
         {
-             var errm = new List<String>();
+            var errm = new List<String>();
 
             if ((msg != ""))
             {
@@ -1046,7 +1052,7 @@ namespace CustodianGroupLife.Data
             }
             return errmsgs.ErrorMsgs;
 
-}
+        }
 
         public static string gnGet_Serial_No(string pvCODE, string pvRef_Type, string pvRef_Code_A, string pvRef_Code_B, String _connstring)
         {
@@ -1056,9 +1062,11 @@ namespace CustodianGroupLife.Data
             pvSerialNum = "0";
             pvSQL = "";
             pvSerialNum = "ERR_ERR";
-            switch (pvCODE.TrimEnd().ToUpper()) {
+            switch (pvCODE.TrimEnd().ToUpper())
+            {
                 case "GET_SN_IL":
-                    switch (pvRef_Type.TrimEnd()) {
+                    switch (pvRef_Type.TrimEnd())
+                    {
                         case "BENEF_SN":
                         case "FUN_SN":
                         case "FUN_COVER_SN":
@@ -1070,7 +1078,8 @@ namespace CustodianGroupLife.Data
                     }
                     break;
                 case "GET_SN_GL":
-                    switch (pvRef_Type.TrimEnd()) {
+                    switch (pvRef_Type.TrimEnd())
+                    {
                         case "GL_MEMBER_SN":
                         case "GL_BENEF_SN":
                         case "GL_FUN_SN":
@@ -1080,14 +1089,14 @@ namespace CustodianGroupLife.Data
                         default:
                             pvSerialNum = "PARAM_ERR";
                             return pvSerialNum;
-                            
+
                     }
                     break;
                 default:
                     pvSerialNum = "PARAM_ERR";
                     return pvSerialNum;
-                    
-                }
+
+            }
 
             string mystrCONN;
             // mystrCONN = CType(ConfigurationManager.AppSettings("APPCONN"), String)
@@ -1162,7 +1171,7 @@ namespace CustodianGroupLife.Data
                     {
                         objOLEConn.Close();
                     }
-                    objOLEConn = null; 
+                    objOLEConn = null;
                     break;
             }
             return pvSerialNum;
@@ -1205,208 +1214,209 @@ namespace CustodianGroupLife.Data
 
 
 
-    static string gnGET_RATE(string pvstr_GET_WHAT, 
-           string pvstr_MODULE, 
-           string pvstr_RATE_CODE, 
-           string pvstr_PRODUCT_REF_CODE, 
-           string pvstr_PERIOD, 
-           string pvstr_AGE, 
-           string pvCtr_Label,  
-           ref string  pvRef_Misc, 
-           string pvRef_Misc_02,
-           string connString) {
-
-
-               string mystr_conn = "";
-               string mystr_Table = "";
-               string mystr_SQL = "";
-               string mystr_Key = "";
-               int myint_C = 0;
-               string myRetValue = "0";
-               mystr_conn = connString;
-               mystr_conn = ("Provider=SQLOLEDB;" + mystr_conn);
-               OleDbConnection myole_CONN = null;
-               myole_CONN = new OleDbConnection(mystr_conn);
-               try
-               {
-                   //  Open connection
-                   myole_CONN.Open();
-               }
-               catch (Exception ex)
-               {
-                   myole_CONN = null;
-                   if (pvCtr_Label != null)
-                   {
-                           pvCtr_Label = "Error. " + ex.Message.ToString();
-                   }
-                   return "ERR_CON";
-               }
-               mystr_SQL = "";
-               mystr_SQL = "";
-               OleDbCommand myole_CMD = new OleDbCommand();
-               myole_CMD.Connection = myole_CONN;
-
-               switch (pvstr_GET_WHAT.Trim())
-               {
-                   case "GET_IL_PREMIUM_RATE":
-                       mystr_SQL = "SPIL_GET_PREM_RATE";
-                       myole_CMD.CommandType = CommandType.StoredProcedure;
-                       myole_CMD.CommandText = mystr_SQL;
-                       myole_CMD.Parameters.Add("@p01", OleDbType.VarChar, 3).Value = pvstr_MODULE.TrimEnd();
-                       myole_CMD.Parameters.Add("@p02", OleDbType.VarChar, 10).Value = pvstr_RATE_CODE.TrimEnd();
-                       myole_CMD.Parameters.Add("@p03", OleDbType.VarChar, 10).Value = pvstr_PRODUCT_REF_CODE.TrimEnd();
-                       myole_CMD.Parameters.Add("@p04", OleDbType.VarChar, 4).Value = pvstr_PERIOD.TrimEnd();
-                       myole_CMD.Parameters.Add("@p05", OleDbType.VarChar, 4).Value = pvstr_AGE.TrimEnd();
-                       break;
-                   case "GET_GL_PREMIUM_RATE":
-                       mystr_SQL = "SPGL_GET_PREM_RATE";
-                       myole_CMD.CommandType = CommandType.StoredProcedure;
-                       myole_CMD.CommandText = mystr_SQL;
-                       myole_CMD.Parameters.Add("@p01", OleDbType.VarChar, 3).Value = pvstr_MODULE.TrimEnd();
-                       myole_CMD.Parameters.Add("@p02", OleDbType.VarChar, 10).Value = pvstr_RATE_CODE.TrimEnd();
-                       myole_CMD.Parameters.Add("@p03", OleDbType.VarChar, 10).Value = pvstr_PRODUCT_REF_CODE.TrimEnd();
-                       myole_CMD.Parameters.Add("@p04", OleDbType.VarChar, 4).Value = pvstr_PERIOD.TrimEnd();
-                       myole_CMD.Parameters.Add("@p05", OleDbType.VarChar, 4).Value = pvstr_AGE.TrimEnd();
-                       break;
-                   case "GET_IL_EXCHANGE_RATE":
-                   case "GET_GL_EXCHANGE_RATE":
-                       mystr_SQL = "SPIL_GET_EXCHANGE_RATE";
-                       myole_CMD.CommandType = CommandType.StoredProcedure;
-                       myole_CMD.CommandText = mystr_SQL;
-                       myole_CMD.Parameters.Add("@p01", OleDbType.VarChar, 3).Value = pvstr_MODULE.TrimEnd();
-                       myole_CMD.Parameters.Add("@p02", OleDbType.VarChar, 10).Value = pvstr_RATE_CODE.TrimEnd();
-                       myole_CMD.Parameters.Add("@p03", OleDbType.VarChar, 10).Value = pvstr_PRODUCT_REF_CODE.TrimEnd();
-                       break;
-                   case "GET_IL_MOP_FACTOR":
-                   case "GET_GL_MOP_FACTOR":
-                       mystr_SQL = "SPIL_GET_MOP_FACTOR";
-                       myole_CMD.CommandType = CommandType.StoredProcedure;
-                       myole_CMD.CommandText = mystr_SQL;
-                       myole_CMD.Parameters.Add("@p01", OleDbType.VarChar, 3).Value = pvstr_MODULE.TrimEnd();
-                       myole_CMD.Parameters.Add("@p02", OleDbType.VarChar, 10).Value = pvstr_RATE_CODE.TrimEnd();
-                       myole_CMD.Parameters.Add("@p03", OleDbType.VarChar, 10).Value = pvstr_PRODUCT_REF_CODE.TrimEnd();
-                       break;
-                   default:
-                       myole_CMD = null;
-                       myole_CONN = null;
-                       if (pvCtr_Label != null )
-                       {
-                               pvCtr_Label= "Error. Invalid parameter: " + pvstr_GET_WHAT.ToString();
-                           
-                       }
-                       return "ERR_PARAM";
-               }
-
-                OleDbDataReader myole_DR;
-               try
-               {
-                   myole_DR = myole_CMD.ExecuteReader();
-                   //  with the new data reader parse values and place into the return variable
-                   if (myole_DR.Read())
-                   {
-                       // Me.UserCode.Text = Me.UserName.Text & " - " & oleDR("pwd_code").ToString & vbNullString
-                       switch (pvstr_GET_WHAT.Trim())
-                       {
-                           case "GET_IL_PREMIUM_RATE":
-                           case "GET_GL_PREMIUM_RATE":
-                               myRetValue = (myole_DR["TBIL_PRM_RT_RATE"] ).ToString();
-                               if ((pvRef_Misc == null))
-                               {
-
-                               }
-                               else
-                               {
-                                   pvRef_Misc = myole_DR["TBIL_PRM_RT_PER"].ToString() ;
-                               }
-                               break;
-                           case "GET_IL_EXCHANGE_RATE":
-                           case "GET_GL_EXCHANGE_RATE":
-                               myRetValue = myole_DR["TBIL_EXCH_RATE"].ToString();
-                               break;
-                           case "GET_IL_MOP_FACTOR":
-                           case "GET_GL_MOP_FACTOR":
-                               myRetValue = myole_DR["TBIL_MOP_RATE"].ToString();
-                               if ((pvRef_Misc == null))
-                               {
-
-                               }
-                               else
-                               {
-                                   pvRef_Misc = myole_DR["TBIL_MOP_TYPE_DESC"].ToString();
-                               }
-                               if ((pvRef_Misc_02 == null))
-                               {
-
-                               }
-                               else
-                               {
-                                   pvRef_Misc_02 = myole_DR["TBIL_MOP_DIVIDE"].ToString();
-                               }
-                               break;
-                           default:
-                               myRetValue = "ERR_PARAM";
-                               if (pvCtr_Label !=null)
-                               {
-                                       pvCtr_Label = "Error. Invalid parameter: " + pvstr_GET_WHAT.ToString();
-                               }
-                               break;
-                       }
-                       myole_DR.Close();
-                       myole_CMD.Dispose();
-                   }
-                   else
-                   {
-                       myRetValue = "ERR_RNF";
-                       if (pvCtr_Label != null)
-                       {
-                               pvCtr_Label = "Record not found for parameters supplied...";
-                       }
-                   }
-               }
-               catch (Exception ex)
-               {
-                   //    'Throw ex
-                   myRetValue = "ERR";
-                   if (pvCtr_Label != null)
-                   {
-                           pvCtr_Label = "Error. " + ex.Message.ToString();
-                   }
-               }
-               // myole_DA.Dispose()
-               try
-               {
-                   //  Close connection
-                   myole_CONN.Close();
-               }
-               catch (Exception ex)
-               {
-               }
-               // myobj_ds = Nothing
-               // myole_DA = Nothing
-               myole_DR = null;
-               myole_CMD = null;
-               myole_CONN = null;
-               return myRetValue;
-           }
-
-
-    private static String ExecuteAdHocQry(string _qry, String _conn)
-    {
-
-        String result = String.Empty;
-        string[] connParts = { };
-        connParts = _conn.Split(';');
-
-        string mySQLClientConn = connParts[1] + ';' + connParts[2] + ';' + connParts[3] + ';' + connParts[4] + ';';
-
-        using (SqlConnection conn = new SqlConnection(mySQLClientConn))
-        using (SqlCommand cmd = new SqlCommand(_qry, conn))
+        static string gnGET_RATE(string pvstr_GET_WHAT,
+               string pvstr_MODULE,
+               string pvstr_RATE_CODE,
+               string pvstr_PRODUCT_REF_CODE,
+               string pvstr_PERIOD,
+               string pvstr_AGE,
+               string pvCtr_Label,
+               ref string pvRef_Misc,
+               string pvRef_Misc_02,
+               string connString)
         {
-            conn.Open();
-             result = cmd.ExecuteScalar().ToString();
-            conn.Close();
+
+
+            string mystr_conn = "";
+            string mystr_Table = "";
+            string mystr_SQL = "";
+            string mystr_Key = "";
+            int myint_C = 0;
+            string myRetValue = "0";
+            mystr_conn = connString;
+            mystr_conn = ("Provider=SQLOLEDB;" + mystr_conn);
+            OleDbConnection myole_CONN = null;
+            myole_CONN = new OleDbConnection(mystr_conn);
+            try
+            {
+                //  Open connection
+                myole_CONN.Open();
+            }
+            catch (Exception ex)
+            {
+                myole_CONN = null;
+                if (pvCtr_Label != null)
+                {
+                    pvCtr_Label = "Error. " + ex.Message.ToString();
+                }
+                return "ERR_CON";
+            }
+            mystr_SQL = "";
+            mystr_SQL = "";
+            OleDbCommand myole_CMD = new OleDbCommand();
+            myole_CMD.Connection = myole_CONN;
+
+            switch (pvstr_GET_WHAT.Trim())
+            {
+                case "GET_IL_PREMIUM_RATE":
+                    mystr_SQL = "SPIL_GET_PREM_RATE";
+                    myole_CMD.CommandType = CommandType.StoredProcedure;
+                    myole_CMD.CommandText = mystr_SQL;
+                    myole_CMD.Parameters.Add("@p01", OleDbType.VarChar, 3).Value = pvstr_MODULE.TrimEnd();
+                    myole_CMD.Parameters.Add("@p02", OleDbType.VarChar, 10).Value = pvstr_RATE_CODE.TrimEnd();
+                    myole_CMD.Parameters.Add("@p03", OleDbType.VarChar, 10).Value = pvstr_PRODUCT_REF_CODE.TrimEnd();
+                    myole_CMD.Parameters.Add("@p04", OleDbType.VarChar, 4).Value = pvstr_PERIOD.TrimEnd();
+                    myole_CMD.Parameters.Add("@p05", OleDbType.VarChar, 4).Value = pvstr_AGE.TrimEnd();
+                    break;
+                case "GET_GL_PREMIUM_RATE":
+                    mystr_SQL = "SPGL_GET_PREM_RATE";
+                    myole_CMD.CommandType = CommandType.StoredProcedure;
+                    myole_CMD.CommandText = mystr_SQL;
+                    myole_CMD.Parameters.Add("@p01", OleDbType.VarChar, 3).Value = pvstr_MODULE.TrimEnd();
+                    myole_CMD.Parameters.Add("@p02", OleDbType.VarChar, 10).Value = pvstr_RATE_CODE.TrimEnd();
+                    myole_CMD.Parameters.Add("@p03", OleDbType.VarChar, 10).Value = pvstr_PRODUCT_REF_CODE.TrimEnd();
+                    myole_CMD.Parameters.Add("@p04", OleDbType.VarChar, 4).Value = pvstr_PERIOD.TrimEnd();
+                    myole_CMD.Parameters.Add("@p05", OleDbType.VarChar, 4).Value = pvstr_AGE.TrimEnd();
+                    break;
+                case "GET_IL_EXCHANGE_RATE":
+                case "GET_GL_EXCHANGE_RATE":
+                    mystr_SQL = "SPIL_GET_EXCHANGE_RATE";
+                    myole_CMD.CommandType = CommandType.StoredProcedure;
+                    myole_CMD.CommandText = mystr_SQL;
+                    myole_CMD.Parameters.Add("@p01", OleDbType.VarChar, 3).Value = pvstr_MODULE.TrimEnd();
+                    myole_CMD.Parameters.Add("@p02", OleDbType.VarChar, 10).Value = pvstr_RATE_CODE.TrimEnd();
+                    myole_CMD.Parameters.Add("@p03", OleDbType.VarChar, 10).Value = pvstr_PRODUCT_REF_CODE.TrimEnd();
+                    break;
+                case "GET_IL_MOP_FACTOR":
+                case "GET_GL_MOP_FACTOR":
+                    mystr_SQL = "SPIL_GET_MOP_FACTOR";
+                    myole_CMD.CommandType = CommandType.StoredProcedure;
+                    myole_CMD.CommandText = mystr_SQL;
+                    myole_CMD.Parameters.Add("@p01", OleDbType.VarChar, 3).Value = pvstr_MODULE.TrimEnd();
+                    myole_CMD.Parameters.Add("@p02", OleDbType.VarChar, 10).Value = pvstr_RATE_CODE.TrimEnd();
+                    myole_CMD.Parameters.Add("@p03", OleDbType.VarChar, 10).Value = pvstr_PRODUCT_REF_CODE.TrimEnd();
+                    break;
+                default:
+                    myole_CMD = null;
+                    myole_CONN = null;
+                    if (pvCtr_Label != null)
+                    {
+                        pvCtr_Label = "Error. Invalid parameter: " + pvstr_GET_WHAT.ToString();
+
+                    }
+                    return "ERR_PARAM";
+            }
+
+            OleDbDataReader myole_DR;
+            try
+            {
+                myole_DR = myole_CMD.ExecuteReader();
+                //  with the new data reader parse values and place into the return variable
+                if (myole_DR.Read())
+                {
+                    // Me.UserCode.Text = Me.UserName.Text & " - " & oleDR("pwd_code").ToString & vbNullString
+                    switch (pvstr_GET_WHAT.Trim())
+                    {
+                        case "GET_IL_PREMIUM_RATE":
+                        case "GET_GL_PREMIUM_RATE":
+                            myRetValue = (myole_DR["TBIL_PRM_RT_RATE"]).ToString();
+                            if ((pvRef_Misc == null))
+                            {
+
+                            }
+                            else
+                            {
+                                pvRef_Misc = myole_DR["TBIL_PRM_RT_PER"].ToString();
+                            }
+                            break;
+                        case "GET_IL_EXCHANGE_RATE":
+                        case "GET_GL_EXCHANGE_RATE":
+                            myRetValue = myole_DR["TBIL_EXCH_RATE"].ToString();
+                            break;
+                        case "GET_IL_MOP_FACTOR":
+                        case "GET_GL_MOP_FACTOR":
+                            myRetValue = myole_DR["TBIL_MOP_RATE"].ToString();
+                            if ((pvRef_Misc == null))
+                            {
+
+                            }
+                            else
+                            {
+                                pvRef_Misc = myole_DR["TBIL_MOP_TYPE_DESC"].ToString();
+                            }
+                            if ((pvRef_Misc_02 == null))
+                            {
+
+                            }
+                            else
+                            {
+                                pvRef_Misc_02 = myole_DR["TBIL_MOP_DIVIDE"].ToString();
+                            }
+                            break;
+                        default:
+                            myRetValue = "ERR_PARAM";
+                            if (pvCtr_Label != null)
+                            {
+                                pvCtr_Label = "Error. Invalid parameter: " + pvstr_GET_WHAT.ToString();
+                            }
+                            break;
+                    }
+                    myole_DR.Close();
+                    myole_CMD.Dispose();
+                }
+                else
+                {
+                    myRetValue = "ERR_RNF";
+                    if (pvCtr_Label != null)
+                    {
+                        pvCtr_Label = "Record not found for parameters supplied...";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                //    'Throw ex
+                myRetValue = "ERR";
+                if (pvCtr_Label != null)
+                {
+                    pvCtr_Label = "Error. " + ex.Message.ToString();
+                }
+            }
+            // myole_DA.Dispose()
+            try
+            {
+                //  Close connection
+                myole_CONN.Close();
+            }
+            catch (Exception ex)
+            {
+            }
+            // myobj_ds = Nothing
+            // myole_DA = Nothing
+            myole_DR = null;
+            myole_CMD = null;
+            myole_CONN = null;
+            return myRetValue;
         }
-        return result;
-    }
+
+
+        private static String ExecuteAdHocQry(string _qry, String _conn)
+        {
+
+            String result = String.Empty;
+            string[] connParts = { };
+            connParts = _conn.Split(';');
+
+            string mySQLClientConn = connParts[1] + ';' + connParts[2] + ';' + connParts[3] + ';' + connParts[4] + ';';
+
+            using (SqlConnection conn = new SqlConnection(mySQLClientConn))
+            using (SqlCommand cmd = new SqlCommand(_qry, conn))
+            {
+                conn.Open();
+                result = cmd.ExecuteScalar().ToString();
+                conn.Close();
+            }
+            return result;
+        }
     }
 }
