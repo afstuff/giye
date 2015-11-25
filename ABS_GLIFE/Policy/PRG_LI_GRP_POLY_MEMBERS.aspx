@@ -459,7 +459,7 @@
                                         <asp:Label ID="lblSum_Assured" Enabled="false" Text="Sum Assured" ToolTip="" runat="server"></asp:Label>
                                         &nbsp;&nbsp;&nbsp;&nbsp;</td>
                                     <td align="left" colspan="2">
-                                    <asp:Label ID="lblEffDate" Text="Effective. Date:" runat="server"></asp:Label>&nbsp;&nbsp;
+                                    <asp:Label ID="lblEffDate" Text="Effective. Date:" Visible="false" runat="server"></asp:Label>&nbsp;&nbsp;
                                     </td>
                                 </tr>
 
@@ -468,7 +468,7 @@
                                         <asp:TextBox ID="txtSum_Assured" Enabled="false" MaxLength="15" 
                                             ToolTip="" runat="server" style="width: 128px" Width="90px"></asp:TextBox><asp:TextBox ID="txtPrem_Amt_Prorata" Visible="false" Enabled="false" MaxLength="15" Width="80px" runat="server"></asp:TextBox><asp:TextBox ID="txtLoad_amt" Visible="false" Enabled="false" MaxLength="15" Width="80px" runat="server"></asp:TextBox></td>
                                     <td align="left" colspan="2">
-                                        <asp:TextBox ID="txtEffDate" runat="server"></asp:TextBox>
+                                        <asp:TextBox ID="txtEffDate" runat="server" Visible="false"></asp:TextBox>
                                         </td>
                                 </tr>
 
@@ -495,7 +495,6 @@
                                                         <td align="center" style="width: 40px;">Age</td>
                                                         <td align="center" style="width: 60px;">Rate</td>
                                                         <td align="center" style="width: 80px;">Prem Amt</td>
-                                                         <td align="center" style="width: 80px;">Effective Dt</td>
                                                         <td align="center" style="width: 80px;">Batch</td>
                           <%--          <tr class="tr_frame" style="display: none;">
                                         <td align="left" valign="top">
@@ -722,8 +721,33 @@
                                                                 <asp:Label ID="lbltxtTotal" runat="server" Text="0.00" DataFormatString="{0:N2}" />
                                                             </FooterTemplate>
                                                         </asp:TemplateField>
-                                                          <asp:BoundField DataField="TBIL_POL_MEMB_EFF_DT" HeaderText="Effective Dt" DataFormatString="{0:d}" />
-                                                        <asp:BoundField ReadOnly="true" DataField="TBIL_POL_MEMB_BATCH_NO" HeaderText="Batch"
+  <%--                                                      <asp:CommandField ShowSelectButton="True" ItemStyle-Width="60px" />
+                                                        <asp:BoundField ReadOnly="true" DataField="TBIL_POL_MEMB_REC_ID" HeaderText="Ref.No"
+                                                            ItemStyle-Width="70px" HeaderStyle-HorizontalAlign="Left" ConvertEmptyStringToNull="true" />
+                                                        <asp:BoundField ReadOnly="true" DataField="TBIL_POL_MEMB_NAME" HeaderText="Member Name"
+                                                            ItemStyle-Width="120px" HeaderStyle-HorizontalAlign="Left" ConvertEmptyStringToNull="true" />
+                                                        <asp:BoundField ReadOnly="true" DataField="TBIL_POL_MEMB_TOT_SA" HeaderText="Sum Assured"
+                                                            ItemStyle-Width="100px" HeaderStyle-HorizontalAlign="Left" ConvertEmptyStringToNull="true" />
+                                                        <asp:BoundField ReadOnly="true" DataField="TBIL_POL_MEMB_BDATE" HeaderText="DOB"
+                                                            ItemStyle-Width="80px" HeaderStyle-HorizontalAlign="Left" ConvertEmptyStringToNull="true"
+                                                            DataFormatString="{0:dd MMM yyyy}" />
+                                                        <asp:BoundField ReadOnly="true" DataField="TBIL_POL_MEMB_AGE" HeaderText="Age" ItemStyle-Width="40px"
+                                                            HeaderStyle-HorizontalAlign="Left" ConvertEmptyStringToNull="true" />
+                                                        <asp:BoundField ReadOnly="true" DataField="TBIL_POL_MEMB_RATE" HeaderText="Prem Rate"
+                                                            ItemStyle-Width="60px" HeaderStyle-HorizontalAlign="Left" ConvertEmptyStringToNull="true" />
+                                                        <asp:TemplateField HeaderText="Prem. Amt" ItemStyle-Width="80px" HeaderStyle-HorizontalAlign="Left">
+                                                            <ItemTemplate>
+                                                                <asp:Label ID="lblTransAmt" runat="server" DataFormatString="{0:N2}" Text='<%#Eval("TBIL_POL_MEMB_PREM") %>' />
+                                                            </ItemTemplate>
+                                                            <FooterTemplate>
+                                                                <asp:Label ID="lbltxtTotal" runat="server" Text="0.00" DataFormatString="{0:N2}" />
+                                                            </FooterTemplate>
+                                                        </asp:TemplateField>
+
+                                                        <asp:BoundField DataField="TBIL_POL_MEMB_EFF_DT" HeaderText="Effective Dt" DataFormatString="{0:d}" />
+                                                        <asp:BoundField readonly="true" DataField="TBIL_POL_MEMB_BATCH_NO" HeaderText="Batch" ItemStyle-Width="80px" HeaderStyle-HorizontalAlign="Left" convertemptystringtonull="true" />
+--%>
+                                                         <asp:BoundField ReadOnly="true" DataField="TBIL_POL_MEMB_BATCH_NO" HeaderText="Batch"
                                                             ItemStyle-Width="80px" HeaderStyle-HorizontalAlign="Left" ConvertEmptyStringToNull="true" />
 
                                                     </Columns>

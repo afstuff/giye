@@ -182,7 +182,8 @@ Partial Class PRG_LI_GRP_POLY_MEMBERS
 
     Dim myRetValue As String = "0"
     Dim myTerm As String = ""
-    Dim dteDOB As Date = Now
+    Dim dteDOB As Date = Now '
+    Dim Err As String
 
 
 
@@ -273,7 +274,7 @@ Partial Class PRG_LI_GRP_POLY_MEMBERS
 
             'Call gnProc_Populate_Box("IL_CODE_LIST", "015", Me.cboGender)
             Call gnPopulate_DropDownList("GL_MEMEBER_CATEGORY", Me.cboGender, "", "", "{select)", "*")
-           
+
             If Trim(strF_ID) <> "" Then
                 'Me.tr_file_upload.Visible = False
                 Me.cmdFile_Upload.Enabled = False
@@ -297,8 +298,7 @@ Partial Class PRG_LI_GRP_POLY_MEMBERS
                         myarrData = Split(Trim(oAL.Item(20).ToString), "/")
                         GenStart_Date = CDate(Format(Val(myarrData(1)), "00") & "/" & Format(Val(myarrData(0)), "00") & "/" & Format(Val(myarrData(2)), "0000"))
                         Me.txtStart_Date.Text = Format(GenStart_Date, "dd/MM/yyyy")
-                        Me.txtEffDate.Text = Format(GenStart_Date, "dd/MM/yyyy")
-
+                        ' Me.txtEffDate.Text = Format(GenStart_Date, "dd/MM/yyyy")
                     End If
                     If Trim(oAL.Item(21).ToString) <> "" Then
                         'GenEnd_Date = CDate(oAL.Item(21).ToString)
@@ -1129,23 +1129,28 @@ Partial Class PRG_LI_GRP_POLY_MEMBERS
         'Validate Effective Date of Member Deletion 
         '****************************************
 
-        If RTrim(Me.txtEffDate.Text) = "" Then
-            Me.lblMsg.Text = "Missing Effective Date of Deletion ... "
+        ' If RTrim(Me.txtEffDate.Text) = "" Then
+        If RTrim(Me.txtStart_Date.Text) = "" Then
+            'Me.lblMsg.Text = "Missing Effective Date of Deletion ... "
+            Me.lblMsg.Text = "Missing Start Date of Deletion ... "
             FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+            txtStart_Date.Focus()
             Exit Sub
         End If
 
-        If RTrim(Me.txtEffDate.Text) = "" Or Len(Trim(Me.txtEffDate.Text)) <> 10 Then
-            Me.lblMsg.Text = "Missing or Invalid deletion date "
+        If RTrim(Me.txtStart_Date.Text) = "" Or Len(Trim(Me.txtStart_Date.Text)) <> 10 Then
+            Me.lblMsg.Text = "Missing or Invalid start date of deletion "
             FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+            txtStart_Date.Focus()
             Exit Sub
         End If
 
         'Validate date
-        myarrData = Split(Me.txtEffDate.Text, "/")
+        myarrData = Split(Me.txtStart_Date.Text, "/")
         If myarrData.Count <> 3 Then
-            Me.lblMsg.Text = "Missing or Invalid Deletion Date. Expecting full date in ddmmyyyy format ..."
+            Me.lblMsg.Text = "Missing or Invalid Start Deletion Date. Expecting full date in ddmmyyyy format ..."
             FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+            txtStart_Date.Focus()
             Exit Sub
         End If
 
@@ -1163,9 +1168,11 @@ Partial Class PRG_LI_GRP_POLY_MEMBERS
         If blnStatusX = False Then
             Me.lblMsg.Text = "Incorrect date. Please enter valid date..."
             FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+            txtStart_Date.Focus()
             Exit Sub
         End If
-        Me.txtEffDate.Text = RTrim(strMyDte)
+        '  Me.txtEffDate.Text = RTrim(strMyDte)
+        Me.txtStart_Date.Text = RTrim(strMyDte)
         mydteX = Trim(strMyMth) & "/" & Trim(strMyDay) & "/" & Trim(strMyYear)
         del_date_deleted = Format(CDate(mydteX), "MM/dd/yyyy")
         'Effective deleted date ends here
@@ -1202,7 +1209,9 @@ Partial Class PRG_LI_GRP_POLY_MEMBERS
                 'Delete selected/checked item(s)
                 If Trim(myKey) <> "" Then
                     Me.txtRecNo.Text = myKey
-                    Call Proc_DoDelete_Record()
+                    Err = ""
+                    Call Proc_DoDelete_Record(Err)
+                    If Err = "Y" Then Exit Sub
                     Prem_Deleted = Prem_Deleted + Convert.ToDecimal(Me.GridView1.Rows(P).Cells(8).Text)
                     deleted_SA = deleted_SA + Convert.ToDecimal(Me.GridView1.Rows(P).Cells(4).Text)
                     C = C + 1
@@ -1242,9 +1251,14 @@ Partial Class PRG_LI_GRP_POLY_MEMBERS
 
     End Sub
 
-    Protected Sub Proc_DoDelete_Record()
-
-
+    Protected Sub Proc_DoDelete_Record(ByRef ErrorInd As String)
+        If (CDate(Session("Mem_Pol_Start_Dt")) = del_date_deleted) Then
+            Me.lblMsg.Text = "Date of deletion must not be equal to member policy start date..."
+            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+            txtStart_Date.Focus()
+            ErrorInd = "Y"
+            Exit Sub
+        End If
         Dim intC As Long = 0
 
         Dim mystrCONN As String = CType(Session("connstr"), String)
@@ -1270,8 +1284,9 @@ Partial Class PRG_LI_GRP_POLY_MEMBERS
         'strSQL = "DELETE FROM " & strTable
         strSQL = "Update " & strTable
         strSQL = strSQL & " SET TBIL_POL_MEMB_FLAG = 'D'"
-        strSQL = strSQL & ",TBIL_POL_MEMB_EFF_DT = '" & del_date_deleted & "'"
-        strSQL = strSQL & ",TBIL_POL_MEMB_KEYDTE = '" & del_date_deleted & "'"
+        ' strSQL = strSQL & ",TBIL_POL_MEMB_EFF_DT = '" & del_date_deleted & "'"
+        strSQL = strSQL & ",TBIL_POL_MEMB_FROM_DT = '" & del_date_deleted & "'"
+        'strSQL = strSQL & ",TBIL_POL_MEMB_KEYDTE = '" & del_date_deleted & "'"
         strSQL = strSQL & " WHERE TBIL_POL_MEMB_FILE_NO = '" & RTrim(strREC_ID) & "'"
         strSQL = strSQL & " AND TBIL_POL_MEMB_PROP_NO = '" & RTrim(txtQuote_Num.Text) & "'"
         strSQL = strSQL & " AND TBIL_POL_MEMB_REC_ID = " & Val(RTrim(Me.txtRecNo.Text)) & ""
@@ -1344,14 +1359,10 @@ Partial Class PRG_LI_GRP_POLY_MEMBERS
                            subctrl.ID = "txtXLS_Data_Start_No" Or _
                            subctrl.ID = "txtXLS_Data_End_No" Or _
                            subctrl.ID = "txtPrem_Rate_TypeNum" Or _
-                           subctrl.ID = "txtPrem_Rate" Or _
-                           subctrl.ID = "txtPrem_Rate_Per" Or _
-                           subctrl.ID = "txtPrem_Rate_Code" Or _
                            subctrl.ID = "txtPrem_SA_Factor" Or _
                            subctrl.ID = "txtRisk_Days" Or _
                             subctrl.ID = "txtStart_Date" Or _
                            subctrl.ID = "txtEnd_Date" Or _
-                           subctrl.ID = "txtEffDate" Or _
                            subctrl.ID = "xyz_123" Then
                             'Control(ID) : txtAction
                             'Control(ID) : txtFileNum
@@ -1379,7 +1390,6 @@ Partial Class PRG_LI_GRP_POLY_MEMBERS
                     If TypeOf subctrl Is System.Web.UI.WebControls.DropDownList Then
                         If subctrl.ID = "cboData_Source" Or _
                            subctrl.ID = "cboBatch_Num" Or _
-                           subctrl.ID = "cboPrem_Rate_Code" Or _
                            subctrl.ID = "xyz_123" Then
                         Else
                             CType(subctrl, DropDownList).SelectedIndex = -1
@@ -1688,26 +1698,26 @@ Proc_Skip_ANB:
         'End If
 
 
-        If txtEffDate.Text <> "" Then
-            Dim ctrlId As Control = FindControl("txtEnd_Date")
-            str = MOD_GEN.DoDate_Process(txtEffDate.Text, ctrlId)
+        'If txtEffDate.Text <> "" Then
+        '    Dim ctrlId As Control = FindControl("txtEnd_Date")
+        '    str = MOD_GEN.DoDate_Process(txtEffDate.Text, ctrlId)
 
-            If str(2) = Nothing Then
-                Dim errMsg = str(0).Insert(18, " Effective date, ")
-                lblMsg.Text = errMsg.Replace("Javascript:alert('", "").Replace("');", "")
-                FirstMsg = errMsg
-                txtEffDate.Focus()
-                Exit Sub
+        '    If str(2) = Nothing Then
+        '        Dim errMsg = str(0).Insert(18, " Effective date, ")
+        '        lblMsg.Text = errMsg.Replace("Javascript:alert('", "").Replace("');", "")
+        '        FirstMsg = errMsg
+        '        txtEffDate.Focus()
+        '        Exit Sub
 
-            Else
-                txtEffDate.Text = str(2).ToString()
-            End If
-        Else
-            lblMsg.Text = "Effective Date field is required!"
-            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
-            txtEffDate.Focus()
-            Exit Sub
-        End If
+        '    Else
+        '        txtEffDate.Text = str(2).ToString()
+        '    End If
+        'Else
+        '    lblMsg.Text = "Effective Date field is required!"
+        '    FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+        '    txtEffDate.Focus()
+        '    Exit Sub
+        'End If
 
 
         Me.txtPrem_Period_Yr.Text = Trim(Me.txtPrem_Period_Yr.Text)
@@ -1942,9 +1952,9 @@ Proc_Skip_ANB:
                     drNewRow("TBIL_POL_MEMB_TO_DT") = dteEnd
                 End If
 
-                If Trim(Me.txtEffDate.Text) <> "" Then
-                    drNewRow("TBIL_POL_MEMB_EFF_DT") = Convert.ToDateTime(DoConvertToDbDateFormat(txtEffDate.Text))
-                End If
+                'If Trim(Me.txtEffDate.Text) <> "" Then
+                '    drNewRow("TBIL_POL_MEMB_EFF_DT") = Convert.ToDateTime(DoConvertToDbDateFormat(txtEffDate.Text))
+                'End If
 
                 drNewRow("TBIL_POL_MEMB_TENOR") = Val(Me.txtPrem_Period_Yr.Text)
                 drNewRow("TBIL_POL_MEMB_DESIG") = Left(RTrim(Me.txtDesignation_Name.Text), 40)
@@ -1955,6 +1965,7 @@ Proc_Skip_ANB:
                 drNewRow("TBIL_POL_MEMB_TOT_SA") = CDbl(Trim(Me.txtSum_Assured.Text))
                 drNewRow("TBIL_POL_MEMB_MEDICAL_YN") = RTrim(Me.txtMedical_YN.Text)
 
+                drNewRow("TBIL_POL_MEMB_RATE_CODE") = Me.txtPrem_Rate_Code.Text
                 drNewRow("TBIL_POL_MEMB_RATE") = RTrim(Trim(Me.txtPrem_Rate.Text))
                 drNewRow("TBIL_POL_MEMB_RATE_PER") = Val(Trim(Me.txtPrem_Rate_Per.Text))
 
@@ -2022,13 +2033,14 @@ Proc_Skip_ANB:
                     .Rows(0)("TBIL_POL_MEMB_TOT_SA") = CDbl(Trim(Me.txtSum_Assured.Text))
                     .Rows(0)("TBIL_POL_MEMB_MEDICAL_YN") = RTrim(Me.txtMedical_YN.Text)
 
+                    .Rows(0)("TBIL_POL_MEMB_RATE_CODE") = Me.txtPrem_Rate_Code.Text
                     .Rows(0)("TBIL_POL_MEMB_RATE") = CDbl(Trim(Me.txtPrem_Rate.Text))
                     .Rows(0)("TBIL_POL_MEMB_RATE_PER") = Val(Trim(Me.txtPrem_Rate_Per.Text))
 
                     .Rows(0)("TBIL_POL_MEMB_PREM") = CDbl(txtPrem_Amt.Text)
                     .Rows(0)("TBIL_POL_MEMB_PRO_RATE_PREM") = CDbl(dblPrem_Amt_ProRata)
                     .Rows(0)("TBIL_POL_MEMB_LOAD") = CDbl(dblLoad_Amt)
-                    .Rows(0)("TBIL_POL_MEMB_EFF_DT") = Convert.ToDateTime(DoConvertToDbDateFormat(txtEffDate.Text))
+                    '.Rows(0)("TBIL_POL_MEMB_EFF_DT") = Convert.ToDateTime(DoConvertToDbDateFormat(txtEffDate.Text))
                     .Rows(0)("TBIL_POL_MEMB_FLAG") = "C"
                     '.Rows(0)("TBIL_POL_MEMB_OPERID") = CType(myUserIDX, String)
                     '.Rows(0)("TBIL_POL_MEMB_KEYDTE") = Now
@@ -3928,7 +3940,7 @@ MyLoop_End:
     Private Function Proc_ExcelDoc_New() As String
         Return String.Empty
     End Function
-    
+
 
     Private Function Proc_DoOpenRecord(ByVal FVstrGetType As String, ByVal FVstrRefNum As String, Optional ByVal FVstrRecNo As String = "", Optional ByVal strSearchByWhat As String = "FILE_NUM") As String
 
@@ -4024,15 +4036,15 @@ MyLoop_End:
 
             If IsDate(objOLEDR("TBIL_POL_MEMB_FROM_DT")) Then
                 Me.txtStart_Date.Text = Format(CType(objOLEDR("TBIL_POL_MEMB_FROM_DT"), DateTime), "dd/MM/yyyy")
-                Me.txtEffDate.Text = Format(CType(objOLEDR("TBIL_POL_MEMB_FROM_DT"), DateTime), "dd/MM/yyyy")
+                Session("Mem_Pol_Start_Dt") = Format(CType(objOLEDR("TBIL_POL_MEMB_FROM_DT"), DateTime), "MM/dd/yyyy")
             End If
             If IsDate(objOLEDR("TBIL_POL_MEMB_TO_DT")) Then
                 Me.txtEnd_Date.Text = Format(CType(objOLEDR("TBIL_POL_MEMB_TO_DT"), DateTime), "dd/MM/yyyy")
             End If
 
-            If IsDate(objOLEDR("TBIL_POL_MEMB_EFF_DT")) Then
-                Me.txtEffDate.Text = Format(CType(objOLEDR("TBIL_POL_MEMB_EFF_DT"), DateTime), "dd/MM/yyyy")
-            End If
+            'If IsDate(objOLEDR("TBIL_POL_MEMB_EFF_DT")) Then
+            '    Me.txtEffDate.Text = Format(CType(objOLEDR("TBIL_POL_MEMB_EFF_DT"), DateTime), "dd/MM/yyyy")
+            'End If
 
             Me.txtPrem_Period_Yr.Text = RTrim(CType(objOLEDR("TBIL_POL_MEMB_TENOR") & vbNullString, String))
             Me.txtDesignation_Name.Text = RTrim(CType(objOLEDR("TBIL_POL_MEMB_DESIG") & vbNullString, String))
@@ -4048,6 +4060,7 @@ MyLoop_End:
             Me.txtMedical_YN.Text = RTrim(CType(objOLEDR("TBIL_POL_MEMB_MEDICAL_YN") & vbNullString, String))
             Call gnProc_DDL_Get(Me.cboMedical_YN, RTrim(Me.txtMedical_YN.Text))
 
+            Me.txtPrem_Rate_Code.Text = RTrim(CType(objOLEDR("TBIL_POL_MEMB_RATE_CODE") & vbNullString, String))
             Call gnProc_DDL_Get(Me.cboPrem_Rate_Code, RTrim(Me.txtPrem_Rate_Code.Text))
 
             Me.txtPrem_Rate.Text = RTrim(CType(objOLEDR("TBIL_POL_MEMB_RATE") & vbNullString, String))
@@ -4306,6 +4319,7 @@ MyLoop_End:
 
 
     Protected Sub butDeleteMembers_ASP_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles butDeleteMembers_ASP.Click
+        If Err = "Y" Then Exit Sub
         Dim mystrURL As String = String.Empty
         Dim formParam As String = String.Empty
         formParam = "transtype=A&secnum=1&cn=C&bustype=RV&sectors=1&billdate=" & Format(Now.Date, "dd/MM/yyyy") & "&branch=1501&policyno=" & txtPolNum.Text & "&sa=" & deleted_SA _
@@ -4478,12 +4492,6 @@ MyLoop_End:
             End If
             ' Me.txtDOB_ANB.Text = Trim(str(lngDOB_ANB))
             Me.txtDOB_ANB.Text = lngDOB_ANB.ToString()
-        End If
-    End Sub
-
-    Protected Sub txtStart_Date_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtStart_Date.TextChanged
-        If txtStart_Date.Text <> "" And IsDate(txtStart_Date.Text) Then
-            txtEffDate.Text = txtStart_Date.Text
         End If
     End Sub
 End Class
