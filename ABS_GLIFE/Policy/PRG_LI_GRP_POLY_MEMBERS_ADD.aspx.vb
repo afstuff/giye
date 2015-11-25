@@ -353,13 +353,15 @@ Partial Class Policy_PRG_LI_GRP_POLY_MEMBERS_ADD
     End Sub
 
     Protected Sub cboBatch_Num_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboBatch_Num.SelectedIndexChanged
-        Call gnGET_SelectedItem(Me.cboBatch_Num, Me.txtBatch_Num, Me.txtBatch_Name, Me.lblMsg)
-        If Trim(Me.txtBatch_Num.Text) <> "" Then
-            Me.cmdNext.Enabled = True
-        Else
+        If cboBatch_Num.SelectedIndex <> 0 Then
+            ' Me.txtBatch_Num.Text = cboBatch_Num.SelectedValue
+            Call gnGET_SelectedItem(Me.cboBatch_Num, Me.txtBatch_Num, Me.txtBatch_Name, Me.lblMsg)
+            If Trim(Me.txtBatch_Num.Text) <> "" Then
+                Me.cmdNext.Enabled = True
+            Else
+            End If
+            Call Proc_DataBind()
         End If
-        Call Proc_DataBind()
-
     End Sub
 
     Protected Sub cmdGetBatch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdGetBatch.Click
@@ -924,7 +926,7 @@ Partial Class Policy_PRG_LI_GRP_POLY_MEMBERS_ADD
             'Me.cmdDelete_ASP.Enabled = True
             Me.cmdDelItem_ASP.Enabled = True
             Me.cmdNext.Enabled = True
-            Me.txtBatch_Num.Enabled = False
+            ' Me.txtBatch_Num.Enabled = False
         Else
             Me.cmdNext.Enabled = False
             Me.txtBatch_Num.Enabled = True
@@ -1262,6 +1264,10 @@ Partial Class Policy_PRG_LI_GRP_POLY_MEMBERS_ADD
                     Prem_added = Prem_added + Convert.ToDecimal(Me.GridView1.Rows(P).Cells(8).Text)
                     added_SA = added_SA + Convert.ToDecimal(Me.GridView1.Rows(P).Cells(4).Text)
                     C = C + 1
+
+                    added_Used_Days = DateDiff(DateInterval.Day, CDate(add_date_added), CDate(add_start_date))
+                    added_Prorata_Days = Convert.ToInt16(txtRisk_Days.Text) - Math.Abs(added_Used_Days)
+                    added_Prorata_Premium = Prem_added * (added_Prorata_Days / Convert.ToInt16(txtRisk_Days.Text))
                 End If
 
             End If
@@ -1288,9 +1294,9 @@ Partial Class Policy_PRG_LI_GRP_POLY_MEMBERS_ADD
         End If
 
         'Calculate the Prorated Premium as at the point of deletion of member(s)
-        added_Used_Days = DateDiff(DateInterval.Day, CDate(add_date_added), CDate(add_start_date))
-        added_Prorata_Days = Convert.ToInt16(txtRisk_Days.Text) - Math.Abs(added_Used_Days)
-        added_Prorata_Premium = Prem_added * (added_Prorata_Days / Convert.ToInt16(txtRisk_Days.Text))
+        'added_Used_Days = DateDiff(DateInterval.Day, CDate(add_date_added), CDate(add_start_date))
+        'added_Prorata_Days = Convert.ToInt16(txtRisk_Days.Text) - Math.Abs(added_Used_Days)
+        'added_Prorata_Premium = Prem_added * (added_Prorata_Days / Convert.ToInt16(txtRisk_Days.Text))
 
     End Sub
 
@@ -1399,6 +1405,8 @@ Partial Class Policy_PRG_LI_GRP_POLY_MEMBERS_ADD
                            subctrl.ID = "txtPrem_Rate_Code" Or _
                            subctrl.ID = "txtPrem_SA_Factor" Or _
                            subctrl.ID = "txtRisk_Days" Or _
+                           subctrl.ID = "txtStart_Date" Or _
+                           subctrl.ID = "txtEnd_Date" Or _
                            subctrl.ID = "xyz_123" Then
                             'Control(ID) : txtAction
                             'Control(ID) : txtFileNum
@@ -1442,9 +1450,9 @@ Partial Class Policy_PRG_LI_GRP_POLY_MEMBERS_ADD
 
         Me.cmdGetPol.Enabled = True
 
-        Me.txtFileNum.Text = ""
-        Me.txtQuote_Num.Text = ""
-        Me.txtPolNum.Text = ""
+        'Me.txtFileNum.Text = ""
+        'Me.txtQuote_Num.Text = ""
+        'Me.txtPolNum.Text = ""
 
         Me.lblPrem_SA_Factor.Enabled = True
         'Me.txtPrem_SA_Factor.Text = ""
@@ -1738,6 +1746,12 @@ Proc_Skip_ANB:
             Exit Sub
         End If
 
+        If txtAdditionDate.Text = "" Then
+            Me.lblMsg.Text = "Missing or invalid effective date... "
+            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+            Exit Sub
+        End If
+
         add_date_added = General_Date_Validation(txtAdditionDate.Text, "Effective")
         add_date_added = Format(CDate(add_date_added), "MM/dd/yyyy")
 
@@ -1917,7 +1931,7 @@ Proc_Skip_ANB:
 
                 drNewRow("TBIL_POL_MEMB_FILE_NO") = RTrim(Me.txtFileNum.Text)
                 drNewRow("TBIL_POL_MEMB_PROP_NO") = RTrim(Me.txtQuote_Num.Text)
-                'drNewRow("TBIL_POL_MEMB_POLY_NO") = RTrim(Me.txtPolNum.Text)
+                drNewRow("TBIL_POL_MEMB_POLY_NO") = RTrim(Me.txtPolNum.Text)
 
                 'drNewRow("TBIL_POL_MEMB_COVER_ID") = Val(Me.txtBenef_Cover_ID.Text)
 
@@ -1937,6 +1951,7 @@ Proc_Skip_ANB:
                 If Trim(Me.txtEnd_Date.Text) <> "" Then
                     drNewRow("TBIL_POL_MEMB_TO_DT") = dteEnd
                 End If
+                'drNewRow("TBIL_POL_MEMB_EFF_DT") = add_date_added
 
                 drNewRow("TBIL_POL_MEMB_TENOR") = Val(Me.txtPrem_Period_Yr.Text)
                 drNewRow("TBIL_POL_MEMB_DESIG") = Left(RTrim(Me.txtDesignation_Name.Text), 40)
@@ -1947,6 +1962,7 @@ Proc_Skip_ANB:
                 drNewRow("TBIL_POL_MEMB_TOT_SA") = CDbl(Trim(Me.txtSum_Assured.Text))
                 drNewRow("TBIL_POL_MEMB_MEDICAL_YN") = RTrim(Me.txtMedical_YN.Text)
 
+                drNewRow("TBIL_POL_MEMB_RATE_CODE") = Me.txtPrem_Rate_Code.Text
                 drNewRow("TBIL_POL_MEMB_RATE") = RTrim(Trim(Me.txtPrem_Rate.Text))
                 drNewRow("TBIL_POL_MEMB_RATE_PER") = Val(Trim(Me.txtPrem_Rate_Per.Text))
 
@@ -1957,7 +1973,6 @@ Proc_Skip_ANB:
                 drNewRow("TBIL_POL_MEMB_FLAG") = "A"
                 drNewRow("TBIL_POL_MEMB_OPERID") = CType(myUserIDX, String)
                 drNewRow("TBIL_POL_MEMB_KEYDTE") = add_date_added
-
                 obj_DT.Rows.Add(drNewRow)
                 'obj_DT.AcceptChanges()
                 intC = objDA.Update(obj_DT)
@@ -1984,7 +1999,7 @@ Proc_Skip_ANB:
 
                     .Rows(0)("TBIL_POL_MEMB_FILE_NO") = RTrim(Me.txtFileNum.Text)
                     .Rows(0)("TBIL_POL_MEMB_PROP_NO") = RTrim(Me.txtQuote_Num.Text)
-                    '.Rows(0)("TBIL_POL_MEMB_POLY_NO") = RTrim(Me.txtPolNum.Text)
+                    .Rows(0)("TBIL_POL_MEMB_POLY_NO") = RTrim(Me.txtPolNum.Text)
 
                     '.Rows(0)("TBIL_POL_MEMB_COVER_ID") = Val(Me.txtBenef_Cover_ID.Text)
 
@@ -2004,7 +2019,7 @@ Proc_Skip_ANB:
                     If Trim(Me.txtEnd_Date.Text) <> "" Then
                         .Rows(0)("TBIL_POL_MEMB_TO_DT") = dteEnd
                     End If
-
+                    '.Rows(0)("TBIL_POL_MEMB_EFF_DT") = add_date_added
                     .Rows(0)("TBIL_POL_MEMB_TENOR") = Val(Me.txtPrem_Period_Yr.Text)
                     .Rows(0)("TBIL_POL_MEMB_DESIG") = Left(RTrim(Me.txtDesignation_Name.Text), 40)
                     .Rows(0)("TBIL_POL_MEMB_NAME") = Left(RTrim(Me.txtMember_Name.Text), 98)
@@ -2013,7 +2028,7 @@ Proc_Skip_ANB:
                     .Rows(0)("TBIL_POL_MEMB_TOT_EMOLUMENT") = CDbl(Trim(Me.txtTotal_Emolument.Text))
                     .Rows(0)("TBIL_POL_MEMB_TOT_SA") = CDbl(Trim(Me.txtSum_Assured.Text))
                     .Rows(0)("TBIL_POL_MEMB_MEDICAL_YN") = RTrim(Me.txtMedical_YN.Text)
-
+                    .Rows(0)("TBIL_POL_MEMB_RATE_CODE") = Me.txtPrem_Rate_Code.Text
                     .Rows(0)("TBIL_POL_MEMB_RATE") = CDbl(Trim(Me.txtPrem_Rate.Text))
                     .Rows(0)("TBIL_POL_MEMB_RATE_PER") = Val(Trim(Me.txtPrem_Rate_Per.Text))
 
@@ -2995,11 +3010,14 @@ MyLoop_End:
         If RTrim(_fromDateControl) = "" Then
             Me.lblMsg.Text = "Missing " & _valueDescr & " Date "
             FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+            Exit Function
         End If
+
 
         If RTrim(_fromDateControl) = "" Or Len(Trim(_fromDateControl)) <> 10 Then
             Me.lblMsg.Text = "Missing or Invalid date "
             FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+            Exit Function
         End If
 
         'Validate date
@@ -3007,6 +3025,7 @@ MyLoop_End:
         If myarrData.Count <> 3 Then
             Me.lblMsg.Text = "Missing or Invalid " & _fromDateControl & " Date. Expecting full date in ddmmyyyy format ..."
             FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+            Exit Function
         End If
 
         strMyDay = myarrData(0)
@@ -3025,7 +3044,7 @@ MyLoop_End:
             FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
             Return Nothing
         End If
-        'Me.txtAdditionDate.Text = RTrim(strMyDte)
+        Me.txtAdditionDate.Text = RTrim(strMyDte)
         mydteX = Trim(strMyMth) & "/" & Trim(strMyDay) & "/" & Trim(strMyYear)
 
         Return mydteX
@@ -4000,6 +4019,7 @@ MyLoop_End:
 
         objOLEDR = objOLECmd.ExecuteReader()
         If (objOLEDR.Read()) Then
+            ShowControls()
             strErrMsg = "true"
             Me.txtFileNum.Text = RTrim(CType(objOLEDR("TBIL_POL_MEMB_FILE_NO") & vbNullString, String))
             Me.txtFileNum.Enabled = False
@@ -4052,6 +4072,10 @@ MyLoop_End:
                 Me.txtEnd_Date.Text = Format(CType(objOLEDR("TBIL_POL_MEMB_TO_DT"), DateTime), "dd/MM/yyyy")
             End If
 
+            'If IsDate(objOLEDR("TBIL_POL_MEMB_EFF_DT")) Then
+            '    Me.txtAdditionDate.Text = Format(CType(objOLEDR("TBIL_POL_MEMB_EFF_DT"), DateTime), "dd/MM/yyyy")
+            'End If
+
             Me.txtPrem_Period_Yr.Text = RTrim(CType(objOLEDR("TBIL_POL_MEMB_TENOR") & vbNullString, String))
             Me.txtDesignation_Name.Text = RTrim(CType(objOLEDR("TBIL_POL_MEMB_DESIG") & vbNullString, String))
             Me.txtMember_Name.Text = RTrim(CType(objOLEDR("TBIL_POL_MEMB_NAME") & vbNullString, String))
@@ -4066,6 +4090,7 @@ MyLoop_End:
             Me.txtMedical_YN.Text = RTrim(CType(objOLEDR("TBIL_POL_MEMB_MEDICAL_YN") & vbNullString, String))
             Call gnProc_DDL_Get(Me.cboMedical_YN, RTrim(Me.txtMedical_YN.Text))
 
+            Me.txtPrem_Rate_Code.Text = RTrim(CType(objOLEDR("TBIL_POL_MEMB_RATE_CODE") & vbNullString, String))
             Call gnProc_DDL_Get(Me.cboPrem_Rate_Code, RTrim(Me.txtPrem_Rate_Code.Text))
 
             Me.txtPrem_Rate.Text = RTrim(CType(objOLEDR("TBIL_POL_MEMB_RATE") & vbNullString, String))
@@ -4373,8 +4398,8 @@ MyLoop_End:
         Call Proc_DoGet_Record("POLICY")
 
     End Sub
-
     Private Sub ShowControls()
+        txtDOB_ANB.Visible = True
         HideRow1.Visible = True
         HideRow2.Visible = True
         HideRow3.Visible = True
@@ -4417,6 +4442,7 @@ MyLoop_End:
         cboPrem_Rate_Code.Enabled = True
     End Sub
     Private Sub HideControls()
+        txtDOB_ANB.Visible = False
         HideRow1.Visible = False
         HideRow2.Visible = False
         HideRow3.Visible = False

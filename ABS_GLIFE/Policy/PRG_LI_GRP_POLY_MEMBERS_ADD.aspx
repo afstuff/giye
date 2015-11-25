@@ -238,7 +238,7 @@
                                             <td align="left" valign="top"><asp:TextBox ID="txtMember_DOB" MaxLength="10" 
                                                     Width="100px" ToolTip="Date of Birth(dd/mm/yyyy)" runat="server" 
                                                     AutoPostBack="True" Visible="False"></asp:TextBox>
-                                                &nbsp;<asp:TextBox ID="txtDOB_ANB" Enabled="true" Width="40px" runat="server" 
+                                                &nbsp;<asp:TextBox ID="txtDOB_ANB" Enabled="False" Width="40px" runat="server" 
                                                     Visible="False"></asp:TextBox></td>
                                         </tr>
                                         
@@ -340,16 +340,14 @@
                                         <asp:Label ID="lblSum_Assured" Enabled="false" Text="Sum Assured" ToolTip="" runat="server"></asp:Label>
                                         &nbsp;&nbsp;&nbsp;&nbsp;</td>
                                     <td align="left" colspan="2">
-                                    <asp:Label ID="lblEffDate" Text="Effective. Date:" runat="server"></asp:Label>
-                                    </td>
+                                        &nbsp;</td>
                                 </tr>
 
                                 <tr>
                                     <td align="left" colspan="2">
                                         <asp:TextBox ID="txtSum_Assured" Enabled="false" MaxLength="15" ToolTip="" runat="server"></asp:TextBox><asp:TextBox ID="txtPrem_Amt_Prorata" Visible="false" Enabled="false" MaxLength="15" Width="80px" runat="server"></asp:TextBox><asp:TextBox ID="txtLoad_amt" Visible="false" Enabled="false" MaxLength="15" Width="80px" runat="server"></asp:TextBox></td>
                                     <td align="left" colspan="2">
-                                        <asp:TextBox ID="txtEffDate" runat="server"></asp:TextBox>
-                                    </td>
+                                        &nbsp;</td>
                                 </tr>
 
                                         <tr>
@@ -437,8 +435,7 @@
                                                             </FooterTemplate>
 
                                                         </asp:TemplateField>
-                                                        <asp:BoundField DataField="TBIL_POL_MEMB_EFF_DT" HeaderText="Effective Dt" DataFormatString="{0:d}" />
-                                                        <asp:BoundField readonly="true" DataField="TBIL_POL_MEMB_BATCH_NO" HeaderText="Batch" ItemStyle-Width="80px" HeaderStyle-HorizontalAlign="Left" convertemptystringtonull="true" />
+                                                      <asp:BoundField readonly="true" DataField="TBIL_POL_MEMB_BATCH_NO" HeaderText="Batch" ItemStyle-Width="80px" HeaderStyle-HorizontalAlign="Left" convertemptystringtonull="true" />
                                                     </Columns>
    
                                                 </asp:GridView>
