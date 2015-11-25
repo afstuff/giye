@@ -246,6 +246,11 @@ Partial Class Policy_PRG_LI_GRP_POLY_MEMBERS_RENEW
     End Sub
 
     Private Sub Proc_DoGet_Record(ByVal pvCODE As String)
+        txtQuote_Num.Text = ""
+        txtFileNum.Text = ""
+        txtStartDate.Text = ""
+        txtEndDate.Text = ""
+
 
         'Me.tr_file_upload.Visible = False
         'Me.cmdFile_Upload.Enabled = False
