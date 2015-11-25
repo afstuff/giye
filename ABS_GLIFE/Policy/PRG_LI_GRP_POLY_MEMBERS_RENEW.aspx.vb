@@ -175,49 +175,8 @@ Partial Class Policy_PRG_LI_GRP_POLY_MEMBERS_RENEW
     End Sub
 
 
-    'Protected Sub DoProc_Premium_Code_Change()
-    '    Call gnProc_DDL_Get(Me.cboPrem_Rate_Code, RTrim(Me.txtPrem_Rate_Code.Text))
-    '    Call DoGet_SelectedItem(Me.cboPrem_Rate_Code, Me.txtPrem_Rate_Code, Me.txtPrem_Rate_CodeName, Me.lblMsg)
-    '    If Trim(Me.txtPrem_Rate_Code.Text) = "" Then
-    '        Me.cboPrem_Rate_Code.Enabled = True
-    '        Me.txtPrem_Rate.Text = "0.00"
-    '        Me.txtPrem_Rate_Per.Text = "0"
-    '        Exit Sub
-    '    End If
-
-    '    Dim myRetValue As String = "0"
-    '    Dim myTerm As String = ""
-    '    myTerm = Me.txtPrem_Period_Yr.Text
-    '    Select Case UCase(Me.txtProduct_Num.Text)
-    '        Case "P005"
-    '            myTerm = "1"
-    '        Case "F001", "F002"
-    '            myTerm = "1"
-    '    End Select
-
-
-    '    'myRetValue = MOD_GEN.gnGET_RATE("GET_IL_PREMIUM_RATE", "IND", Me.txtPrem_Rate_Code.Text, Me.txtProduct_Num.Text, myTerm, Me.txtDOB_ANB.Text, Me.lblMsg, Me.txtPrem_Rate_Per)
-    '    myRetValue = MOD_GEN.gnGET_RATE("GET_GL_PREMIUM_RATE", "GRP", Me.txtPrem_Rate_Code.Text, Me.txtProduct_Num.Text, myTerm, Val(Me.txtDOB_ANB.Text), Me.lblMsg, Me.txtPrem_Rate_Per)
-
-    '    'Response.Write("<BR/>Rate Code: " & Me.txtPrem_Rate_Code.Text)
-    '    'Response.Write("<BR/>Product Code: " & Me.txtProduct_Num.Text)
-    '    'Response.Write("<BR/>Period: " & myTerm)
-    '    'Response.Write("<BR/>Age: " & Me.txtDOB_ANB.Text)
-    '    'Response.Write("<BR/>Value: " & myRetValue)
-
-    '    If Left(LTrim(myRetValue), 3) = "ERR" Then
-    '        Me.cboPrem_Rate_Code.SelectedIndex = -1
-    '        Me.cboPrem_Rate_Code.Enabled = True
-    '        Me.txtPrem_Rate.Text = "0.00"
-    '        Me.txtPrem_Rate_Per.Text = "0"
-    '    Else
-    '        Me.txtPrem_Rate.Text = myRetValue.ToString
-    '    End If
-
-    'End Sub
-
-    Public Sub GETMEMBERSBY_BATCHNO_POLYNO(ByVal polyNumber As String, ByVal fileNumber As String, ByVal propNumber As String, ByVal batchNumber As String)
-        'Dim rtnString As String
+    Public Sub GETMEMBERSBY_BATCHNO_POLYNO(ByVal polyNumber As String, ByVal fileNumber As String, ByVal propNumber As String)
+        'Dim rtnString As String , ByVal batchNumber As String
         Dim mystrConn As String = CType(Session("connstr"), String)
         Dim conn As OleDbConnection
         conn = New OleDbConnection(mystrConn)
@@ -228,19 +187,21 @@ Partial Class Policy_PRG_LI_GRP_POLY_MEMBERS_RENEW
         cmd.Parameters.AddWithValue("@TBIL_POL_MEMB_POLY_NO", polyNumber)
         cmd.Parameters.AddWithValue("@TBIL_POL_MEMB_FILE_NO", fileNumber)
         cmd.Parameters.AddWithValue("@TBIL_POL_MEMB_PROP_NO", propNumber)
-        cmd.Parameters.AddWithValue("@TBIL_POL_MEMB_BATCH_NO", batchNumber)
+        'cmd.Parameters.AddWithValue("@TBIL_POL_MEMB_BATCH_NO", batchNumber)
 
         Try
             conn.Open()
             Dim objOledr As OleDbDataReader
-            'objOledr = cmd.ExecuteReader()
+            objOledr = cmd.ExecuteReader()
+            Dim dt As DataTable = New DataTable
+            dt.Load(objOledr)
+            Dim numRows As Integer = dt.Rows.Count
+            lblResult.Text = "Result: " + numRows.ToString + " members listed."
 
             'If objOledr.HasRows Then
-            GridView1.DataSource = cmd.ExecuteReader()
+            GridView1.DataSource = dt
             GridView1.DataBind()
-            'Else
-            '    _rtnMessage = "Sorry. The system cannot find record with IDs: " + txtPolNum.Text
-            'End If
+
 
 
             conn.Close()
@@ -488,18 +449,20 @@ Partial Class Policy_PRG_LI_GRP_POLY_MEMBERS_RENEW
             Exit Sub
         End If
 
-        GetPolicyBatchNumber(txtPolNum.Text)
+        'GetPolicyBatchNumber(txtPolNum.Text) , txtBatch_Num.Text
         strP_ID = RTrim(Me.txtPolNum.Text)
         Session("strP_ID") = strP_ID
         Call Proc_DoGet_Record("POLICY")
         Call GET_POLICYDATE_BY_FILENO(txtFileNum.Text)
+        Call GETMEMBERSBY_BATCHNO_POLYNO(txtPolNum.Text, txtFileNum.Text, txtQuote_Num.Text)
+
     End Sub
 
     Protected Sub cmdGetBatch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdGetBatch.Click
 
-        If txtBatch_Num.Text <> "" And txtPolNum.Text <> "" Then
-            GETMEMBERSBY_BATCHNO_POLYNO(txtPolNum.Text, txtFileNum.Text, txtQuote_Num.Text, txtBatch_Num.Text)
-        End If
+        'If txtBatch_Num.Text <> "" And txtPolNum.Text <> "" Then
+        '    'GETMEMBERSBY_BATCHNO_POLYNO(txtPolNum.Text, txtFileNum.Text, txtQuote_Num.Text, txtBatch_Num.Text)
+        'End If
 
     End Sub
 
@@ -2527,11 +2490,18 @@ Partial Class Policy_PRG_LI_GRP_POLY_MEMBERS_RENEW
         Try
             conn.Open()
             Dim objOledr As OleDbDataReader
-            'objOledr = cmd.ExecuteReader()
+            objOledr = cmd.ExecuteReader()
+
+            Dim dt As DataTable = New DataTable
+            dt.Load(objOledr)
+            Dim numRows As Integer = dt.Rows.Count
+            lblResult.Text = "Result: " + numRows.ToString + " members listed."
 
             'If objOledr.HasRows Then
-            GridView1.DataSource = cmd.ExecuteReader()
+            GridView1.DataSource = dt
             GridView1.DataBind()
+
+
             'Else
             '    _rtnMessage = "Sorry. The system cannot find record with IDs: " + txtPolNum.Text
             'End If
@@ -2554,6 +2524,7 @@ Partial Class Policy_PRG_LI_GRP_POLY_MEMBERS_RENEW
         'Dim row As GridViewRow = GridView1.Rows(e.NewSelectedIndex)
 
         GridView1.PageIndex = e.NewPageIndex
+        GETMEMBERSBY_BATCHNO_POLYNO(txtPolNum.Text, txtFileNum.Text, txtQuote_Num.Text)
         'Call Proc_DataBindGrid()
         lblMsg.Text = "Page " & GridView1.PageIndex + 1 & " of " & Me.GridView1.PageCount
 

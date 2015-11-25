@@ -53,6 +53,13 @@
 
     </script>
 
+    <style type="text/css">
+        .style1
+        {
+            width: 17px;
+        }
+    </style>
+
 </head>
 <body onload="<%= FirstMsg %>">
     <form id="Form1" name="Form1" runat="server">
@@ -137,11 +144,14 @@
                                     runat="server"></asp:Label>
                             </td>
                             <td align="left" valign="top" colspan="1">
-                                <asp:TextBox ID="txtBatch_Num" MaxLength="10" Width="80px" runat="server"></asp:TextBox>
+                                <asp:TextBox ID="txtBatch_Num" MaxLength="10" Width="80px" runat="server" 
+                                    Enabled="False">1</asp:TextBox>
                                 &nbsp;&nbsp;<asp:DropDownList ID="cboBatch_Num" AutoPostBack="true" Width="100px"
-                                    runat="server">
+                                    runat="server" Enabled="False">
+                                    <asp:ListItem Value="0">1</asp:ListItem>
                                 </asp:DropDownList>
-                                &nbsp;&nbsp;<asp:Button ID="cmdGetBatch" Enabled="true" Text="Get Data" runat="server" />
+                                &nbsp;&nbsp;<asp:Button ID="cmdGetBatch" Enabled="False" Text="Get Data" 
+                                    runat="server" />
                                 &nbsp;<asp:TextBox ID="txtBatch_Name" Visible="false" MaxLength="10" Width="20px"
                                     runat="server"></asp:TextBox>
                             </td>
@@ -406,7 +416,7 @@
                                                 height: 35px;">
                                                 <table align="left" border="0" style="background-color: #1C5E55; width: 100%; height: 30px;">
                                                     <tr style="font-size: medium; font-weight: bold;">
-                                                        <td align="left">
+                                                        <td align="left" class="style1">
                                                             &nbsp;
                                                             &nbsp;
                                                         </td>
@@ -445,8 +455,10 @@
                                                 <asp:GridView ID="GridView1" CellPadding="2" runat="server" CssClass="grd_ctrl" DataKeyNames="TBIL_POL_MEMB_REC_ID"
                                                     HorizontalAlign="Left" AutoGenerateColumns="False" AllowSorting="True" PagerSettings-Position="TopAndBottom"
                                                     PagerSettings-Mode="NextPreviousFirstLast" PagerSettings-FirstPageText="First"
-                                                    PagerSettings-NextPageText="Next" PagerSettings-PreviousPageText="Previous" PagerSettings-LastPageText="Last"
-                                                    EmptyDataText="No data available..." ShowHeader="False" ShowFooter="True">
+                                                    PagerSettings-NextPageText="Next" 
+                                                    PagerSettings-PreviousPageText="Previous" PagerSettings-LastPageText="Last"
+                                                    EmptyDataText="No data available..." ShowHeader="False" ShowFooter="True" 
+                                                    AllowPaging="True">
                                                     <PagerStyle CssClass="grd_page_style" />
                                                     <HeaderStyle CssClass="grd_header_style" />
                                                     <RowStyle CssClass="grd_row_style" />
@@ -496,6 +508,11 @@
                                                             <HeaderStyle HorizontalAlign="Left"></HeaderStyle>
                                                             <ItemStyle Width="60px"></ItemStyle>
                                                         </asp:BoundField>
+                                                         <asp:BoundField ReadOnly="true" DataField="TBIL_POL_MEMB_PREM" DataFormatString="{0:N2}" HeaderText="Prem Rate"
+                                                            ItemStyle-Width="60px" HeaderStyle-HorizontalAlign="Left" ConvertEmptyStringToNull="true" Visible="False">
+                                                            <HeaderStyle HorizontalAlign="Left"></HeaderStyle>
+                                                            <ItemStyle Width="60px"></ItemStyle>
+                                                        </asp:BoundField>
                                                         <asp:TemplateField HeaderText="Prem. Amt" ItemStyle-Width="80px" HeaderStyle-HorizontalAlign="Left">
                                                             <ItemTemplate>
                                                                 <asp:Label ID="lblTransAmt" runat="server" DataFormatString="{0:N2}" Text='<%#Eval("TBIL_POL_MEMB_PREM") %>' />
@@ -519,12 +536,12 @@
                                 </table>
                             </td>
                         </tr>
-                        <tr style="display: none;">
+                        <tr>
                             <td align="left" colspan="4" valign="top">
                                 <asp:Label ID="lblResult" Text="Result:" runat="server"></asp:Label>
-                                <asp:CheckBox runat="server" ID="chkDRNote" Text="Create Debit Note" /><asp:Button
+                                <%--<asp:CheckBox runat="server" ID="chkDRNote" Text="Create Debit Note" /><asp:Button
                                     ID="butDeleteMembers_ASP" CssClass="cmd_butt" Enabled="TRUE" Font-Bold="true"
-                                    Text="Add Members" OnClientClick="JSAddItem_ASP()" runat="server" Width="147px" />
+                                    Text="Add Members" OnClientClick="JSAddItem_ASP()" runat="server" Width="147px" />--%>
                             </td>
                         </tr>
                     </table>
