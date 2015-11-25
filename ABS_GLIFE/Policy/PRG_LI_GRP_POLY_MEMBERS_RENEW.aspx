@@ -469,7 +469,7 @@
                                                     <PagerSettings FirstPageText="First" LastPageText="Last" NextPageText="Next" Position="TopAndBottom"
                                                         PreviousPageText="Previous"></PagerSettings>
                                                     <Columns>
-                                                        <asp:TemplateField>
+                                                        <asp:TemplateField ItemStyle-Width="25">
                                                             <ItemTemplate>
                                                                 <asp:CheckBox ID="chkSel" runat="server" Width="30px" Checked="true"></asp:CheckBox>
                                                             </ItemTemplate>
