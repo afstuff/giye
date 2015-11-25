@@ -52,7 +52,29 @@
         }
 
     </script>
-
+    
+    <style type="text/css">
+        .style18
+        {
+            width: 54px;
+        }
+        .style19
+        {
+            width: 111px;
+        }
+        .style22
+        {
+            width: 52px;
+        }
+        .style23
+        {
+            width: 90px;
+        }
+        .style24
+        {
+            width: 122px;
+        }
+        </style>
 </head>
 <body onload="<%= FirstMsg %>">
     <form id="Form1" name="Form1" runat="server">
@@ -201,7 +223,7 @@
                                             <asp:CheckBox ID="chkData_Source" Text="-" runat="server" />
                                             &nbsp;<asp:Label ID="lblData_Source" Text="Data Source:" runat="server"></asp:Label>
                                         </td>
-                                        <td align="left" valign="top" colspan="4">
+                                        <td align="left" valign="top" colspan="6">
                                             <asp:DropDownList ID="cboData_Source" Width="250px" AutoPostBack="true" runat="server"
                                                 OnTextChanged="DoProc_Data_Source_Change">
                                                 <asp:ListItem Selected="True" Value="*">(Select item)</asp:ListItem>
@@ -220,7 +242,7 @@
                                         <td nowrap align="right" valign="top">
                                             <asp:Label ID="lbl_File_Upload" Text="Select Document:" runat="server"></asp:Label>
                                         </td>
-                                        <td nowrap align="left" valign="top" colspan="4">
+                                        <td nowrap align="left" valign="top" colspan="6">
                                             <input type="file" id="My_File_Upload" name="My_File_Upload" runat="server" onchange="Func_File_Change()"
                                                 onclick="return My_File_Upload_onclick()" />
                                             &nbsp;<asp:TextBox ID="txtFile_Upload" Enabled="false" Visible="true" runat="server"></asp:TextBox>&nbsp;<asp:Button
@@ -243,12 +265,239 @@
                                         <td align="left" valign="top" colspan="1">
                                             <asp:TextBox ID="txtXLS_Data_End_No" Width="60px" runat="server"></asp:TextBox>
                                         </td>
-                                        <td align="left" valign="top" colspan="1">
+                                        <td align="left" valign="top" colspan="3">
                                             <asp:Label ID="lblXLS_Data_Remarks" Font-Bold="true" Text="Applies to Upload option"
                                                 runat="server"></asp:Label>
                                         </td>
                                     </tr>
-                                    <tr class="tr_frame" style="display: none;">
+
+                
+                          <%-- <tr>
+                                <td align="left" colspan="4">
+                                    <table align="center" border="0" style="width: 100%">
+                                        <tr style="background-color: #ADD8E6;">
+                                                <td nowrap align="right" valign="top" class="style25">
+                                                    <asp:CheckBox ID="chkData_Source" Text="-" runat="server" />
+                                                    &nbsp;<asp:Label ID="lblData_Source" Text="Data Source:" runat="server"></asp:Label></td>
+                                                <td align="left" valign="top" colspan="6">
+                                                    <asp:DropDownList ID="cboData_Source" Width="250px" AutoPostBack="true" runat="server" OnTextChanged="DoProc_Data_Source_Change">
+                                                        <asp:ListItem Selected="True" Value="*">(Select item)</asp:ListItem>
+                                                        <asp:ListItem Value="M">Manually Input Data</asp:ListItem>
+                                                        <asp:ListItem Value="U">Upload Data From Excel Document</asp:ListItem>
+                                                    </asp:DropDownList>
+                                                    &nbsp;<asp:TextBox ID="txtData_Source_SW" Width="40" Visible="false" runat="server"></asp:TextBox>
+                                                    &nbsp;<asp:TextBox ID="txtData_Source_Name" Width="40" Visible="false" Enabled="false" runat="server"></asp:TextBox>
+                                                    &nbsp;&nbsp;&nbsp;<asp:Label ID="lblRisk_Days" ForeColor="Red" Visible="true" runat="server" Text="Risk Days:"></asp:Label>
+                                                    &nbsp;<asp:TextBox ID="txtRisk_Days" Width="60" Visible="true" runat="server"></asp:TextBox>
+                                                </td>
+                                        </tr>
+                                        <tr id="tr_file_upload" runat="server" style="background-color: #ADD8E6;">
+                                                <td nowrap align="right" valign="top" class="style25"><asp:Label ID="lbl_File_Upload" Text="Select Document:" runat="server"></asp:Label></td>
+                                                <td nowrap align="left" valign="top" colspan="6">
+                                                    <input type="file" id="My_File_Upload" name="My_File_Upload" runat="server" onchange="Func_File_Change()" onclick="return My_File_Upload_onclick()" />
+                                                    &nbsp;<asp:TextBox ID="txtFile_Upload" Enabled="false" Visible="true" runat="server"></asp:TextBox>&nbsp;<asp:Button ID="cmdFile_Upload" Enabled="false" Font-Bold="true" Font-Size="Large" Text="Upload" runat="server" />
+                                                    &nbsp;<asp:Label ID="lblFile_Upload_Warning" Visible="false" ForeColor="Red" runat="server" Text="Excel File of .XLS or .XLSX"></asp:Label></td>                                        
+                                        </tr>
+
+                                        <tr style="background-color: Maroon; color: White;">
+                                            <td align="left" valign="top" class="style25"><asp:Label ID="lblXLS_Data_Start_No" Text="Start Excel No" runat="server"></asp:Label></td>
+                                            <td align="left" valign="top" colspan="2"><asp:TextBox ID="txtXLS_Data_Start_No" 
+                                                    Width="60px" runat="server" style="margin-left: 0px"></asp:TextBox> 
+                                            </td>
+                                            <td align="left" valign="top" colspan="2" class="style9">
+                                                <asp:Label ID="lblXLS_Data_End_No" Text="End Excel No" runat="server" 
+                                                    Width="120px" Visible="False"></asp:Label></td>
+                                            <td align="left" valign="top" class="style11"><asp:TextBox ID="txtXLS_Data_End_No" Width="60px" runat="server"></asp:TextBox> </td>
+                                            <td align="left" valign="top" colspan="1" class="style4"><asp:Label ID="lblXLS_Data_Remarks" Font-Bold="true" Text="Applies to Upload option" runat="server"></asp:Label></td>                                            
+                                        </tr>--%>
+                                        
+                                        <tr class="tr_frame" id="HideRow1" runat="server">
+                                            <td align="left" valign="top" class="style26"><asp:Label ID="lblMember_SN" Text="Serial No" 
+                                                    runat="server" Visible="False"></asp:Label></td>
+                                            <td align="left" valign="top" colspan="2" class="style3"><asp:Label ID="lblGender" Text="Category" 
+                                                    runat="server" Visible="False"></asp:Label></td>
+                                            <td align="left" valign="top" colspan="2" class="style10"><asp:Label ID="lblMember_Name" 
+                                                    Text="Member Name" runat="server" Visible="False"></asp:Label></td>
+                                            <td align="left" valign="top" class="style12"><asp:Label ID="lblDesignation_Name" 
+                                                    Text="Designation" runat="server" Visible="False"></asp:Label></td>
+                                            <td align="left" valign="top" class="style5"><asp:Label ID="lblMember_DOB" 
+                                                    Text="Date of Birth / Age" ToolTip="Date of Birth(dd/mm/yyyy)" runat="server" 
+                                                    Visible="False"></asp:Label></td>
+                                        </tr>
+                                        <tr style="font-size: small;">
+                      
+                                            <td align="left" valign="top" class="style25">
+                                            <asp:TextBox ID="txtMember_SN" Enabled="false" MaxLength="10" Width="100px" 
+                                                    runat="server" Visible="False"></asp:TextBox>
+                                              </td>
+                                            <td align="left" valign="top" colspan="2"> 
+                                                <asp:DropDownList ID="cboGender" Width="100px" runat="server" Visible="False">
+                                                </asp:DropDownList>
+                                                <asp:TextBox ID="txtGender" Visible="false" Enabled="false" Width="20px" runat="server"></asp:TextBox><asp:TextBox ID="txtGenderName" Visible="false" Enabled="false" Width="20px" runat="server"></asp:TextBox> 
+                                                </td>
+                                            <td align="left" valign="top" class="style9" colspan="2">
+                                                <asp:TextBox ID="txtMember_Name" 
+                                                    runat="server" Width="200px" Visible="False"></asp:TextBox>
+                                            </td>
+                                            <td align="left" valign="top" class="style11">
+                                                <asp:TextBox ID="txtDesignation_Name" runat="server" 
+                                                    Visible="False" Width="150px"></asp:TextBox>
+                                                </td>
+                                                <td>
+                                                <asp:TextBox ID="txtMember_DOB" MaxLength="10" Width="100px" 
+                                                    ToolTip="Date of Birth(dd/mm/yyyy)" runat="server" Visible="False" 
+                                                        AutoPostBack="True"></asp:TextBox>
+                                                    <asp:TextBox ID="txtDOB_ANB" Enabled="False" 
+                                                    Width="40px" runat="server" Visible="False"></asp:TextBox>
+                                                </td>
+                                        </tr>
+                                        
+                                        <tr class="tr_frame" id="HideRow2" runat="server">
+                                            <td align="left" valign="top" class="style25"><asp:Label ID="lblStart_Date" Text="Start Date" 
+                                                    ToolTip="Start Date (dd/mm/yyyy)" runat="server" Visible="False"></asp:Label></td>
+                                            <td align="left" valign="top" colspan="2"><asp:Label ID="lblEnd_Date" 
+                                                    Text="End Date" ToolTip="End Date (dd/mm/yyyy)" runat="server" Visible="False"></asp:Label></td>
+                                            <td align="left" valign="top" class="style33">
+                                                <asp:Label ID="lblPrem_Period_Yr" Text="Tenor" runat="server" Visible="False"></asp:Label>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                            <td align="left" valign="top" class="style9">
+                                                <asp:Label ID="lblTotal_Emolument" 
+                                                    Text="Total Emolument" runat="server" Visible="False"></asp:Label></td>
+                                            <td align="left" valign="top" class="style11"><asp:Label ID="lblMedical_YN" 
+                                                    Text="Req Medical" ToolTip="Any medical examination" runat="server" 
+                                                    Visible="False"></asp:Label></td>
+                                            <td align="left" valign="top" class="style4"><asp:Label ID="lblPrem_Rate_X" 
+                                                    Text="Select Premium Rate" runat="server" Visible="False"></asp:Label>
+                                            </td>
+                                        </tr>
+                                        <tr style="font-size: small;">
+                                            <td align="left" valign="top" class="style27"><asp:TextBox ID="txtStart_Date" MaxLength="10" 
+                                                    Width="100px" ToolTip="Start Date (dd/mm/yyyy)" runat="server" 
+                                                    Visible="False" AutoPostBack="True"></asp:TextBox></td>
+                                            <td align="left" valign="top" colspan="2" class="style13"><asp:TextBox ID="txtEnd_Date" 
+                                                    MaxLength="10" Width="100px" ToolTip="End Date (dd/mm/yyyy)" runat="server" 
+                                                    Visible="False"></asp:TextBox></td>
+                                            <td align="left" valign="top" class="style34">
+                                                <asp:TextBox ID="txtPrem_Period_Yr" MaxLength="3" ToolTip="" runat="server" 
+                                                    Width="40px" Visible="False"></asp:TextBox>
+                                                &nbsp;&nbsp;&nbsp;</td>
+                                            <td align="left" valign="top" class="style14">
+                                                <asp:TextBox ID="txtTotal_Emolument" 
+                                                    MaxLength="15" ToolTip="" runat="server" Visible="False"></asp:TextBox></td>
+                                            <td align="left" valign="top" class="style15">
+                                                <asp:DropDownList ID="cboMedical_YN" Width="100px" runat="server" 
+                                                    Visible="False">
+                                                        <asp:ListItem Selected="True" Value="*">(Select item)</asp:ListItem>
+                                                        <asp:ListItem Value="Y">Yes</asp:ListItem>
+                                                        <asp:ListItem Value="N">No</asp:ListItem>                                                
+                                                </asp:DropDownList>
+                                                &nbsp;<asp:TextBox ID="txtMedical_YN" Visible="false" Width="20px" ToolTip="" runat="server"></asp:TextBox>&nbsp;<asp:TextBox ID="txtMedical_YN_Name" Visible="false" Width="20px" ToolTip="" runat="server"></asp:TextBox></td>
+                                            <td align="left" valign="top" class="style16">
+                                                <asp:DropDownList ID="cboPrem_Rate_Code" Enabled="false" Width="200px" 
+                                                    runat="server" AutoPostBack="true" OnTextChanged="DoProc_Premium_Code_Change" 
+                                                    Visible="False">
+                                                </asp:DropDownList>                                                
+                                            </td>
+                                        </tr>
+
+                                <tr class="tr_frame" id="HideRow3" runat="server">
+                                    <td align="left" colspan="1" class="style28">
+                                        <asp:Label ID="lblPrem_Rate_Code" Enabled="false" Text="Premium Rate Code:" runat="server" Visible="false"></asp:Label>
+                                    </td>
+                                    <td align="left" class="style29">
+                                        <asp:Label ID="lblPrem_Rate" Enabled="False" Text="Premium Rate:" 
+                                            runat="server" Visible="False"></asp:Label>
+                                        </td>
+                                    <td align="left" colspan="2" class="style30">
+                                        <asp:Label ID="lblPrem_Rate_Per" Enabled="False" Text="Rate Per:" 
+                                            runat="server" Visible="False"></asp:Label>
+                                        </td>
+                                    <td align="left" class="style31">
+                                        <asp:Label ID="lblPrem_Amt" Enabled="False" Text="Prem Amount:" runat="server" 
+                                            Visible="False"></asp:Label>
+                                        </td>
+                                    <td align="left" colspan="1" class="style32">
+                                        &nbsp;</td>
+                                        <td class="style29">
+                                        <asp:Label ID="lblErr_List" Visible="false" Enabled="true" ForeColor="Red" Text="Error:" runat="server"></asp:Label>
+                                        </td>
+                                </tr>
+
+                              <!--  <tr style="font-size: small>-->
+                                 <tr>
+                                    <td align="left" colspan="1">
+                                        <asp:TextBox ID="txtPrem_Rate_Code" Visible="False" 
+                                            Enabled="false" Width="80px" runat="server"></asp:TextBox>
+                                        <asp:TextBox ID="txtPrem_Rate_CodeName" Visible="false" Enabled="false" Width="30px" runat="server"></asp:TextBox>
+                                        <asp:TextBox ID="txtPrem_Rate_TypeNum" Visible="False" Enabled="false" 
+                                            MaxLength="1" Width="16px" runat="server"></asp:TextBox>
+                                    <td align="left" class="style25">
+                                        <asp:TextBox ID="txtPrem_Rate" Enabled="false" Width="90px" ToolTip="" 
+                                            runat="server" Visible="False"></asp:TextBox></td>
+                                    <td align="left">
+                                        <asp:TextBox ID="txtPrem_Rate_Per" Visible="False" Enabled="false" 
+                                            MaxLength="5" Width="60px" ToolTip="" runat="server"></asp:TextBox></td>
+                                    <td align="left" class="style9">
+                                        &nbsp;</td>
+                                    <td align="left" class="style9">
+                                        <asp:TextBox ID="txtPrem_Amt" Visible="False" Enabled="false" 
+                                            MaxLength="15" runat="server"></asp:TextBox></td>
+                                    <td align="left" class="style11">
+                                        &nbsp;</td>
+                                    <td align="left" colspan="1" class="style4">
+                                        <asp:DropDownList ID="cboErr_List" Visible="false" Width="200px" runat="server"></asp:DropDownList>
+                                     </td>
+                                             <td>&nbsp;</td>
+                                </tr>
+
+                                    </table>
+                                </td>
+                            </tr>
+                            
+                                <tr  class="tr_frame">
+                                    <td align="left" colspan="2">
+                                        <asp:Label ID="lblSum_Assured" Enabled="false" Text="Sum Assured" ToolTip="" runat="server"></asp:Label>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                    <td align="left" colspan="2">
+                                    <asp:Label ID="lblEffDate" Text="Effective. Date:" runat="server"></asp:Label>&nbsp;&nbsp;
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td align="left" colspan="2">
+                                        <asp:TextBox ID="txtSum_Assured" Enabled="false" MaxLength="15" 
+                                            ToolTip="" runat="server" style="width: 128px" Width="90px"></asp:TextBox><asp:TextBox ID="txtPrem_Amt_Prorata" Visible="false" Enabled="false" MaxLength="15" Width="80px" runat="server"></asp:TextBox><asp:TextBox ID="txtLoad_amt" Visible="false" Enabled="false" MaxLength="15" Width="80px" runat="server"></asp:TextBox></td>
+                                    <td align="left" colspan="2">
+                                        <asp:TextBox ID="txtEffDate" runat="server"></asp:TextBox>
+                                        </td>
+                                </tr>
+
+                                        <tr>
+                                            <td colspan="4"><hr /></td>
+                                        </tr>
+
+                    
+                            <tr>
+                                <td align="center" colspan="4" valign="top">
+                                    <table align="center" style="background-color: White; width: 97%;">
+                                    
+                                        <tr>
+                                            <td align="left" valign="top">
+                                            <div align="left" style="background-color: White; color: White; border-bottom-style: ridge; height: 35px;">
+                                                <table align="left" border="0" style="background-color: #1C5E55; width: 100%; height: 30px;" >
+                                                    <tr style="font-size: medium; font-weight: bold;">
+                                                        <td align="left" style="width: 30px;">&nbsp;</td>
+                                                        <td align="left" class="style22">&nbsp;</td>
+                                                        <td align="center" class="style18">Ref.No</td>
+                                                        <td align="center" class="style19">Member Name</td>
+                                                        <td align="center" class="style23">Sum Assured</td>
+                                                        <td align="center" class="style24">DOB</td>
+                                                        <td align="center" style="width: 40px;">Age</td>
+                                                        <td align="center" style="width: 60px;">Rate</td>
+                                                        <td align="center" style="width: 80px;">Prem Amt</td>
+                                                         <td align="center" style="width: 80px;">Effective Dt</td>
+                                                        <td align="center" style="width: 80px;">Batch</td>
+                          <%--          <tr class="tr_frame" style="display: none;">
                                         <td align="left" valign="top">
                                             <asp:Label ID="lblMember_SN" Text="Serial No" runat="server"></asp:Label>
                                         </td>
@@ -361,12 +610,14 @@
                                             <asp:Label ID="lblPrem_Amt" Enabled="false" Text="Prem Amount:" runat="server"></asp:Label>
                                             &nbsp;<asp:TextBox ID="txtPrem_Amt" Visible="true" Enabled="false" MaxLength="15"
                                                 runat="server"></asp:TextBox>
-                                        </td>
+                                        </td>--%>
                                     </tr>
                                 </table>
+                                </div>
+                                
                             </td>
                         </tr>
-                        <tr>
+                  <%--      <tr>
                             <td align="left" colspan="2">
                                 <asp:Label ID="lblSum_Assured" Enabled="false" Text="Sum Assured" ToolTip="" runat="server"></asp:Label>
                                 &nbsp;&nbsp;<asp:TextBox ID="txtSum_Assured" Enabled="false" MaxLength="15" ToolTip=""
@@ -382,15 +633,10 @@
                                 </asp:DropDownList>
                                 &nbsp;
                             </td>
-                        </tr>
-                        <tr>
-                            <td colspan="4">
-                                <hr />
-                            </td>
-                        </tr>
-                        <tr>
+                        </tr>--%>
+                        <%--   <tr>
                             <td align="center" colspan="4" valign="top">
-                                <table align="center" style="background-color: White; width: 97%;">
+                               <table align="center" style="background-color: White; width: 97%;">
                                     <tr>
                                         <td align="left" colspan="4" valign="top">
                                             <div align="left" style="background-color: White; color: White; border-bottom-style: ridge;
@@ -431,9 +677,9 @@
                                                 </table>
                                             </div>
                                         </td>
-                                    </tr>
+                                    </tr>--%>
                                     <tr>
-                                        <td align="left" colspan="4" valign="top">
+                                        <td align="left" valign="top">
                                             <div class="div_grid">
                                                 <asp:GridView ID="GridView1" CellPadding="2" runat="server" CssClass="grd_ctrl" DataKeyNames="TBIL_POL_MEMB_REC_ID"
                                                     HorizontalAlign="Left" AutoGenerateColumns="False" AllowPaging="false" AllowSorting="true"
@@ -452,25 +698,23 @@
                                                         PreviousPageText="Previous"></PagerSettings>
                                                     <Columns>
                                                         <asp:TemplateField>
-                                                            <ItemTemplate>
-                                                                <asp:CheckBox ID="chkSel" runat="server" Width="30px"></asp:CheckBox>
-                                                            </ItemTemplate>
+        			                                        <ItemTemplate>
+        						                                <asp:CheckBox id="chkSel" runat="server" Width="20px"></asp:CheckBox>
+                                                            </ItemTemplate>                                                            
                                                         </asp:TemplateField>
-                                                        <asp:CommandField ShowSelectButton="True" ItemStyle-Width="60px" />
-                                                        <asp:BoundField ReadOnly="true" DataField="TBIL_POL_MEMB_REC_ID" HeaderText="Ref.No"
-                                                            ItemStyle-Width="70px" HeaderStyle-HorizontalAlign="Left" ConvertEmptyStringToNull="true" />
-                                                        <asp:BoundField ReadOnly="true" DataField="TBIL_POL_MEMB_NAME" HeaderText="Member Name"
-                                                            ItemStyle-Width="120px" HeaderStyle-HorizontalAlign="Left" ConvertEmptyStringToNull="true" />
-                                                        <asp:BoundField ReadOnly="true" DataField="TBIL_POL_MEMB_TOT_SA" HeaderText="Sum Assured"
-                                                            ItemStyle-Width="100px" HeaderStyle-HorizontalAlign="Left" ConvertEmptyStringToNull="true" />
-                                                        <asp:BoundField ReadOnly="true" DataField="TBIL_POL_MEMB_BDATE" HeaderText="DOB"
-                                                            ItemStyle-Width="80px" HeaderStyle-HorizontalAlign="Left" ConvertEmptyStringToNull="true"
-                                                            DataFormatString="{0:dd MMM yyyy}" />
-                                                        <asp:BoundField ReadOnly="true" DataField="TBIL_POL_MEMB_AGE" HeaderText="Age" ItemStyle-Width="40px"
-                                                            HeaderStyle-HorizontalAlign="Left" ConvertEmptyStringToNull="true" />
-                                                        <asp:BoundField ReadOnly="true" DataField="TBIL_POL_MEMB_RATE" HeaderText="Prem Rate"
-                                                            ItemStyle-Width="60px" HeaderStyle-HorizontalAlign="Left" ConvertEmptyStringToNull="true" />
-                                                        <asp:TemplateField HeaderText="Prem. Amt" ItemStyle-Width="80px" HeaderStyle-HorizontalAlign="Left">
+                                
+                                                        <asp:CommandField ShowSelectButton="True" ItemStyle-Width="50px" />
+                            
+                                                        <asp:BoundField readonly="true" DataField="TBIL_POL_MEMB_REC_ID" HeaderText="Ref.No" ItemStyle-Width="70px" HeaderStyle-HorizontalAlign="Left" convertemptystringtonull="true" />
+                                                        <asp:BoundField readonly="true" DataField="TBIL_POL_MEMB_NAME" HeaderText="Member Name" ItemStyle-Width="120px" HeaderStyle-HorizontalAlign="Left" convertemptystringtonull="true" />
+                                                        <asp:BoundField readonly="true" DataField="TBIL_POL_MEMB_TOT_SA" HeaderText="Sum Assured" ItemStyle-Width="100px" HeaderStyle-HorizontalAlign="Left" convertemptystringtonull="true" />
+                                                        <asp:BoundField readonly="true" DataField="TBIL_POL_MEMB_BDATE" HeaderText="DOB" ItemStyle-Width="80px" HeaderStyle-HorizontalAlign="Left" convertemptystringtonull="true"  DataFormatString="{0:dd MMM yyyy}" />
+                                                        <asp:BoundField readonly="true" DataField="TBIL_POL_MEMB_AGE" HeaderText="Age" ItemStyle-Width="40px" HeaderStyle-HorizontalAlign="Left" convertemptystringtonull="true" />
+                                                        <asp:BoundField readonly="true" DataField="TBIL_POL_MEMB_RATE" HeaderText="Prem Rate" ItemStyle-Width="60px" HeaderStyle-HorizontalAlign="Left" convertemptystringtonull="true" />
+                                                        <asp:BoundField readonly="true" DataField="TBIL_POL_MEMB_PREM" HeaderText="Prem Rate" ItemStyle-Width="60px" 
+                                                            HeaderStyle-HorizontalAlign="Left" convertemptystringtonull="true" Visible="false" DataFormatString="{0:N2}"/>
+                                                        
+                                                         <asp:TemplateField HeaderText="Prem. Amt" ItemStyle-Width="80px" HeaderStyle-HorizontalAlign="Left">
                                                             <ItemTemplate>
                                                                 <asp:Label ID="lblTransAmt" runat="server" DataFormatString="{0:N2}" Text='<%#Eval("TBIL_POL_MEMB_PREM") %>' />
                                                             </ItemTemplate>
@@ -478,30 +722,35 @@
                                                                 <asp:Label ID="lbltxtTotal" runat="server" Text="0.00" DataFormatString="{0:N2}" />
                                                             </FooterTemplate>
                                                         </asp:TemplateField>
+                                                          <asp:BoundField DataField="TBIL_POL_MEMB_EFF_DT" HeaderText="Effective Dt" DataFormatString="{0:d}" />
                                                         <asp:BoundField ReadOnly="true" DataField="TBIL_POL_MEMB_BATCH_NO" HeaderText="Batch"
                                                             ItemStyle-Width="80px" HeaderStyle-HorizontalAlign="Left" ConvertEmptyStringToNull="true" />
+
                                                     </Columns>
                                                 </asp:GridView>
+                                            </div>    
+                                            </td>                                            
+                                        </tr>
+                                                                                
+                                    </table>
+                                </td>
+                            </tr> 
+                            
+                            <tr>
+                                <td align="left" colspan="4" valign="top">
+                                    <asp:Label ID="lblResult" Text="Result:" runat="server"></asp:Label>
+                                    <script language="JavaScript" type="text/javascript">new tcal({ 'formname': 'frmLoadMembers', 'controlname': 'txtDeleteDate' });</script> 
+                                    <asp:CheckBox runat="server" ID="chkCRNote"  Text="Create Credit Note"/><asp:Button ID="butDeleteMembers_ASP" CssClass="cmd_butt" Enabled="TRUE" Font-Bold="true" Text="Delete Members" OnClientClick="JSDelItem_ASP()" runat="server" Width="147px"/>
+                                    
+                                </td>
+                            </tr>
                                             </div>
                                         </td>
                                     </tr>
                                 </table>
                             </td>
                         </tr>
-                        <tr>
-                            <td align="left" colspan="4" valign="top">
-                                <asp:Label ID="lblResult" Text="Result:" runat="server"></asp:Label>
-                                <asp:Label ID="Label1" Text="Delete Eff. Date:" runat="server"></asp:Label><asp:TextBox
-                                    ID="txtDeleteDate" runat="server"> </asp:TextBox>
-
-                                <script language="JavaScript" type="text/javascript">                                    new tcal({ 'formname': 'frmLoadMembers', 'controlname': 'txtDeleteDate' });</script>
-
-                                <asp:CheckBox runat="server" ID="chkCRNote" Text="Create Credit Note" /><asp:Button
-                                    ID="butDeleteMembers_ASP" CssClass="cmd_butt" Enabled="TRUE" Font-Bold="true"
-                                    Text="Delete Members" OnClientClick="JSDelItem_ASP()" runat="server" Width="147px" />
-                            </td>
-                        </tr>
-                    </table>
+                        </table>
                 </td>
             </tr>
         </table>

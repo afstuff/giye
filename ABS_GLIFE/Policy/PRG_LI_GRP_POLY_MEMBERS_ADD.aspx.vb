@@ -153,6 +153,7 @@ Partial Class Policy_PRG_LI_GRP_POLY_MEMBERS_ADD
     Dim myRetValue As String = "0"
     Dim myTerm As String = ""
     Dim blnRet As Boolean = False
+    Dim dteDOB As Date = Now
 
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
@@ -215,6 +216,9 @@ Partial Class Policy_PRG_LI_GRP_POLY_MEMBERS_ADD
 
 
         If Not (Page.IsPostBack) Then
+            HideRow1.Visible = False
+            HideRow2.Visible = False
+            HideRow3.Visible = False
             Call Proc_DoNew()
             Me.txtRisk_Days.Text = "365"
             Me.txtDOB_ANB.Text = "0"
@@ -964,13 +968,16 @@ Partial Class Policy_PRG_LI_GRP_POLY_MEMBERS_ADD
                 'tr_file_upload.Visible = False
                 Me.cmdFile_Upload.Enabled = False
                 Me.cmdSave_ASP.Enabled = True
+                ShowControls()
             Case "U"
                 'tr_file_upload.Visible = True
                 Me.cmdSave_ASP.Enabled = False
+                HideControls()
             Case Else
                 'tr_file_upload.Visible = False
                 Me.cmdFile_Upload.Enabled = False
                 Me.cmdSave_ASP.Enabled = False
+                HideControls()
         End Select
 
         'Response.Write("<br />Code: " & UCase(Trim(Me.txtData_Source_SW.Text)))
@@ -979,6 +986,8 @@ Partial Class Policy_PRG_LI_GRP_POLY_MEMBERS_ADD
     End Sub
 
     Protected Sub DoProc_Premium_Code_Change()
+        'Added by Azeez bcos  "txtPrem_Rate_Code.Text" is sending a empty value
+        txtPrem_Rate_Code.Text = Me.cboPrem_Rate_Code.SelectedValue
         Call gnProc_DDL_Get(Me.cboPrem_Rate_Code, RTrim(Me.txtPrem_Rate_Code.Text))
         Call DoGet_SelectedItem(Me.cboPrem_Rate_Code, Me.txtPrem_Rate_Code, Me.txtPrem_Rate_CodeName, Me.lblMsg)
         If Trim(Me.txtPrem_Rate_Code.Text) = "" Then
@@ -1015,8 +1024,37 @@ Partial Class Policy_PRG_LI_GRP_POLY_MEMBERS_ADD
             Me.txtPrem_Rate_Per.Text = "0"
         Else
             Me.txtPrem_Rate.Text = myRetValue.ToString
-        End If
+            If txtTotal_Emolument.Text = "" Then
+                lblMsg.Text = "Total Emolument must no be empty"
+                FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+                Exit Sub
+            End If
 
+            Me.txtPrem_Rate.Text = myRetValue.ToString
+
+            dblPrem_Amt = 0
+            dblPrem_Amt_ProRata = 0
+            dblTotal_SA = 0
+
+            dblTotal_Salary = CDbl(Trim(Me.txtTotal_Emolument.Text))
+            dblTotal_Salary = CDbl(Trim(Me.txtTotal_Emolument.Text))
+
+            dblTotal_SA = dblTotal_Salary
+            If Val(Me.txtPrem_SA_Factor.Text) <> 0 Then
+                dblTotal_SA = dblTotal_Salary * Val(Trim(Me.txtPrem_SA_Factor.Text))
+            End If
+
+            Me.txtSum_Assured.Text = dblTotal_SA.ToString
+
+
+            dblPrem_Rate = CDbl(Trim(Me.txtPrem_Rate.Text))
+            dblPrem_Rate_Per = CDbl(Trim(Me.txtPrem_Rate_Per.Text))
+            If dblTotal_SA <> 0 And dblPrem_Rate <> 0 And dblPrem_Rate_Per <> 0 Then
+                dblPrem_Amt = dblTotal_SA * dblPrem_Rate / dblPrem_Rate_Per
+                dblPrem_Amt_ProRata = dblPrem_Amt
+                txtPrem_Amt.Text = dblPrem_Amt
+            End If
+        End If
     End Sub
 
     Private Sub Proc_DoDelete()
@@ -4334,5 +4372,137 @@ MyLoop_End:
         Session("strP_ID") = strP_ID
         Call Proc_DoGet_Record("POLICY")
 
+    End Sub
+
+    Private Sub ShowControls()
+        HideRow1.Visible = True
+        HideRow2.Visible = True
+        HideRow3.Visible = True
+        'txtPrem_Rate_Code.Enabled = True
+        txtPrem_Rate.Enabled = True
+        txtPrem_Rate_Per.Enabled = True
+        'txtPrem_Amt.Enabled = True
+        lblMember_SN.Visible = True
+        lblGender.Visible = True
+        lblMember_Name.Visible = True
+        lblDesignation_Name.Visible = True
+        lblMember_DOB.Visible = True
+        txtMember_Name.Visible = True
+        txtMember_SN.Visible = True
+        cboGender.Visible = True
+        txtDesignation_Name.Visible = True
+        txtMember_DOB.Visible = True
+        lblStart_Date.Visible = True
+        lblEnd_Date.Visible = True
+        lblPrem_Period_Yr.Visible = True
+        lblTotal_Emolument.Visible = True
+        lblMedical_YN.Visible = True
+        lblPrem_Rate_X.Visible = True
+        txtStart_Date.Visible = True
+        txtEnd_Date.Visible = True
+        txtPrem_Period_Yr.Visible = True
+        txtTotal_Emolument.Visible = True
+        cboMedical_YN.Visible = True
+        cboPrem_Rate_Code.Visible = True
+        lblPrem_Rate_Code.Visible = True
+        txtPrem_Rate_Code.Visible = True
+        txtPrem_Rate.Visible = True
+        txtPrem_Rate_Per.Visible = True
+        txtPrem_Amt.Visible = True
+        lblPrem_Rate_Per.Visible = True
+        lblPrem_Amt.Visible = True
+        lblPrem_Rate.Visible = True
+        cmdSave_ASP.Visible = True
+        cmdSave_ASP.Enabled = True
+        cboPrem_Rate_Code.Enabled = True
+    End Sub
+    Private Sub HideControls()
+        HideRow1.Visible = False
+        HideRow2.Visible = False
+        HideRow3.Visible = False
+        txtPrem_Rate_Code.Enabled = False
+        txtPrem_Rate.Enabled = False
+        txtPrem_Rate_Per.Enabled = False
+        txtPrem_Amt.Enabled = False
+        lblMember_SN.Visible = False
+        lblGender.Visible = False
+        lblMember_Name.Visible = False
+        lblDesignation_Name.Visible = False
+        lblMember_DOB.Visible = False
+        txtMember_Name.Visible = False
+        txtMember_SN.Visible = False
+        cboGender.Visible = False
+        txtDesignation_Name.Visible = False
+        txtMember_DOB.Visible = False
+        lblStart_Date.Visible = False
+        lblEnd_Date.Visible = False
+        lblPrem_Period_Yr.Visible = False
+        lblTotal_Emolument.Visible = False
+        lblMedical_YN.Visible = False
+        lblPrem_Rate_X.Visible = False
+        txtStart_Date.Visible = False
+        txtEnd_Date.Visible = False
+        txtPrem_Period_Yr.Visible = False
+        txtTotal_Emolument.Visible = False
+        cboMedical_YN.Visible = False
+        cboPrem_Rate_Code.Visible = False
+        lblPrem_Rate_Code.Visible = False
+        txtPrem_Rate_Code.Visible = False
+        txtPrem_Rate.Visible = False
+        txtPrem_Rate_Per.Visible = False
+        txtPrem_Amt.Visible = False
+        lblPrem_Rate_Per.Visible = False
+        lblPrem_Amt.Visible = False
+        lblPrem_Rate.Visible = False
+        cmdSave_ASP.Visible = False
+        cmdSave_ASP.Enabled = False
+        txtSum_Assured.Enabled = False
+        cboPrem_Rate_Code.Enabled = False
+    End Sub
+
+    Protected Sub txtMember_DOB_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtMember_DOB.TextChanged
+        If txtMember_DOB.Text <> "" Then
+            myarrData = Split(Me.txtMember_DOB.Text, "/")
+            If myarrData.Count <> 3 Then
+                Me.lblMsg.Text = "Missing or Invalid " & Me.lblMember_DOB.Text & ". Expecting full date in ddmmyyyy format ..."
+                FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+                Exit Sub
+            End If
+            strMyDay = myarrData(0)
+            strMyMth = myarrData(1)
+            strMyYear = myarrData(2)
+
+            strMyDay = CType(Format(Val(strMyDay), "00"), String)
+            strMyMth = CType(Format(Val(strMyMth), "00"), String)
+            strMyYear = CType(Format(Val(strMyYear), "0000"), String)
+
+            strMyDte = Trim(strMyDay) & "/" & Trim(strMyMth) & "/" & Trim(strMyYear)
+
+            blnStatusX = MOD_GEN.gnTest_TransDate(strMyDte)
+            If blnStatusX = False Then
+                Me.lblMsg.Text = "Incorrect date. Please enter valid date..."
+                FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+                Exit Sub
+            End If
+            Me.txtMember_DOB.Text = RTrim(strMyDte)
+            'mydteX = Mid(Me.txtStartDate.Text, 4, 2) & "/" & Left(Me.txtStartDate.Text, 2) & "/" & Right(Me.txtStartDate.Text, 4)
+            mydteX = Trim(strMyMth) & "/" & Trim(strMyDay) & "/" & Trim(strMyYear)
+            mydte = Format(CDate(mydteX), "MM/dd/yyyy")
+            dteDOB = Format(mydte, "MM/dd/yyyy")
+
+            Dte_DOB = dteDOB
+
+            Dte_Current = Now
+            lngDOB_ANB = Val(DateDiff("yyyy", Dte_Current, Dte_DOB))
+            If lngDOB_ANB < 0 Then
+                lngDOB_ANB = lngDOB_ANB * -1
+            End If
+
+            If Dte_Current.Month >= Dte_DOB.Month Then
+                lngDOB_ANB = lngDOB_ANB
+            End If
+            ' Me.txtDOB_ANB.Text = Trim(str(lngDOB_ANB))
+            Me.txtDOB_ANB.Text = lngDOB_ANB.ToString()
+        End If
     End Sub
 End Class
