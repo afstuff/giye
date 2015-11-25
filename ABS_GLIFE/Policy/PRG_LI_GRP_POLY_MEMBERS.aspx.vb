@@ -882,7 +882,7 @@ Partial Class PRG_LI_GRP_POLY_MEMBERS
             'Me.cmdDelete_ASP.Enabled = True
             Me.cmdDelItem_ASP.Enabled = True
             Me.cmdNext.Enabled = True
-            Me.txtBatch_Num.Enabled = False
+            'Me.txtBatch_Num.Enabled = False
         Else
             Me.cmdNext.Enabled = False
             Me.txtBatch_Num.Enabled = True
@@ -1349,6 +1349,9 @@ Partial Class PRG_LI_GRP_POLY_MEMBERS
                            subctrl.ID = "txtPrem_Rate_Code" Or _
                            subctrl.ID = "txtPrem_SA_Factor" Or _
                            subctrl.ID = "txtRisk_Days" Or _
+                            subctrl.ID = "txtStart_Date" Or _
+                           subctrl.ID = "txtEnd_Date" Or _
+                           subctrl.ID = "txtEffDate" Or _
                            subctrl.ID = "xyz_123" Then
                             'Control(ID) : txtAction
                             'Control(ID) : txtFileNum
@@ -2132,7 +2135,7 @@ Proc_Skip_ANB:
         End Select
 
         Me.txtBatch_Num.Enabled = False
-        Me.cboBatch_Num.Enabled = False
+        ' Me.cboBatch_Num.Enabled = False
         Call Proc_Batch()
         Call Proc_DataBind()
         Call Proc_DoNew()
@@ -4007,7 +4010,7 @@ MyLoop_End:
 
             Me.txtBatch_Num.Text = RTrim(objOLEDR("TBIL_POL_MEMB_BATCH_NO") & vbNullString)
             'Me.txtBatch_Num.Enabled = False
-            Me.cboBatch_Num.Enabled = False
+            'Me.cboBatch_Num.Enabled = False
 
             Me.txtMember_SN.Text = Val(RTrim(CType(objOLEDR("TBIL_POL_MEMB_SNO") & vbNullString, String)))
 
