@@ -1671,6 +1671,9 @@ SKIP_Next_88:
                 drNewRow("TBIL_POLY_ASSRD_RELATN") = RTrim(Me.txtRelation.Text)
 
                 drNewRow("TBIL_POLY_ASSRD_PLACE_BIRTH") = RTrim(Me.txtDOB_Place.Text)
+                drNewRow("TBIL_POLY_MED_COVER_LMT") = Val(Trim(txtFreeMedCovLmt.text))
+                drNewRow("TBIL_POLY_RETENTION") = Val(Trim(txtRetention.text))
+                drNewRow("TBIL_POLY_COMP_SHARE") = Val(Trim(txtCompShare.Text))
 
                 drNewRow("TBIL_POLY_FLAG") = "A"
                 drNewRow("TBIL_POLY_OPERID") = CType(myUserIDX, String)
@@ -1749,6 +1752,9 @@ SKIP_Next_88:
                     .Rows(0)("TBIL_POLY_ASSRD_RELATN") = RTrim(Me.txtRelation.Text)
 
                     .Rows(0)("TBIL_POLY_ASSRD_PLACE_BIRTH") = RTrim(Me.txtDOB_Place.Text)
+                    .Rows(0)("TBIL_POLY_MED_COVER_LMT") = Val(Trim(txtFreeMedCovLmt.text))
+                    .Rows(0)("TBIL_POLY_RETENTION") = Val(Trim(txtRetention.text))
+                    .Rows(0)("TBIL_POLY_COMP_SHARE") = Val(Trim(txtCompShare.Text))
 
                     .Rows(0)("TBIL_POLY_FLAG") = "C"
                     '.Rows(0)("TBIL_POLY_OPERID") = CType(myUserIDX, String)
@@ -2260,6 +2266,13 @@ PUpdate_Date1:
             Me.txtProStatus.Text = RTrim(CType(objOLEDR("TBIL_POLY_PROPSL_ACCPT_STATUS") & vbNullString, String))
             Call gnProc_DDL_Get(Me.cboProStatus, RTrim(Me.txtProStatus.Text))
 
+            If Not IsDBNull(objOLEDR("TBIL_POLY_MED_COVER_LMT")) Then _
+                                    txtFreeMedCovLmt.text = Format(objOLEDR("TBIL_POLY_MED_COVER_LMT"), "Standard")
+            If Not IsDBNull(objOLEDR("TBIL_POLY_RETENTION")) Then _
+                                    txtRetention.text = Format(objOLEDR("TBIL_POLY_RETENTION"), "Standard")
+            If Not IsDBNull(objOLEDR("TBIL_POLY_COMP_SHARE")) Then _txtCompShare.Text = objOLEDR("TBIL_POLY_COMP_SHARE")
+
+
             Me.lblFileNum.Enabled = False
             'Call DisableBox(Me.txtFileNum)
             Me.chkFileNum.Enabled = False
@@ -2281,10 +2294,10 @@ PUpdate_Date1:
                 Me.lblFileNum.Enabled = False
                 Me.txtFileNum.Enabled = False
                 Me.cmdFileNum.Enabled = False
-                Me.cmdSave_ASP.Enabled = False
+                ' Me.cmdSave_ASP.Enabled = False
+                Me.cmdSave_ASP.Enabled = True
                 Me.cmdDelete_ASP.Enabled = False
 
-                Me.cmdSave_ASP.Visible = False
                 Me.cmdDelete_ASP.Visible = False
                 Me.cmdPrint_ASP.Visible = False
             End If

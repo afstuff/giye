@@ -242,7 +242,7 @@
 
                                     <tr>
                                                 <td align="left" valign="top"><asp:Label ID="lblRetirement_Age" Text="Retirement_Age:" runat="server"></asp:Label></td>
-                                                <td align="left" valign="top" colspan="4"><asp:TextBox ID="txtRetirement_Age" Width="40px" MaxLength="3" runat="server"></asp:TextBox>
+                                                <td align="left" valign="top" colspan="3"><asp:TextBox ID="txtRetirement_Age" Width="40px" MaxLength="3" runat="server"></asp:TextBox>
                                                 </td>
                                     </tr>
 
@@ -424,6 +424,35 @@
                                                     <tr><td colspan="2"></td></tr>                                                                                                      
                                                   </table>                                                
                                             </div> 
+                                        </td>
+                                    </tr>
+                                     <tr>
+                                        <td align="left" colspan="4" valign="top" class="myMenu_Title">Re Insurance Info / Treaty Share</td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left" valign="top"><asp:Label ID="lblRetention" Text="Retention:" 
+                                                runat="server"></asp:Label></td>
+                                        <td align="left" valign="top" colspan="3">
+                                                    <asp:TextBox ID="txtRetention" Visible="true" Enabled="true" 
+                                                MaxLength="25" Width="142px" runat="server"></asp:TextBox>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left" valign="top"><asp:Label ID="lblFreeMedCovLmt" 
+                                                Text="Free Medical Cover Limit" runat="server"></asp:Label></td>
+                                        <td align="left" valign="top" colspan="3">
+                                                    <asp:TextBox ID="txtFreeMedCovLmt" Visible="true" Enabled="true" 
+                                                MaxLength="25" Width="142px" runat="server"></asp:TextBox>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td align="left" valign="top">
+                                            <asp:Label ID="lblCompShare" 
+                                                Text="Your Company Share %:" runat="server"></asp:Label></td>
+                                        <td align="left" valign="top" colspan="3">
+                                                    <asp:TextBox ID="txtCompShare" Visible="true" Enabled="true" 
+                                                MaxLength="25" Width="53px" runat="server"></asp:TextBox>
                                         </td>
                                     </tr>
 
