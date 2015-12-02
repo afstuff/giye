@@ -242,9 +242,11 @@ Partial Class MENU_GL
                 AddMenuItem("", "Credit Note Without Commission Print", "Reports/PRG_LI_GRP_DN_RPT.aspx?TTYPE=CNNOCOM")
                 AddMenuItem("", "", "") 'blank link
                 AddMenuItem("", "Medical Examination Requirement List", "Reports/GRP_MED_1101.aspx?TTYPE=GRP_RPT_MED_1101")
-                AddMenuItem("", "Group Medical Examination Test Requirement List", "Reports/GRP_MEDICAL_EXAM_LIST.aspx")
                 'AddMenuItem("", "Policy Schedule", "")
                 AddMenuItem("", "Print Policy Schedule", "POLICY/PRG_LI_GRP_QUOT_SCHEDULE.aspx?opt=POLY_SCHDLE")
+
+                AddMenuItem("", "Print ReAssurance Certificate", "Reports/PRG_LI_RE_ASSURANCE_CERT_RPT.aspx?opt=REASS_CERT")
+
 
                 AddMenuItem("", "Policy Register", "")
                 AddMenuItem("", "Premium Report", "")
@@ -304,27 +306,16 @@ Partial Class MENU_GL
                 AddMenuItem("", "", "") 'blank link
                 'AddMenuItem("", "MENU CAPTION", "PAGE URL")Claim Request Entry
                 AddMenuItem("Transactions", "Claim Reported Entry", "Claims/PRG_LI_GRP_CLM_ENTRY.aspx")
-                AddMenuItem("", "Waiver of Premium", "Claims/PRG_LI_GRP_CLM_WAIVER.aspx")
-                AddMenuItem("", "Paid-Up Policies", "Claims/PRG_LI_GRP_PAIDUP_PROCESS.aspx")
-                AddMenuItem("", "Lapse Policies", "Claims/PRG_LI_GRP_LAPSE_PROCESS.aspx")
-                AddMenuItem("", "Policy Cancellation Process", "Claims/PRG_LI_GRP_CANCEL_PROCESS.aspx")
-                AddMenuItem("", "Policy Reactivation Process", "Claims/PRG_LI_GRP_REVIVE_POLICY.aspx")
-                AddMenuItem("", "Maturity Claim Process", "Claims/PRG_LI_GRP_CLM_MATURE.aspx")
-                AddMenuItem("", "Partial Maturity Claim Process", "Claims/PRG_LI_CLM_PART_MATURE.aspx")
-                AddMenuItem("", "Claims Additions Entry", "")
-                'AddMenuItem("", "", "")
-                'AddMenuItem("", "", "") 'blank link
-                AddMenuItem("", "Claims Paid Entry", "")
-
-
                 AddMenuItem("", "", "")
                 AddMenuItem("", "", "") 'blank link
-                AddMenuItem("Reports", "Claims Reported Report", "")
-                AddMenuItem("", "Claims Paid Report", "")
-                AddMenuItem("", "Claims Outstanding Report", "")
-                AddMenuItem("", "Death Claims Paid Report", "")
+
                 AddMenuItem("", "", "") 'blank link
-                AddMenuItem("", "UNDER_LINE", "") 'blank link
+                'AddMenuItem("Reports", "Claims Reported Report", "")
+                'AddMenuItem("", "Claims Paid Report", "")
+                'AddMenuItem("", "Claims Outstanding Report", "")
+                'AddMenuItem("", "Death Claims Paid Report", "")
+                'AddMenuItem("", "", "") 'blank link
+                'AddMenuItem("", "UNDER_LINE", "") 'blank link
                 AddMenuItem("", "Returns to Previous Page", "menu_gl.aspx?menu=home")
 
             Case "GL_REINS"
@@ -357,16 +348,6 @@ Partial Class MENU_GL
                 AddMenuItem("", "", "") 'blank link
                 AddMenuItem("", "UNDER_LINE", "") 'blank link
                 AddMenuItem("", "Returns to Previous Page", "menu_gl.aspx?menu=home")
-
-            Case "GL_RENEWAL"
-                STRMENU_TITLE = "+++ Renewal Menu +++ "
-                AddMenuItem("", "Returns to Previous Page", "menu_gl.aspx?menu=home")
-                AddMenuItem("", "", "")
-                AddMenuItem("", "", "") 'blank link
-                'AddMenuItem("", "", "")
-                AddMenuItem("Renewals", "Pre-Renewal Processing", "")
-                AddMenuItem("", "Renew Scheme", "./policy/PRG_LI_GRP_POLY_MEMBERS_RENEW.aspx") 'blank link
-
 
         End Select
 
