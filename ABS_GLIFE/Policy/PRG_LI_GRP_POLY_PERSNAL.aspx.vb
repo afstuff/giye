@@ -1067,6 +1067,47 @@ Proc_Skip_Check:
             Exit Sub
         End If
 
+        If txtRetention.Text <> "" Then
+            If Not IsNumeric(txtRetention.Text) Then
+                Me.lblMsg.Text = "Retention must be numeric"
+                FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+                txtRetention.Focus()
+                Exit Sub
+            End If
+        Else
+            Me.lblMsg.Text = "Retention not be empty"
+            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+            txtRetention.Focus()
+            Exit Sub
+        End If
+
+        If txtFreeMedCovLmt.Text <> "" Then
+            If Not IsNumeric(txtFreeMedCovLmt.Text) Then
+                Me.lblMsg.Text = "Free medical cover limit must be numeric"
+                FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+                txtFreeMedCovLmt.Focus()
+                Exit Sub
+            End If
+        Else
+            Me.lblMsg.Text = "Free medical cover limit not be empty"
+            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+            txtFreeMedCovLmt.Focus()
+            Exit Sub
+        End If
+
+        If txtCompShare.Text <> "" Then
+            If Not IsNumeric(txtCompShare.Text) Then
+                Me.lblMsg.Text = "Company share must be numeric"
+                FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+                txtCompShare.Focus()
+                Exit Sub
+            End If
+        Else
+            Me.lblMsg.Text = "Company share must not be empty"
+            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+            txtCompShare.Focus()
+            Exit Sub
+        End If
 
 
 
@@ -1671,8 +1712,8 @@ SKIP_Next_88:
                 drNewRow("TBIL_POLY_ASSRD_RELATN") = RTrim(Me.txtRelation.Text)
 
                 drNewRow("TBIL_POLY_ASSRD_PLACE_BIRTH") = RTrim(Me.txtDOB_Place.Text)
-                drNewRow("TBIL_POLY_MED_COVER_LMT") = Val(Trim(txtFreeMedCovLmt.text))
-                drNewRow("TBIL_POLY_RETENTION") = Val(Trim(txtRetention.text))
+                drNewRow("TBIL_POLY_MED_COVER_LMT") = Val(Trim(txtFreeMedCovLmt.Text))
+                drNewRow("TBIL_POLY_RETENTION") = Val(Trim(txtRetention.Text))
                 drNewRow("TBIL_POLY_COMP_SHARE") = Val(Trim(txtCompShare.Text))
 
                 drNewRow("TBIL_POLY_FLAG") = "A"
@@ -1752,8 +1793,8 @@ SKIP_Next_88:
                     .Rows(0)("TBIL_POLY_ASSRD_RELATN") = RTrim(Me.txtRelation.Text)
 
                     .Rows(0)("TBIL_POLY_ASSRD_PLACE_BIRTH") = RTrim(Me.txtDOB_Place.Text)
-                    .Rows(0)("TBIL_POLY_MED_COVER_LMT") = Val(Trim(txtFreeMedCovLmt.text))
-                    .Rows(0)("TBIL_POLY_RETENTION") = Val(Trim(txtRetention.text))
+                    .Rows(0)("TBIL_POLY_MED_COVER_LMT") = Val(Trim(txtFreeMedCovLmt.Text))
+                    .Rows(0)("TBIL_POLY_RETENTION") = Val(Trim(txtRetention.Text))
                     .Rows(0)("TBIL_POLY_COMP_SHARE") = Val(Trim(txtCompShare.Text))
 
                     .Rows(0)("TBIL_POLY_FLAG") = "C"
@@ -2410,4 +2451,7 @@ PUpdate_Date1:
 
     End Sub
 
+    Protected Sub cmdNew_ASP_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdNew_ASP.Click
+
+    End Sub
 End Class

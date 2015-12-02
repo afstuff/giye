@@ -438,8 +438,9 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td align="left" valign="top"><asp:Label ID="lblFreeMedCovLmt" 
-                                                Text="Free Medical Cover Limit" runat="server"></asp:Label></td>
+                                        <td align="left" valign="top">
+                                            <asp:Label ID="lblFreeMedCovLmt" 
+                                                Text="Free Medical Cover Limit:" runat="server"></asp:Label></td>
                                         <td align="left" valign="top" colspan="3">
                                                     <asp:TextBox ID="txtFreeMedCovLmt" Visible="true" Enabled="true" 
                                                 MaxLength="25" Width="142px" runat="server"></asp:TextBox>
