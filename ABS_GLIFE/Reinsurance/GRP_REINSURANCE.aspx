@@ -89,7 +89,7 @@
                                 <asp:Label ID="lblMessage" Text="Staus:" runat="server" Font-Size="Small" ForeColor="Red"
                                     Font-Bold="True"></asp:Label>
                                 &nbsp;<a id="PageAnchor_Return_Link" runat="server" class="a_return_menu" href="#"
-                                    style="float: right;">Returns to Previous Page</a> &nbsp;<%=PageLinks%>&nbsp;
+                                    style="float: right;" visible="False">Returns to Previous Page</a> &nbsp;<%=PageLinks%>&nbsp;
                                 <%--onclick="javascript:JSDO_RETURN('MENU_IL.aspx?menu=il_code_cust')"--%>
                             </td>
                         </tr>

@@ -28,6 +28,11 @@ Partial Class Reinsurance_GRP_REINSURANCE
     Dim strErrMsg As String
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+
+        PageLinks = ""
+        'PageLinks = PageLinks & "<a href='javascript:window.close();' runat='server'>Close...</a>"
+        PageLinks = "<a href='../MENU_GL.aspx?menu=GL_REINS' class='a_sub_menu' style='float:right;'>Return to Menu</a>&nbsp;<br/>"
+
         strTableName = "TBGL_REINSURANCE"
     End Sub
 
