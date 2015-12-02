@@ -242,6 +242,7 @@ Partial Class MENU_GL
                 AddMenuItem("", "Credit Note Without Commission Print", "Reports/PRG_LI_GRP_DN_RPT.aspx?TTYPE=CNNOCOM")
                 AddMenuItem("", "", "") 'blank link
                 AddMenuItem("", "Medical Examination Requirement List", "Reports/GRP_MED_1101.aspx?TTYPE=GRP_RPT_MED_1101")
+                AddMenuItem("", "Group Medical Examination Test Requirement List", "Reports/GRP_MEDICAL_EXAM_LIST.aspx")
                 'AddMenuItem("", "Policy Schedule", "")
                 AddMenuItem("", "Print Policy Schedule", "POLICY/PRG_LI_GRP_QUOT_SCHEDULE.aspx?opt=POLY_SCHDLE")
 

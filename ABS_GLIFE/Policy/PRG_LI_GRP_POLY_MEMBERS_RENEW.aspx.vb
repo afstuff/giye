@@ -2520,7 +2520,11 @@ Partial Class Policy_PRG_LI_GRP_POLY_MEMBERS_RENEW
 
     Protected Sub btnRenewClaim_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnRenewClaim.Click
 
-        DoClaimRenewal(txtPolNum.Text, txtFileNum.Text, txtQuote_Num.Text, MOD_GEN.DoConvertToDbDateFormat(txtStartDate.Text), MOD_GEN.DoConvertToDbDateFormat(txtEndDate.Text))
+        If txtPolNum.Text <> "" Then
+            DoClaimRenewal(txtPolNum.Text, txtFileNum.Text, txtQuote_Num.Text, MOD_GEN.DoConvertToDbDateFormat(txtStartDate.Text), MOD_GEN.DoConvertToDbDateFormat(txtEndDate.Text))
+
+        End If
+
     End Sub
 
 

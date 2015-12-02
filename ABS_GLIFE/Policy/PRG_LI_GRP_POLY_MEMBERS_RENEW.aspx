@@ -50,6 +50,21 @@
                 return true;
             }
         }
+//        $(function() {
+//        $("#btnRenewClaim").click(function(e) {
+//        var polVal=$("txtPolNum").val();
+//        if (polVal.lenght<0) { }
+//                e.preventDefault()
+//                alert("clicked");
+//                var ok = confirm("WARNING: Record will be permanently BE RENEWED! Are you sure you want to renew policy?");
+//                if (ok == true) {
+//                    var myform = window.document.forms["Form1"];
+//                    myform.submit();
+//                    alert("true!");
+
+//                }
+//            });
+//        });
 
     </script>
 
@@ -59,7 +74,6 @@
             width: 17px;
         }
     </style>
-
 </head>
 <body onload="<%= FirstMsg %>">
     <form id="Form1" name="Form1" runat="server">
@@ -144,14 +158,12 @@
                                     runat="server"></asp:Label>
                             </td>
                             <td align="left" valign="top" colspan="1">
-                                <asp:TextBox ID="txtBatch_Num" MaxLength="10" Width="80px" runat="server" 
-                                    Enabled="False">1</asp:TextBox>
+                                <asp:TextBox ID="txtBatch_Num" MaxLength="10" Width="80px" runat="server" Enabled="False">1</asp:TextBox>
                                 &nbsp;&nbsp;<asp:DropDownList ID="cboBatch_Num" AutoPostBack="true" Width="100px"
                                     runat="server" Enabled="False">
                                     <asp:ListItem Value="0">1</asp:ListItem>
                                 </asp:DropDownList>
-                                &nbsp;&nbsp;<asp:Button ID="cmdGetBatch" Enabled="False" Text="Get Data" 
-                                    runat="server" />
+                                &nbsp;&nbsp;<asp:Button ID="cmdGetBatch" Enabled="False" Text="Get Data" runat="server" />
                                 &nbsp;<asp:TextBox ID="txtBatch_Name" Visible="false" MaxLength="10" Width="20px"
                                     runat="server"></asp:TextBox>
                             </td>
@@ -209,7 +221,7 @@
                                 </div>
                             </td>
                         </tr>--%>
-                       <%-- <tr>
+                        <%-- <tr>
                             <td align="left" colspan="4" style="display: none;">
                                 <table align="center" border="0" style="width: 100%">
                                     <tr style="background-color: #ADD8E6;">
@@ -385,7 +397,7 @@
                                 </table>
                             </td>
                         </tr>--%>
-                       <%-- <tr style="display: none;">
+                        <%-- <tr style="display: none;">
                             <td align="left" colspan="2">
                                 <asp:Label ID="lblSum_Assured" Enabled="false" Text="Sum Assured" ToolTip="" runat="server"></asp:Label>
                                 &nbsp;&nbsp;<asp:TextBox ID="txtSum_Assured" Enabled="false" MaxLength="15" ToolTip=""
@@ -417,8 +429,7 @@
                                                 <table align="left" border="0" style="background-color: #1C5E55; width: 100%; height: 30px;">
                                                     <tr style="font-size: medium; font-weight: bold;">
                                                         <td align="left" class="style1">
-                                                            &nbsp;
-                                                            &nbsp;
+                                                            &nbsp; &nbsp;
                                                         </td>
                                                         <td align="center" style="width: 70px;">
                                                             Ref.No
@@ -455,10 +466,8 @@
                                                 <asp:GridView ID="GridView1" CellPadding="2" runat="server" CssClass="grd_ctrl" DataKeyNames="TBIL_POL_MEMB_REC_ID"
                                                     HorizontalAlign="Left" AutoGenerateColumns="False" AllowSorting="True" PagerSettings-Position="TopAndBottom"
                                                     PagerSettings-Mode="NextPreviousFirstLast" PagerSettings-FirstPageText="First"
-                                                    PagerSettings-NextPageText="Next" 
-                                                    PagerSettings-PreviousPageText="Previous" PagerSettings-LastPageText="Last"
-                                                    EmptyDataText="No data available..." ShowHeader="False" ShowFooter="True" 
-                                                    AllowPaging="True">
+                                                    PagerSettings-NextPageText="Next" PagerSettings-PreviousPageText="Previous" PagerSettings-LastPageText="Last"
+                                                    EmptyDataText="No data available..." ShowHeader="False" ShowFooter="True" AllowPaging="True">
                                                     <PagerStyle CssClass="grd_page_style" />
                                                     <HeaderStyle CssClass="grd_header_style" />
                                                     <RowStyle CssClass="grd_row_style" />
@@ -508,8 +517,9 @@
                                                             <HeaderStyle HorizontalAlign="Left"></HeaderStyle>
                                                             <ItemStyle Width="60px"></ItemStyle>
                                                         </asp:BoundField>
-                                                         <asp:BoundField ReadOnly="true" DataField="TBIL_POL_MEMB_PREM" DataFormatString="{0:N2}" HeaderText="Prem Rate"
-                                                            ItemStyle-Width="60px" HeaderStyle-HorizontalAlign="Left" ConvertEmptyStringToNull="true" Visible="False">
+                                                        <asp:BoundField ReadOnly="true" DataField="TBIL_POL_MEMB_PREM" DataFormatString="{0:N2}"
+                                                            HeaderText="Prem Rate" ItemStyle-Width="60px" HeaderStyle-HorizontalAlign="Left"
+                                                            ConvertEmptyStringToNull="true" Visible="False">
                                                             <HeaderStyle HorizontalAlign="Left"></HeaderStyle>
                                                             <ItemStyle Width="60px"></ItemStyle>
                                                         </asp:BoundField>
