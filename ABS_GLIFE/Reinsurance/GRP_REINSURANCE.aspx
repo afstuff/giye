@@ -81,6 +81,7 @@
                         <tr>
                             <td align="left" colspan="4" class="myMenu_Title">
                                 <%=STRPAGE_TITLE%>
+                                <asp:Label ID="Label1" runat="server" Text="+++ REINSURANCE DATA ENTRY +++"></asp:Label>
                             </td>
                         </tr>
                         <tr>
@@ -176,7 +177,6 @@
                             <td align="left" nowrap>
                                 <asp:DropDownList ID="ddnCompanyType" runat="server" Width="250px">
                                     <asp:ListItem>--Select Item --</asp:ListItem>
-                                    <asp:ListItem Value="C">COINSURANCE</asp:ListItem>
                                     <asp:ListItem Value="R">REINSURANCE</asp:ListItem>
                                 </asp:DropDownList>
                             </td>

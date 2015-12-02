@@ -340,6 +340,7 @@ Partial Class MENU_GL
                 AddMenuItem("", "", "") 'blank link
                 AddMenuItem("Reports", "ReAssurance Report", "Reinsurance/GRP_REINS_1101.aspx?TTYPE=GRP_RPT_REINS_1101")
                 AddMenuItem("", "ReAssurance Register", "Reinsurance/GRP_REINS_1101.aspx?TTYPE=GRP_RPT_REINS_1102")
+                AddMenuItem("", "ReInsurance Data Entry", "Reinsurance/GRP_REINSURANCE.aspx")
                 AddMenuItem("", "ReAssurer Bordeareaux", "")
                 AddMenuItem("", "Definite Certificate", "")
                 AddMenuItem("", "", "") 'blank link

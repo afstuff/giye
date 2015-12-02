@@ -31,7 +31,7 @@ Partial Class Reports_GRP_MEDICAL_EXAM_LIST
 
     Protected STRMENU_TITLE As String
     Protected BufferStr As String
-    Dim rParams As String() = {"nw", "nw", "new", "new", "new", "new", "new", "new", "new"}
+    Dim rParams As String() = {"nw", "nw", "new", "new"}
 
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
@@ -50,10 +50,11 @@ Partial Class Reports_GRP_MEDICAL_EXAM_LIST
             Exit Sub
         End If
 
+         Dim url As String = HttpContext.Current.Request.Url.AbsoluteUri
         rParams(0) = "rptMEDICAL_UNDER_CLASS_TEST"
         rParams(1) = "pPOLICYNUMBER="
         rParams(2) = txtPolicyNumber.Text + "&"
-        'rParams(3) = "PARAM_FILE_NUM="
+        rParams(3) = url
         'rParams(4) = txtFileNo.Text + "&"
         'rParams(5) = "PARAM_BATCH_NUM="
         'rParams(6) = txtBatchNo.Text + "&"

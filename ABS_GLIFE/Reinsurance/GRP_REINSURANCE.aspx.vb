@@ -452,7 +452,7 @@ Partial Class Reinsurance_GRP_REINSURANCE
 
     Private Sub Proc_GetPfa(ByVal sVal As String)
 
-        strTable = "TBGL_DETAIL"
+        strTable = "TBGL_REINSURANCE"
         strSQL = "SELECT *, RTRIM(ISNULL(TBGL_DESC,'')) AS TBGL_FULL_NAME FROM " & strTable & " where TBGL_CODE = '" & sVal.Trim & "'"
 
         Dim mystrCONN As String = CType(Session("connstr"), String)
