@@ -242,6 +242,9 @@ Partial Class MENU_GL
                 AddMenuItem("", "Credit Note Without Commission Print", "Reports/PRG_LI_GRP_DN_RPT.aspx?TTYPE=CNNOCOM")
                 AddMenuItem("", "", "") 'blank link
                 AddMenuItem("", "Medical Examination Requirement List", "Reports/GRP_MED_1101.aspx?TTYPE=GRP_RPT_MED_1101")
+
+                AddMenuItem("", "Group Medical Examination Test Requirement List", "Reports/GRP_MEDICAL_EXAM_LIST.aspx")
+
                 'AddMenuItem("", "Policy Schedule", "")
                 AddMenuItem("", "Print Policy Schedule", "POLICY/PRG_LI_GRP_QUOT_SCHEDULE.aspx?opt=POLY_SCHDLE")
 
@@ -349,6 +352,14 @@ Partial Class MENU_GL
                 AddMenuItem("", "", "") 'blank link
                 AddMenuItem("", "UNDER_LINE", "") 'blank link
                 AddMenuItem("", "Returns to Previous Page", "menu_gl.aspx?menu=home")
+
+            Case "GL_RENEWAL"
+                STRMENU_TITLE = "+++ Group Life Renewal +++ "
+                AddMenuItem("", "Returns to Previous Page", "menu_gl.aspx?menu=home")
+                AddMenuItem("", "UNDER_LINE", "") 'blank link
+                AddMenuItem("Renewal", "Pre-Renewal Processing", "")
+                AddMenuItem("", "Renew Scheme", "Policy/PRG_LI_GRP_POLY_MEMBERS_RENEW.aspx")
+
 
         End Select
 
