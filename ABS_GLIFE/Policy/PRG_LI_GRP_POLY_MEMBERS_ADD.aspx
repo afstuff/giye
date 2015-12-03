@@ -270,7 +270,7 @@
                                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                                             <td align="left" valign="top">
                                                 <asp:TextBox ID="txtTotal_Emolument" MaxLength="15" ToolTip="" runat="server" 
-                                                    Visible="False"></asp:TextBox></td>
+                                                    Visible="False" AutoPostBack="true" OnTextChanged="DoProc_Premium_Code_Change" ></asp:TextBox></td>
                                             <td align="left" valign="top">
                                                 <asp:DropDownList ID="cboMedical_YN" Width="100px" runat="server" 
                                                     Visible="False">
