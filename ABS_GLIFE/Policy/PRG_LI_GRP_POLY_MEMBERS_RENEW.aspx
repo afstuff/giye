@@ -50,21 +50,33 @@
                 return true;
             }
         }
-//        $(function() {
-//        $("#btnRenewClaim").click(function(e) {
-//        var polVal=$("txtPolNum").val();
-//        if (polVal.lenght<0) { }
-//                e.preventDefault()
-//                alert("clicked");
-//                var ok = confirm("WARNING: Record will be permanently BE RENEWED! Are you sure you want to renew policy?");
-//                if (ok == true) {
-//                    var myform = window.document.forms["Form1"];
-//                    myform.submit();
-//                    alert("true!");
+        //        $(function() {
+        //        $("#btnRenewClaim").click(function(e) {
+        //        var polVal=$("txtPolNum").val();
+        //        if (polVal.lenght<0) { }
+        //                e.preventDefault()
+        //                alert("clicked");
+        //                var ok = confirm("WARNING: Record will be permanently BE RENEWED! Are you sure you want to renew policy?");
+        //                if (ok == true) {
+        //                    var myform = window.document.forms["Form1"];
+        //                    myform.submit();
+        //                    alert("true!");
 
-//                }
-//            });
-//        });
+        //                }
+        //            });
+        //        });
+
+//        function Check() {
+//            var a = confirm("WARNING: Record will be permanently BE RENEWED! Are you sure you want to renew policy?");
+//            if (a) {
+//                var myform = window.document.forms["Form1"];
+//                myform.submit();
+//                return true;
+//            }
+//            else {
+//                return false;
+//            }
+//        }
 
     </script>
 
@@ -111,7 +123,7 @@
                         <tr>
                             <td align="center" colspan="4" valign="top" style="height: 26px">
                                 &nbsp;&nbsp;<a href="#" onclick="javascript:JSDO_RETURN('PRG_GP_PROP_POLICY.aspx?menu=GL_QUOTE')">Go
-                                    to Menu</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:Button ID="btnRenewClaim" runat="server"
+                                    to Menu</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:Button ID="btnRenewClaim" runat="server" OnClientClick="return confirm('WARNING: Record will be permanently BE RENEWED! Are you sure you want to renew policy!');" 
                                         Height="44px" Text="Renew" Width="135px" Font-Bold="True" Font-Size="Large" />
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             </td>

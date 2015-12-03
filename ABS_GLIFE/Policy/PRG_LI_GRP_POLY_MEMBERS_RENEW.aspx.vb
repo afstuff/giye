@@ -2521,8 +2521,12 @@ Partial Class Policy_PRG_LI_GRP_POLY_MEMBERS_RENEW
     Protected Sub btnRenewClaim_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnRenewClaim.Click
 
         If txtPolNum.Text <> "" Then
+            'ClientScript.RegisterClientScriptBlock(Me.GetType(), "Yes", "Check();", True)
+            'FirstMsg = "javascript:confirm('Field policy number cannot be empty!')"
             DoClaimRenewal(txtPolNum.Text, txtFileNum.Text, txtQuote_Num.Text, MOD_GEN.DoConvertToDbDateFormat(txtStartDate.Text), MOD_GEN.DoConvertToDbDateFormat(txtEndDate.Text))
-
+        Else
+            FirstMsg = "javascript:alert('Field policy number cannot be empty!')"
+            Exit Sub
         End If
 
     End Sub
