@@ -30,14 +30,15 @@
         <tr>
             <td align="center" valign="top" class="td_menu">
 	            <table align="center" border="0" cellspacing="0" class="tbl_menu_new">
-	                <tr style="display:none;">
+	                <tr style="">
                         <td align="right" valign="top">    
                                 &nbsp;&nbsp;Find Insured Name:&nbsp;
                                 <input type="text" id="txtSearch" name="txtSearch" value="Search..." runat="server"
                                     onfocus="if (this.value == 'Search...') {this.value = '';}"
                                     onblur="if (this.value == '') {this.value = 'Search...';}" />
                                 &nbsp;<asp:Button ID="cmdSearch" Text="Search" runat="server" />
-    	                        &nbsp;<asp:DropDownList ID="cboSearch" AutoPostBack="true" Width="450px" runat="server"></asp:DropDownList>
+    	                        &nbsp;<asp:DropDownList ID="cboSearch" AutoPostBack="true" Width="300px" 
+                                    runat="server"></asp:DropDownList>
                         </td>	                
 	                </tr>
 

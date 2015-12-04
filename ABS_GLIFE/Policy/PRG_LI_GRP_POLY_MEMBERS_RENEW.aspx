@@ -101,21 +101,23 @@
             <tr>
                 <td align="left" valign="top" class="myMenu_Title_02">
                     <table border="0" width="100%">
-                        <tr style="display: none;">
+                        <tr style="">
                             <td align="left" colspan="2" valign="top">
                                 <%=STRMENU_TITLE%>
                             </td>
                             <td align="right" colspan="2" valign="top">
-                                &nbsp;&nbsp;Status:&nbsp;<asp:TextBox ID="txtAction" Visible="true" ForeColor="Gray"
-                                    runat="server" EnableViewState="False" Width="50px"></asp:TextBox>&nbsp;&nbsp;Find:&nbsp;
+                                &nbsp;&nbsp;<%--Status:&nbsp;<asp:TextBox ID="txtAction" Visible="true" ForeColor="Gray"
+                                    runat="server" EnableViewState="False" Width="50px"></asp:TextBox>&nbsp;&nbsp;--%>
+                                    Find:&nbsp;
                                 <input type="text" id="txtSearch" name="txtSearch" value="Search..." runat="server"
                                     onfocus="if (this.value == 'Search...') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Search...';}" />
                                 &nbsp;&nbsp;<asp:Button ID="cmdSearch" Text="Search" runat="server" />
-                                &nbsp;&nbsp;<asp:DropDownList ID="cboSearch" runat="server" Height="26px" Width="150px">
+                                &nbsp;&nbsp;<asp:DropDownList ID="cboSearch" runat="server" Height="26px" 
+                                    Width="150px" AutoPostBack="True">
                                 </asp:DropDownList>
                             </td>
                         </tr>
-                        <tr style="display: none;">
+                        <tr style="">
                             <td align="left" colspan="4" valign="top">
                                 <hr />
                             </td>
