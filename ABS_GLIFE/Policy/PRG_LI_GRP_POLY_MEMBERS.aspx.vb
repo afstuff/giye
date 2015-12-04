@@ -3078,12 +3078,20 @@ MyLoop_End:
         End If
 
 
-        'strPATH = CType(ConfigurationManager.ConnectionStrings("LIFE_DOC_PATH").ToString, String)
-        strPATH = CType(ConfigurationManager.AppSettings("LIFE_DOC_PATH").ToString, String)
+        'Commented by Azeez because this section does not correspond to the section in Proc_DoSave_OLE
+        'strPATH = CType(ConfigurationManager.AppSettings("LIFE_DOC_PATH").ToString, String)
 
-        Dim strFilename As String = "C:\Temp\test1.xls"
+        'Dim strFilename As String = "C:\Temp\test1.xls"
+        'strFilename = strPATH & Me.txtFile_Upload.Text
+        
+
+
+        Dim strFilename As String
+        Dim strFileNameOnly As String = txtFile_Upload.Text
+        'strFilename = strPATH & Me.txtFile_Upload.Text
+        strPATH = Server.MapPath("~/App_Data/Schedules/")
         strFilename = strPATH & Me.txtFile_Upload.Text
-        'strFilename = Server.MapPath(strPATH & Me.txtFile_Upload.Text)
+
 
 
         If System.IO.File.Exists(strFilename) = False Then
@@ -3347,7 +3355,7 @@ MyLoop_End:
         my_File_Num = Me.txtFileNum.Text
         my_Prop_Num = Me.txtQuote_Num.Text
         my_Poly_Num = Me.txtPolNum.Text
-
+        my_Batch_Num = Me.txtBatch_Num.Text
 
         strGen_Msg = ""
         Me.lblErr_List.Visible = False
@@ -3375,10 +3383,17 @@ MyLoop_End:
 
         'HERE CAHNGE
         'call the hashhelper function and pass the form values into it
-        hashHelper.postFromExcel(strPATH, strFilename, myUserIDX, my_Batch_Num, nROW_MIN, nROW_MAX, Me.txtPrem_Period_Yr.Text, mystr_con, _
-       Me.txtPrem_SA_Factor.Text, my_File_Num, my_Prop_Num, my_Poly_Num, txtPrem_Rate_TypeNum.Text, txtPrem_Rate_Per.Text, txtPrem_Rate_Code.Text, _
-       txtProduct_Num.Text, lstErrMsgs, Convert.ToInt16(txtRisk_Days.Text), 0, GenStart_Date, GenEnd_Date, txtStart_Date.Text, txtEnd_Date.Text, _
-       MemJoin_Date, txtData_Source_SW.Text, txtPrem_Rate.Text, String.Empty)
+        'Commented by Azeez becasue it should b a replica of Proc_DoSave_OLE which is working fine
+        ' hashHelper.postFromExcel(strPATH, strFilename, myUserIDX, my_Batch_Num, nROW_MIN, nROW_MAX, Me.txtPrem_Period_Yr.Text, mystr_con, _
+        'Me.txtPrem_SA_Factor.Text, my_File_Num, my_Prop_Num, my_Poly_Num, txtPrem_Rate_TypeNum.Text, txtPrem_Rate_Per.Text, txtPrem_Rate_Code.Text, _
+        'txtProduct_Num.Text, lstErrMsgs, Convert.ToInt16(txtRisk_Days.Text), 0, GenStart_Date, GenEnd_Date, txtStart_Date.Text, txtEnd_Date.Text, _
+        'MemJoin_Date, txtData_Source_SW.Text, txtPrem_Rate.Text, String.Empty)
+        ' GoTo MyLoop_999a
+
+        hashHelper.postFromExcel(strPATH, txtFile_Upload.Text.Trim, myUserIDX, my_Batch_Num, nROW_MIN, nROW_MAX, Me.txtPrem_Period_Yr.Text, mystr_con, _
+     Me.txtPrem_SA_Factor.Text, my_File_Num, my_Prop_Num, my_Poly_Num, txtPrem_Rate_TypeNum.Text, txtPrem_Rate_Per.Text, txtPrem_Rate_Code.Text, _
+     txtProduct_Num.Text, lstErrMsgs, Convert.ToInt16(txtRisk_Days.Text), 0, GenStart_Date, GenEnd_Date, txtStart_Date.Text, txtEnd_Date.Text, _
+     MemJoin_Date, txtData_Source_SW.Text, txtPrem_Rate.Text, String.Empty)
         GoTo MyLoop_999a
 
 
@@ -3793,65 +3808,67 @@ MyLoop_Start:
             dblPrem_Amt_ProRata = Format((dblPrem_Amt / intRisk_Days) * intDays_Diff, "#########0.00")
         End If
 
-        mystr_sql = "insert into table_name(fld1, fld1) values(@val1, @val2)"
-        mystr_sql = "SPGL_TBIL_GRP_POLICY_MEMBERS_INSERT"
 
-        myole_cmd = New OleDbCommand()
-        myole_cmd.Connection = myole_con
-        'myole_cmd.CommandType = CommandType.Text
-        myole_cmd.CommandType = CommandType.StoredProcedure
-        myole_cmd.CommandText = mystr_sql
+        'Commented by Azeez since there exist hashhelper that perform this same function
+        'mystr_sql = "insert into table_name(fld1, fld1) values(@val1, @val2)"
+        'mystr_sql = "SPGL_TBIL_GRP_POLICY_MEMBERS_INSERT"
 
-        myole_cmd.Parameters.AddWithValue("@p01", RTrim(my_File_Num))
-        myole_cmd.Parameters.AddWithValue("@p02", Val(0))
-        myole_cmd.Parameters.AddWithValue("@p03", RTrim("G"))
-        myole_cmd.Parameters.AddWithValue("@p04", RTrim(my_Prop_Num))
-        myole_cmd.Parameters.AddWithValue("@p05", RTrim(my_Poly_Num))
-        myole_cmd.Parameters.AddWithValue("@p05A", RTrim(my_Batch_Num))
-        myole_cmd.Parameters.AddWithValue("@p05B", RTrim(my_Staff_Num))
-        myole_cmd.Parameters.AddWithValue("@p06", Val(my_SNo))
-        myole_cmd.Parameters.AddWithValue("@p07", RTrim(my_Gender))
-        myole_cmd.Parameters.AddWithValue("@p08", Format(my_Dte_DOB, "MM/dd/yyyy"))
-        myole_cmd.Parameters.AddWithValue("@p09", Val(my_AGE))
-        myole_cmd.Parameters.AddWithValue("@p10", Format(my_Dte_Start, "MM/dd/yyyy"))
-        myole_cmd.Parameters.AddWithValue("@p11", Format(my_Dte_End, "MM/dd/yyyy"))
-        myole_cmd.Parameters.AddWithValue("@p12", Val(my_Tenor))
-        myole_cmd.Parameters.AddWithValue("@p13", RTrim(my_Designation))
-        myole_cmd.Parameters.AddWithValue("@p14", Left(RTrim(my_Member_Name), 95))
-        myole_cmd.Parameters.AddWithValue("@p14A", CDbl(Trim(my_SA_Factor)))
-        myole_cmd.Parameters.AddWithValue("@p14B", CDbl(Trim(my_Total_Salary)))
-        myole_cmd.Parameters.AddWithValue("@p15", CDbl(Trim(my_Total_SA)))
-        myole_cmd.Parameters.AddWithValue("@p16", RTrim(my_Medical_YN))
+        'myole_cmd = New OleDbCommand()
+        'myole_cmd.Connection = myole_con
+        ''myole_cmd.CommandType = CommandType.Text
+        'myole_cmd.CommandType = CommandType.StoredProcedure
+        'myole_cmd.CommandText = mystr_sql
 
-        myole_cmd.Parameters.AddWithValue("@p17", CDbl(dblPrem_Rate))
-        myole_cmd.Parameters.AddWithValue("@p18", CDbl(dblPrem_Rate_Per))
-        myole_cmd.Parameters.AddWithValue("@p19", CDbl(dblPrem_Amt))
-        myole_cmd.Parameters.AddWithValue("@p20", CDbl(dblPrem_Amt_ProRata))
-        myole_cmd.Parameters.AddWithValue("@p21", CDbl(dblLoad_Amt))
+        'myole_cmd.Parameters.AddWithValue("@p01", RTrim(my_File_Num))
+        'myole_cmd.Parameters.AddWithValue("@p02", Val(0))
+        'myole_cmd.Parameters.AddWithValue("@p03", RTrim("G"))
+        'myole_cmd.Parameters.AddWithValue("@p04", RTrim(my_Prop_Num))
+        'myole_cmd.Parameters.AddWithValue("@p05", RTrim(my_Poly_Num))
+        'myole_cmd.Parameters.AddWithValue("@p05A", RTrim(my_Batch_Num))
+        'myole_cmd.Parameters.AddWithValue("@p05B", RTrim(my_Staff_Num))
+        'myole_cmd.Parameters.AddWithValue("@p06", Val(my_SNo))
+        'myole_cmd.Parameters.AddWithValue("@p07", RTrim(my_Gender))
+        'myole_cmd.Parameters.AddWithValue("@p08", Format(my_Dte_DOB, "MM/dd/yyyy"))
+        'myole_cmd.Parameters.AddWithValue("@p09", Val(my_AGE))
+        'myole_cmd.Parameters.AddWithValue("@p10", Format(my_Dte_Start, "MM/dd/yyyy"))
+        'myole_cmd.Parameters.AddWithValue("@p11", Format(my_Dte_End, "MM/dd/yyyy"))
+        'myole_cmd.Parameters.AddWithValue("@p12", Val(my_Tenor))
+        'myole_cmd.Parameters.AddWithValue("@p13", RTrim(my_Designation))
+        'myole_cmd.Parameters.AddWithValue("@p14", Left(RTrim(my_Member_Name), 95))
+        'myole_cmd.Parameters.AddWithValue("@p14A", CDbl(Trim(my_SA_Factor)))
+        'myole_cmd.Parameters.AddWithValue("@p14B", CDbl(Trim(my_Total_Salary)))
+        'myole_cmd.Parameters.AddWithValue("@p15", CDbl(Trim(my_Total_SA)))
+        'myole_cmd.Parameters.AddWithValue("@p16", RTrim(my_Medical_YN))
 
-        myole_cmd.Parameters.AddWithValue("@p22", RTrim(Me.txtData_Source_SW.Text))
-        myole_cmd.Parameters.AddWithValue("@p23", RTrim(Me.txtFile_Upload.Text))
+        'myole_cmd.Parameters.AddWithValue("@p17", CDbl(dblPrem_Rate))
+        'myole_cmd.Parameters.AddWithValue("@p18", CDbl(dblPrem_Rate_Per))
+        'myole_cmd.Parameters.AddWithValue("@p19", CDbl(dblPrem_Amt))
+        'myole_cmd.Parameters.AddWithValue("@p20", CDbl(dblPrem_Amt_ProRata))
+        'myole_cmd.Parameters.AddWithValue("@p21", CDbl(dblLoad_Amt))
 
-        myole_cmd.Parameters.AddWithValue("@p24", vbNull)
-        myole_cmd.Parameters.AddWithValue("@p25", RTrim("A"))
-        myole_cmd.Parameters.AddWithValue("@p26", RTrim(myUserIDX))
-        myole_cmd.Parameters.AddWithValue("@p27", Format(Now, "MM/dd/yyyy"))
+        'myole_cmd.Parameters.AddWithValue("@p22", RTrim(Me.txtData_Source_SW.Text))
+        'myole_cmd.Parameters.AddWithValue("@p23", RTrim(Me.txtFile_Upload.Text))
+
+        'myole_cmd.Parameters.AddWithValue("@p24", vbNull)
+        'myole_cmd.Parameters.AddWithValue("@p25", RTrim("A"))
+        'myole_cmd.Parameters.AddWithValue("@p26", RTrim(myUserIDX))
+        'myole_cmd.Parameters.AddWithValue("@p27", Format(Now, "MM/dd/yyyy"))
 
 
-        Try
-            mycnt = myole_cmd.ExecuteNonQuery()
-            If mycnt >= 1 Then
-                my_intCNT = my_intCNT + 1
-            Else
-                strGen_Msg = " * Error!. Row: " & nRow.ToString & " record not save... "
-            End If
-        Catch ex As Exception
-            strGen_Msg = " * Error while saving Row: " & nRow.ToString & " record... "
+        'Try
+        '    mycnt = myole_cmd.ExecuteNonQuery()
+        '    If mycnt >= 1 Then
+        '        my_intCNT = my_intCNT + 1
+        '    Else
+        '        strGen_Msg = " * Error!. Row: " & nRow.ToString & " record not save... "
+        '    End If
+        'Catch ex As Exception
+        '    strGen_Msg = " * Error while saving Row: " & nRow.ToString & " record... "
 
-        End Try
+        'End Try
 
-        myole_cmd.Dispose()
-        myole_cmd = Nothing
+        'myole_cmd.Dispose()
+        'myole_cmd = Nothing
 
 MyLoop_888:
         If strGen_Msg <> "" Then

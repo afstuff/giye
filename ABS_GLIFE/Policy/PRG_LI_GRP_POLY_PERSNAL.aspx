@@ -427,14 +427,15 @@
                                         </td>
                                     </tr>
                                      <tr>
-                                        <td align="left" colspan="4" valign="top" class="myMenu_Title">Re Insurance Info / Treaty Share</td>
+                                        <td align="left" colspan="4" valign="top" class="myMenu_Title">Re Insurance / Treaty 
+                                            info</td>
                                     </tr>
                                     <tr>
                                         <td align="left" valign="top"><asp:Label ID="lblRetention" Text="Retention:" 
                                                 runat="server"></asp:Label></td>
                                         <td align="left" valign="top" colspan="3">
                                                     <asp:TextBox ID="txtRetention" Visible="true" Enabled="true" 
-                                                MaxLength="25" Width="142px" runat="server"></asp:TextBox>
+                                                MaxLength="25" Width="142px" runat="server" AutoPostBack="True"></asp:TextBox>
                                         </td>
                                     </tr>
                                     <tr>
@@ -443,14 +444,14 @@
                                                 Text="Free Medical Cover Limit:" runat="server"></asp:Label></td>
                                         <td align="left" valign="top" colspan="3">
                                                     <asp:TextBox ID="txtFreeMedCovLmt" Visible="true" Enabled="true" 
-                                                MaxLength="25" Width="142px" runat="server"></asp:TextBox>
+                                                MaxLength="25" Width="142px" runat="server" AutoPostBack="True"></asp:TextBox>
                                         </td>
                                     </tr>
 
                                     <tr>
                                         <td align="left" valign="top">
                                             <asp:Label ID="lblCompShare" 
-                                                Text="Your Company Share %:" runat="server"></asp:Label></td>
+                                                Text="CAI Share %:" runat="server"></asp:Label></td>
                                         <td align="left" valign="top" colspan="3">
                                                     <asp:TextBox ID="txtCompShare" Visible="true" Enabled="true" 
                                                 MaxLength="25" Width="53px" runat="server"></asp:TextBox>
