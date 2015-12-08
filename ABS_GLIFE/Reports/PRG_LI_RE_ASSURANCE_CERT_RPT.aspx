@@ -155,7 +155,7 @@ mso-bidi-language:AR-SA">Print Reassurance Cert</span></b></td>
                         <td align="left" valign="top" class="style13">
                             <asp:TextBox ID="txtPolicyNo" runat="server" Width="269px"></asp:TextBox>
                             <asp:Button ID="cmdGetRecord" runat="server" style="height: 26px" 
-                                Text="Button" />
+                                Text="Get record" />
                         </td>
                         <td class="style13">
                             </td>

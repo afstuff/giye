@@ -207,7 +207,9 @@ Partial Class Reports_PRG_LI_RE_ASSURANCE_CERT_RPT
             strSQL = strSQL & " INNER JOIN [TBIL_GRP_POLICY_MEMBERS] AS MEM ON DET.[TBIL_POLY_POLICY_NO] = MEM.[TBIL_POL_MEMB_POLY_NO]"
             strSQL = strSQL & " WHERE DET.[TBIL_POLY_POLICY_NO] = '" & policyno & "'"
             strSQL = strSQL & " AND DET.[TBIL_POLY_FLAG] <> 'D'"
-            strSQL = strSQL & " AND MEM.[TBIL_POL_MEMB_TOT_SA] > " & 10000000 & ""
+            'strSQL = strSQL & " AND MEM.[TBIL_POL_MEMB_TOT_SA] > " & 10000000 & ""
+            strSQL = strSQL & " AND MEM.[TBIL_POL_MEMB_TOT_SA] * DET.[TBIL_POLY_COMP_SHARE]/100 > DET.[TBIL_POLY_RETENTION]"
+
 
             objOLEComm.Connection = objOLEConn
             objOLEComm.CommandText = strSQL
@@ -221,7 +223,7 @@ Partial Class Reports_PRG_LI_RE_ASSURANCE_CERT_RPT
             lblMsg.Visible = True
             Exit Function
         End Try
-Con:
+
         If objOLEComm.Connection.State = ConnectionState.Open Then
             objOLEComm.Connection.Close()
         End If
@@ -250,5 +252,10 @@ Con:
         Catch ex As Exception
             lblMsg.Text = "Error. Reason: " & ex.Message.ToString
         End Try
+    End Sub
+
+    Protected Sub cmdNew_ASP_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdNew_ASP.Click
+        Initialize()
+        txtPolicyNo.Text = ""
     End Sub
 End Class
