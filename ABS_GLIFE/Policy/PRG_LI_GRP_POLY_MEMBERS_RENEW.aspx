@@ -50,21 +50,33 @@
                 return true;
             }
         }
-//        $(function() {
-//        $("#btnRenewClaim").click(function(e) {
-//        var polVal=$("txtPolNum").val();
-//        if (polVal.lenght<0) { }
-//                e.preventDefault()
-//                alert("clicked");
-//                var ok = confirm("WARNING: Record will be permanently BE RENEWED! Are you sure you want to renew policy?");
-//                if (ok == true) {
-//                    var myform = window.document.forms["Form1"];
-//                    myform.submit();
-//                    alert("true!");
+        //        $(function() {
+        //        $("#btnRenewClaim").click(function(e) {
+        //        var polVal=$("txtPolNum").val();
+        //        if (polVal.lenght<0) { }
+        //                e.preventDefault()
+        //                alert("clicked");
+        //                var ok = confirm("WARNING: Record will be permanently BE RENEWED! Are you sure you want to renew policy?");
+        //                if (ok == true) {
+        //                    var myform = window.document.forms["Form1"];
+        //                    myform.submit();
+        //                    alert("true!");
 
-//                }
-//            });
-//        });
+        //                }
+        //            });
+        //        });
+
+//        function Check() {
+//            var a = confirm("WARNING: Record will be permanently BE RENEWED! Are you sure you want to renew policy?");
+//            if (a) {
+//                var myform = window.document.forms["Form1"];
+//                myform.submit();
+//                return true;
+//            }
+//            else {
+//                return false;
+//            }
+//        }
 
     </script>
 
@@ -89,21 +101,23 @@
             <tr>
                 <td align="left" valign="top" class="myMenu_Title_02">
                     <table border="0" width="100%">
-                        <tr style="display: none;">
+                        <tr style="">
                             <td align="left" colspan="2" valign="top">
                                 <%=STRMENU_TITLE%>
                             </td>
                             <td align="right" colspan="2" valign="top">
-                                &nbsp;&nbsp;Status:&nbsp;<asp:TextBox ID="txtAction" Visible="true" ForeColor="Gray"
-                                    runat="server" EnableViewState="False" Width="50px"></asp:TextBox>&nbsp;&nbsp;Find:&nbsp;
+                                &nbsp;&nbsp;<%--Status:&nbsp;<asp:TextBox ID="txtAction" Visible="true" ForeColor="Gray"
+                                    runat="server" EnableViewState="False" Width="50px"></asp:TextBox>&nbsp;&nbsp;--%>
+                                    Find:&nbsp;
                                 <input type="text" id="txtSearch" name="txtSearch" value="Search..." runat="server"
                                     onfocus="if (this.value == 'Search...') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Search...';}" />
                                 &nbsp;&nbsp;<asp:Button ID="cmdSearch" Text="Search" runat="server" />
-                                &nbsp;&nbsp;<asp:DropDownList ID="cboSearch" runat="server" Height="26px" Width="150px">
+                                &nbsp;&nbsp;<asp:DropDownList ID="cboSearch" runat="server" Height="26px" 
+                                    Width="150px" AutoPostBack="True">
                                 </asp:DropDownList>
                             </td>
                         </tr>
-                        <tr style="display: none;">
+                        <tr style="">
                             <td align="left" colspan="4" valign="top">
                                 <hr />
                             </td>
@@ -111,7 +125,7 @@
                         <tr>
                             <td align="center" colspan="4" valign="top" style="height: 26px">
                                 &nbsp;&nbsp;<a href="#" onclick="javascript:JSDO_RETURN('PRG_GP_PROP_POLICY.aspx?menu=GL_QUOTE')">Go
-                                    to Menu</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:Button ID="btnRenewClaim" runat="server"
+                                    to Menu</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:Button ID="btnRenewClaim" runat="server" OnClientClick="return confirm('WARNING: Record will be permanently BE RENEWED! Are you sure you want to renew policy!');" 
                                         Height="44px" Text="Renew" Width="135px" Font-Bold="True" Font-Size="Large" />
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             </td>

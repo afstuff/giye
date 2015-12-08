@@ -22,6 +22,8 @@ Partial Class Reports_GRP_MEDICAL_EXAM_LIST
     Dim strTable As String
     Dim strSQL As String
 
+    Dim strErrMsg As String
+
     Protected strRptName As String
     Protected strReportFile As String
     Protected strRptTitle As String
@@ -50,7 +52,7 @@ Partial Class Reports_GRP_MEDICAL_EXAM_LIST
             Exit Sub
         End If
 
-         Dim url As String = HttpContext.Current.Request.Url.AbsoluteUri
+        Dim url As String = HttpContext.Current.Request.Url.AbsoluteUri
         rParams(0) = "rptMEDICAL_UNDER_CLASS_TEST"
         rParams(1) = "pPOLICYNUMBER="
         rParams(2) = txtPolicyNumber.Text + "&"
@@ -112,14 +114,114 @@ Partial Class Reports_GRP_MEDICAL_EXAM_LIST
         Catch ex As Exception
             Return False
         End Try
-        objOLEDR_Chk = Nothing
-        objOLECmd_Chk.Dispose()
-        objOLECmd_Chk = Nothing
 
-        If objOLEConn_Chk.State = ConnectionState.Open Then
-            objOLEConn_Chk.Close()
-        End If
-        objOLEConn_Chk = Nothing
+
     End Function
+
+    Protected Sub cmdSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdSearch.Click
+        If LTrim(RTrim(Me.txtSearch.Value)) = "Search..." Then
+        ElseIf LTrim(RTrim(Me.txtSearch.Value)) <> "" Then
+            Call gnProc_Populate_Box("GL_ASSURED_HELP_SP", "001", Me.cboSearch, RTrim(Me.txtSearch.Value))
+        End If
+    End Sub
+
+    Protected Sub cboSearch_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboSearch.SelectedIndexChanged
+        Try
+            If Me.cboSearch.SelectedIndex = -1 Or Me.cboSearch.SelectedIndex = 0 Or _
+            Me.cboSearch.SelectedItem.Value = "" Or Me.cboSearch.SelectedItem.Value = "*" Then
+                Me.txtPolicyNumber.Text = ""
+
+            Else
+                Me.txtPolicyNumber.Text = Me.cboSearch.SelectedItem.Value
+                strStatus = Proc_DoOpenRecord(RTrim("POL"), Me.txtPolicyNumber.Text, RTrim("0"))
+
+
+            End If
+        Catch ex As Exception
+            Me.lblMsg.Text = "Error. Reason: " & ex.Message.ToString
+        End Try
+    End Sub
+
+    Private Function Proc_DoOpenRecord(ByVal FVstrGetType As String, ByVal FVstrRefNum As String, Optional ByVal FVstrRecNo As String = "", Optional ByVal strSearchByWhat As String = "FILE_NUM") As String
+
+        strErrMsg = "false"
+
+        lblMsg.Text = ""
+        If Trim(FVstrRefNum) = "" Then
+            Return strErrMsg
+            Exit Function
+        End If
+
+        Dim mystrCONN As String = CType(Session("connstr"), String)
+        Dim objOLEConn As New OleDbConnection(mystrCONN)
+
+        Try
+            'open connection to database
+            objOLEConn.Open()
+        Catch ex As Exception
+            Me.lblMsg.Text = "Unable to connect to database. Reason: " & ex.Message
+            objOLEConn = Nothing
+            Return strErrMsg
+            Exit Function
+        End Try
+
+
+        strREC_ID = Trim(FVstrRefNum)
+
+        strTable = strTableName
+        strSQL = ""
+        strSQL = strSQL & "SELECT TOP 1 PT.*"
+        strSQL = strSQL & " FROM " & strTable & " AS PT"
+        strSQL = strSQL & " WHERE PT.TBIL_POLY_FILE_NO = '" & RTrim(strREC_ID) & "'"
+        If Val(LTrim(RTrim(FVstrRecNo))) <> 0 Then
+            strSQL = strSQL & " AND PT.TBIL_POLY_REC_ID = '" & Val(FVstrRecNo) & "'"
+        End If
+        'strSQL = strSQL & " AND PT.TBIL_POLY_PROPSAL_NO = '" & RTrim(strQ_ID) & "'"
+        'strSQL = strSQL & " AND PT.TBIL_POLY_POLICY_NO = '" & RTrim(strP_ID) & "'"
+
+        strSQL = "SPGL_GET_POLICY_DET"
+
+        Dim objOLECmd As OleDbCommand = New OleDbCommand(strSQL, objOLEConn)
+        objOLECmd.CommandTimeout = 180
+        'objOLECmd.CommandType = CommandType.Text
+        objOLECmd.CommandType = CommandType.StoredProcedure
+        objOLECmd.Parameters.Add("p01", OleDbType.VarChar, 3).Value = LTrim(RTrim(FVstrGetType))
+        objOLECmd.Parameters.Add("p02", OleDbType.VarChar, 40).Value = strREC_ID
+        objOLECmd.Parameters.Add("p03", OleDbType.VarChar, 18).Value = Val(FVstrRecNo)
+
+        Dim objOLEDR As OleDbDataReader
+
+        objOLEDR = objOLECmd.ExecuteReader()
+        If (objOLEDR.Read()) Then
+            strErrMsg = "true"
+
+            Me.txtPolicyNumber.Text = RTrim(CType(objOLEDR("TBIL_POLY_FILE_NO") & vbNullString, String))
+
+
+        Else
+
+
+
+        End If
+
+
+        ' dispose of open objects
+        objOLECmd.Dispose()
+        objOLECmd = Nothing
+
+        If objOLEDR.IsClosed = False Then
+            objOLEDR.Close()
+        End If
+        objOLEDR = Nothing
+
+        If objOLEConn.State = ConnectionState.Open Then
+            objOLEConn.Close()
+        End If
+        objOLEConn = Nothing
+
+        Return strErrMsg
+
+    End Function
+
 
 End Class
