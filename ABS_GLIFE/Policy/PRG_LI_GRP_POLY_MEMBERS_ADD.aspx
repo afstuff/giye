@@ -373,7 +373,6 @@
                                                         <td align="center" style="width: 40px;">Age</td>
                                                         <td align="center" style="width: 60px;">Rate</td>
                                                         <td align="center" style="width: 80px;">Prem Amt</td>
-                                                          <td align="center" style="width: 80px;">Effective Dt</td>
                                                         <td align="center" style="width: 80px;">Batch</td>
                                                     </tr>
                                                 </table>

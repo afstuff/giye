@@ -1625,7 +1625,7 @@ Partial Class Policy_PRG_LI_GRP_POLY_MEMBERS_ADD
         End If
 
         If Dte_Current.Month >= Dte_DOB.Month Then
-            lngDOB_ANB = lngDOB_ANB + 1
+            lngDOB_ANB = lngDOB_ANB
         End If
         Me.txtDOB_ANB.Text = Trim(Str(lngDOB_ANB))
 
