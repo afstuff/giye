@@ -266,6 +266,7 @@ Partial Class Policy_PRG_LI_GRP_POLY_MEMBERS_ADD
                         myarrData = Split(Trim(oAL.Item(20).ToString), "/")
                         GenStart_Date = CDate(Format(Val(myarrData(1)), "00") & "/" & Format(Val(myarrData(0)), "00") & "/" & Format(Val(myarrData(2)), "0000"))
                         Me.txtStart_Date.Text = Format(GenStart_Date, "dd/MM/yyyy")
+                        txtGenStart_DateHidden.Text = Me.txtStart_Date.Text
                     End If
                     If Trim(oAL.Item(21).ToString) <> "" Then
                         'GenEnd_Date = CDate(oAL.Item(21).ToString)
@@ -406,6 +407,25 @@ Partial Class Policy_PRG_LI_GRP_POLY_MEMBERS_ADD
             FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
             Exit Sub
         End If
+
+        If Me.txtAdditionDate.Text = "" Then
+            Me.lblMsg.Text = "Missing effective date"
+            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+            Exit Sub
+        End If
+
+        Dim str() As String
+        str = DoDate_Process(txtAdditionDate.Text, txtAdditionDate)
+        If (str(2) = Nothing) Then
+            Dim errMsg = str(0).Insert(18, " effective date, ")
+            lblMsg.Text = errMsg.Replace("Javascript:alert('", "").Replace("');", "")
+            lblMsg.Visible = True
+            txtAdditionDate.Focus()
+            Exit Sub
+        Else
+            txtAdditionDate.Text = str(2).ToString()
+        End If
+
 
         Call gnGET_SelectedItem(Me.cboData_Source, Me.txtData_Source_SW, Me.txtData_Source_Name, Me.lblMsg)
         Select Case UCase(Trim(Me.txtData_Source_SW.Text))
@@ -550,6 +570,7 @@ Partial Class Policy_PRG_LI_GRP_POLY_MEMBERS_ADD
                 myarrData = Split(Trim(oAL.Item(20).ToString), "/")
                 GenStart_Date = CDate(Format(Val(myarrData(1)), "00") & "/" & Format(Val(myarrData(0)), "00") & "/" & Format(Val(myarrData(2)), "0000"))
                 Me.txtStart_Date.Text = Format(GenStart_Date, "dd/MM/yyyy")
+                txtGenStart_DateHidden.Text = Me.txtStart_Date.Text
             End If
             If Trim(oAL.Item(21).ToString) <> "" Then
                 'GenEnd_Date = CDate(oAL.Item(21).ToString)
@@ -1407,6 +1428,7 @@ Partial Class Policy_PRG_LI_GRP_POLY_MEMBERS_ADD
                            subctrl.ID = "txtRisk_Days" Or _
                            subctrl.ID = "txtStart_Date" Or _
                            subctrl.ID = "txtEnd_Date" Or _
+                           subctrl.ID = "txtGenStart_DateHidden" Or _
                            subctrl.ID = "xyz_123" Then
                             'Control(ID) : txtAction
                             'Control(ID) : txtFileNum
@@ -1843,6 +1865,12 @@ Proc_Skip_ANB:
         'intDays_Diff = Val(DateDiff(DateInterval.Day, my_Dte_Start, my_Dte_End))
         intDays_Diff = Val(DateDiff(DateInterval.Day, dteStart, dteEnd))
 
+        'Added by Azeez
+        'Initially both MemJoin_Date and GenStart_Date looses their value 
+        'Start date equals join date for a particular member
+        MemJoin_Date = dteStart
+        GenStart_Date = Convert.ToDateTime(DoConvertToDbDateFormat(txtGenStart_DateHidden.Text))
+
         If MemJoin_Date > GenStart_Date And dblPrem_Amt <> 0 And intDays_Diff <> 0 Then
             dblPrem_Amt_ProRata = Format((dblPrem_Amt / intRisk_Days) * intDays_Diff, "#########0.00")
         End If
@@ -1966,7 +1994,8 @@ Proc_Skip_ANB:
                 drNewRow("TBIL_POL_MEMB_RATE") = RTrim(Trim(Me.txtPrem_Rate.Text))
                 drNewRow("TBIL_POL_MEMB_RATE_PER") = Val(Trim(Me.txtPrem_Rate_Per.Text))
 
-                drNewRow("TBIL_POL_MEMB_PREM") = CDbl(dblPrem_Amt)
+                ' drNewRow("TBIL_POL_MEMB_PREM") = CDbl(dblPrem_Amt) 'commented inorder to effect the pro rata calculation
+                drNewRow("TBIL_POL_MEMB_PREM") = CDbl(dblPrem_Amt_ProRata)
                 drNewRow("TBIL_POL_MEMB_PRO_RATE_PREM") = CDbl(dblPrem_Amt_ProRata)
                 drNewRow("TBIL_POL_MEMB_LOAD") = CDbl(dblLoad_Amt)
 
@@ -2032,7 +2061,8 @@ Proc_Skip_ANB:
                     .Rows(0)("TBIL_POL_MEMB_RATE") = CDbl(Trim(Me.txtPrem_Rate.Text))
                     .Rows(0)("TBIL_POL_MEMB_RATE_PER") = Val(Trim(Me.txtPrem_Rate_Per.Text))
 
-                    .Rows(0)("TBIL_POL_MEMB_PREM") = CDbl(dblPrem_Amt)
+                    '.Rows(0)("TBIL_POL_MEMB_PREM") = CDbl(dblPrem_Amt)  'commented inorder to effect the pro rata calculation
+                    .Rows(0)("TBIL_POL_MEMB_PREM") = CDbl(dblPrem_Amt_ProRata)
                     .Rows(0)("TBIL_POL_MEMB_PRO_RATE_PREM") = CDbl(dblPrem_Amt_ProRata)
                     .Rows(0)("TBIL_POL_MEMB_LOAD") = CDbl(dblLoad_Amt)
 
@@ -2446,6 +2476,9 @@ Proc_Skip_ANB:
         'to the hashHelper function
         '*************************************************************************************
 
+        'Added by Azeez
+        'Initially GenStart_Date looses value 
+        GenStart_Date = Convert.ToDateTime(DoConvertToDbDateFormat(txtGenStart_DateHidden.Text))
 
         'call the hashhelper function and pass the form values into it
         hashHelper.postFromExcel(strPATH, txtFile_Upload.Text.Trim, myUserIDX, my_Batch_Num, nROW_MIN, nROW_MAX, Me.txtPrem_Period_Yr.Text, mystr_con, _
@@ -4326,6 +4359,10 @@ MyLoop_End:
         'txtProduct_Num.Text, lstErrMsgs, Convert.ToInt16(txtRisk_Days.Text), 0, GenStart_Date, GenEnd_Date, txtStart_Date.Text, txtEnd_Date.Text, _
         'MemJoin_Date, txtData_Source_SW.Text, txtPrem_Rate.Text, String.Empty)
         ' GoTo MyLoop_999a
+
+        'Added by Azeez
+        'Initially GenStart_Date looses value 
+        GenStart_Date = Convert.ToDateTime(DoConvertToDbDateFormat(txtGenStart_DateHidden.Text))
 
         hashHelper.postFromExcel(strPATH, txtFile_Upload.Text.Trim, myUserIDX, my_Batch_Num, nROW_MIN, nROW_MAX, Me.txtPrem_Period_Yr.Text, mystr_con, _
      Me.txtPrem_SA_Factor.Text, my_File_Num, my_Prop_Num, my_Poly_Num, txtPrem_Rate_TypeNum.Text, txtPrem_Rate_Per.Text, txtPrem_Rate_Code.Text, _

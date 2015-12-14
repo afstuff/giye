@@ -467,7 +467,9 @@
                                 <tr>
                                     <td align="left" colspan="2">
                                         <asp:TextBox ID="txtSum_Assured" Enabled="false" MaxLength="15" 
-                                            ToolTip="" runat="server" style="width: 128px" Width="90px"></asp:TextBox><asp:TextBox ID="txtPrem_Amt_Prorata" Visible="false" Enabled="false" MaxLength="15" Width="80px" runat="server"></asp:TextBox><asp:TextBox ID="txtLoad_amt" Visible="false" Enabled="false" MaxLength="15" Width="80px" runat="server"></asp:TextBox></td>
+                                            ToolTip="" runat="server" style="width: 128px" Width="90px"></asp:TextBox><asp:TextBox ID="txtPrem_Amt_Prorata" Visible="false" Enabled="false" MaxLength="15" Width="80px" runat="server"></asp:TextBox><asp:TextBox ID="txtLoad_amt" Visible="false" Enabled="false" MaxLength="15" Width="80px" runat="server"></asp:TextBox>
+                                        <asp:TextBox ID="txtGenStart_DateHidden" runat="server" Visible="False"></asp:TextBox>
+                                    </td>
                                     <td align="left" colspan="2">
                                         <asp:TextBox ID="txtEffDate" runat="server" Visible="false"></asp:TextBox>
                                         </td>

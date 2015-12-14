@@ -335,6 +335,8 @@ namespace CustodianGroupLife.Data
             return ts.TotalDays;
         }
 
+      
+
         public static void postFromExcel(String _uploadpath, String _filename, String _username, String _batchno,
             String _minRange, String _maxRange, String _tenor, String _connstring,
             String _prem_sa_factor, String _filenum, String _quote_num, String _poly_num, String _prem_Rate_TypeNum,
@@ -360,6 +362,7 @@ namespace CustodianGroupLife.Data
             string my_Batch_Num = _batchno;
             long my_intCNT = 0;
             string my_SNo = "";
+            string _memend_date; //Added by Azeez
 
             var errmsg = new List<String>();
 
@@ -679,6 +682,9 @@ namespace CustodianGroupLife.Data
                                 {
 
                                     startdatetest = removeDateSeperators(strMyDte);
+                                    //Added by Azeez
+                                    //Member Join date should be pick from the excel file
+                                    _memjoin_date = strMyDte;
                                     if (startdatetest.Substring(0, 5) != "ERROR")
                                         my_Start_Date = startdatetest;
                                     else
@@ -753,6 +759,9 @@ namespace CustodianGroupLife.Data
                                 {
 
                                     enddatetest = removeDateSeperators(strMyDte);
+                                    //Added by Azeez
+                                    //Member End from the excel file
+                                    _memend_date = strMyDte;
                                     if (enddatetest.Substring(0, 5) != "ERROR")
                                         my_End_Date = enddatetest;
                                     else
@@ -875,6 +884,18 @@ namespace CustodianGroupLife.Data
                                 //_risk_days = Convert.ToInt16(DateDiff(_genstart_date, _genend_date) + 0);
                                 _days_diff = _risk_days;
                                 //_days_diff = Convert.ToInt16(DateDiff(_dtestart, _dteend));
+                               
+                                myarrData = _memjoin_date.Split('/');
+                                _memjoin_date = myarrData[2] + "-" + myarrData[1] + "-" + myarrData[0];
+
+                                //Added by Azeez
+                                //Accurate days difference needed for ProRata calculation
+                                myarrData = _memend_date.Split('/');
+                                _memend_date = myarrData[2] + "-" + myarrData[1] + "-" + myarrData[0];
+
+                                 _days_diff = Convert.ToInt16(DateDifference(_memjoin_date, _memend_date));
+
+                                
                                 if (((Convert.ToDateTime(_memjoin_date) > Convert.ToDateTime(_genstart_date)) && ((dblPrem_Amt != 0) && (_days_diff != 0))))
                                 {
                                     //Convert.ToDecimal(((dblPrem_Amt / _risk_days)
@@ -912,7 +933,8 @@ namespace CustodianGroupLife.Data
                                      + ",2005 " // rate code default
                                     + ",'" + dblPrem_Rate.ToString() + "' "
                                     + ",'" + dblPrem_Rate_Per.ToString() + "' "
-                                    + ",'" + dblPrem_Amt.ToString() + "' "
+                                    //+ ",'" + dblPrem_Amt.ToString() + "' "
+                                    + ",'" + dblPrem_Amt_ProRata.ToString() + "' " //Modified by Azeez
                                     + ",'" + dblPrem_Amt_ProRata.ToString() + "' "
                                     + ",'" + dblLoad_Amt + "' "
                                     + ",'" + _data_source_sw + "' "
@@ -1417,6 +1439,14 @@ namespace CustodianGroupLife.Data
                 conn.Close();
             }
             return result;
+        }
+
+        public static double DateDifference(String StartDate, String EndDate)
+        {
+            System.DateTime _startDate = Convert.ToDateTime(StartDate);
+            System.DateTime _endDate = Convert.ToDateTime(EndDate);
+            System.TimeSpan diffResult = _endDate - _startDate;
+            return diffResult.TotalDays;
         }
     }
 }

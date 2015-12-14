@@ -297,7 +297,9 @@ Partial Class PRG_LI_GRP_POLY_MEMBERS
                         'GenEnd_Date = CDate(oAL.Item(20).ToString)
                         myarrData = Split(Trim(oAL.Item(20).ToString), "/")
                         GenStart_Date = CDate(Format(Val(myarrData(1)), "00") & "/" & Format(Val(myarrData(0)), "00") & "/" & Format(Val(myarrData(2)), "0000"))
+
                         Me.txtStart_Date.Text = Format(GenStart_Date, "dd/MM/yyyy")
+                        txtGenStart_DateHidden.Text = Me.txtStart_Date.Text
                         ' Me.txtEffDate.Text = Format(GenStart_Date, "dd/MM/yyyy")
                     End If
                     If Trim(oAL.Item(21).ToString) <> "" Then
@@ -1210,17 +1212,21 @@ Partial Class PRG_LI_GRP_POLY_MEMBERS
                 If Trim(myKey) <> "" Then
                     Me.txtRecNo.Text = myKey
                     Err = ""
-                    Call Proc_DoDelete_Record(Err)
-                    If Err = "Y" Then Exit Sub
                     Prem_Deleted = Prem_Deleted + Convert.ToDecimal(Me.GridView1.Rows(P).Cells(8).Text)
                     deleted_SA = deleted_SA + Convert.ToDecimal(Me.GridView1.Rows(P).Cells(4).Text)
                     C = C + 1
                 End If
 
                 'Calculate the Prorated Premium as at the point of deletion of member(s)
-                deleted_Used_Days = DateDiff(DateInterval.Day, CDate(del_date_deleted), CDate(del_start_date))
+                ' deleted_Used_Days = DateDiff(DateInterval.Day, CDate(del_date_deleted), CDate(del_start_date))
+                'CDate(Session("Mem_Pol_Start_Dt") 'Member Policy Start Date
+                deleted_Used_Days = DateDiff(DateInterval.Day, CDate(Session("Mem_Pol_Start_Dt")), CDate(del_start_date))
                 deleted_Prorata_Days = Convert.ToInt16(txtRisk_Days.Text) - Math.Abs(deleted_Used_Days)
                 deleted_Prorata_Premium = Prem_Deleted * (deleted_Prorata_Days / Convert.ToInt16(txtRisk_Days.Text))
+
+                Call Proc_DoDelete_Record(Err)
+                If Err = "Y" Then Exit Sub
+
             End If
 
         Next
@@ -1285,7 +1291,9 @@ Partial Class PRG_LI_GRP_POLY_MEMBERS
         strSQL = "Update " & strTable
         strSQL = strSQL & " SET TBIL_POL_MEMB_FLAG = 'D'"
         ' strSQL = strSQL & ",TBIL_POL_MEMB_EFF_DT = '" & del_date_deleted & "'"
-        strSQL = strSQL & ",TBIL_POL_MEMB_FROM_DT = '" & del_date_deleted & "'"
+        strSQL = strSQL & ", TBIL_POL_MEMB_PREM ='" & deleted_Prorata_Premium & "'"
+        strSQL = strSQL & ", TBIL_POL_MEMB_PRO_RATE_PREM ='" & deleted_Prorata_Premium & "'"
+        strSQL = strSQL & ", TBIL_POL_MEMB_FROM_DT = '" & del_date_deleted & "'"
         'strSQL = strSQL & ",TBIL_POL_MEMB_KEYDTE = '" & del_date_deleted & "'"
         strSQL = strSQL & " WHERE TBIL_POL_MEMB_FILE_NO = '" & RTrim(strREC_ID) & "'"
         strSQL = strSQL & " AND TBIL_POL_MEMB_PROP_NO = '" & RTrim(txtQuote_Num.Text) & "'"
@@ -1363,6 +1371,7 @@ Partial Class PRG_LI_GRP_POLY_MEMBERS
                            subctrl.ID = "txtRisk_Days" Or _
                             subctrl.ID = "txtStart_Date" Or _
                            subctrl.ID = "txtEnd_Date" Or _
+                           subctrl.ID = "txtGenStart_DateHidden" Or _
                            subctrl.ID = "xyz_123" Then
                             'Control(ID) : txtAction
                             'Control(ID) : txtFileNum
@@ -1617,6 +1626,8 @@ Proc_Skip_ANB:
 
         strMyDte = Trim(strMyDay) & "/" & Trim(strMyMth) & "/" & Trim(strMyYear)
 
+
+
         blnStatusX = MOD_GEN.gnTest_TransDate(strMyDte)
         If blnStatusX = False Then
             Me.lblMsg.Text = "Please enter valid date..."
@@ -1628,8 +1639,6 @@ Proc_Skip_ANB:
         mydteX = Trim(strMyMth) & "/" & Trim(strMyDay) & "/" & Trim(strMyYear)
         mydte = Format(CDate(mydteX), "MM/dd/yyyy")
         dteStart = Format(mydte, "MM/dd/yyyy")
-
-
 
         'Validate date
         myarrData = Split(Me.txtEnd_Date.Text, "/")
@@ -1809,9 +1818,16 @@ Proc_Skip_ANB:
         'intDays_Diff = Val(DateDiff(DateInterval.Day, my_Dte_Start, my_Dte_End))
         intDays_Diff = Val(DateDiff(DateInterval.Day, dteStart, dteEnd))
 
+        'Added by Azeez
+        'Initially both MemJoin_Date and GenStart_Date looses their value 
+        'Start date equals join date for a particular member
+        MemJoin_Date = dteStart
+        GenStart_Date = Convert.ToDateTime(DoConvertToDbDateFormat(txtGenStart_DateHidden.Text))
+
         If MemJoin_Date > GenStart_Date And dblPrem_Amt <> 0 And intDays_Diff <> 0 Then
             dblPrem_Amt_ProRata = Format((dblPrem_Amt / intRisk_Days) * intDays_Diff, "#########0.00")
         End If
+
 
         If dblTotal_SA >= dblFree_Cover_Limit Then
             If Trim(Me.txtMedical_YN.Text) = "" Then
@@ -1969,7 +1985,8 @@ Proc_Skip_ANB:
                 drNewRow("TBIL_POL_MEMB_RATE") = RTrim(Trim(Me.txtPrem_Rate.Text))
                 drNewRow("TBIL_POL_MEMB_RATE_PER") = Val(Trim(Me.txtPrem_Rate_Per.Text))
 
-                drNewRow("TBIL_POL_MEMB_PREM") = CDbl(txtPrem_Amt.Text)
+                'drNewRow("TBIL_POL_MEMB_PREM") = CDbl(txtPrem_Amt.Text)
+                drNewRow("TBIL_POL_MEMB_PREM") = CDbl(dblPrem_Amt_ProRata)
                 drNewRow("TBIL_POL_MEMB_PRO_RATE_PREM") = CDbl(dblPrem_Amt_ProRata)
                 drNewRow("TBIL_POL_MEMB_LOAD") = CDbl(dblLoad_Amt)
 
@@ -2037,7 +2054,8 @@ Proc_Skip_ANB:
                     .Rows(0)("TBIL_POL_MEMB_RATE") = CDbl(Trim(Me.txtPrem_Rate.Text))
                     .Rows(0)("TBIL_POL_MEMB_RATE_PER") = Val(Trim(Me.txtPrem_Rate_Per.Text))
 
-                    .Rows(0)("TBIL_POL_MEMB_PREM") = CDbl(txtPrem_Amt.Text)
+                    '.Rows(0)("TBIL_POL_MEMB_PREM") = CDbl(txtPrem_Amt.Text)
+                    .Rows(0)("TBIL_POL_MEMB_PREM") = CDbl(dblPrem_Amt_ProRata)
                     .Rows(0)("TBIL_POL_MEMB_PRO_RATE_PREM") = CDbl(dblPrem_Amt_ProRata)
                     .Rows(0)("TBIL_POL_MEMB_LOAD") = CDbl(dblLoad_Amt)
                     '.Rows(0)("TBIL_POL_MEMB_EFF_DT") = Convert.ToDateTime(DoConvertToDbDateFormat(txtEffDate.Text))
@@ -2448,6 +2466,10 @@ Proc_Skip_ANB:
         'Gather the validated values from the form and pass 
         'to the hashHelper function
         '*************************************************************************************
+
+        'Added by Azeez
+        'Initially GenStart_Date looses value 
+        GenStart_Date = Convert.ToDateTime(DoConvertToDbDateFormat(txtGenStart_DateHidden.Text))
 
 
         'call the hashhelper function and pass the form values into it
@@ -3389,6 +3411,11 @@ MyLoop_End:
         'txtProduct_Num.Text, lstErrMsgs, Convert.ToInt16(txtRisk_Days.Text), 0, GenStart_Date, GenEnd_Date, txtStart_Date.Text, txtEnd_Date.Text, _
         'MemJoin_Date, txtData_Source_SW.Text, txtPrem_Rate.Text, String.Empty)
         ' GoTo MyLoop_999a
+
+        'Added by Azeez
+        'Initially GenStart_Date looses value 
+        GenStart_Date = Convert.ToDateTime(DoConvertToDbDateFormat(txtGenStart_DateHidden.Text))
+
 
         hashHelper.postFromExcel(strPATH, txtFile_Upload.Text.Trim, myUserIDX, my_Batch_Num, nROW_MIN, nROW_MAX, Me.txtPrem_Period_Yr.Text, mystr_con, _
      Me.txtPrem_SA_Factor.Text, my_File_Num, my_Prop_Num, my_Poly_Num, txtPrem_Rate_TypeNum.Text, txtPrem_Rate_Per.Text, txtPrem_Rate_Code.Text, _
