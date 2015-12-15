@@ -257,7 +257,7 @@ Partial Class PRG_LI_GRP_POLY_MEMBERS
             Me.txtData_Source_SW.Text = ""
             Me.txtData_Source_Name.Text = ""
             Me.txtFile_Upload.Text = ""
-            Me.txtPrem_Period_Yr.Text = "1"
+            'Me.txtPrem_Period_Yr.Text = "1" 'Azeez: Tenor is calculated in days not yearly
             Me.txtBatch_Num.Text = ""
             Me.txtXLS_Data_Start_No.Text = "1"
             Me.txtXLS_Data_End_No.Text = "1000"
@@ -300,6 +300,7 @@ Partial Class PRG_LI_GRP_POLY_MEMBERS
 
                         Me.txtStart_Date.Text = Format(GenStart_Date, "dd/MM/yyyy")
                         txtGenStart_DateHidden.Text = Me.txtStart_Date.Text
+                        txtPolStart_Date.Text = Me.txtStart_Date.Text
                         ' Me.txtEffDate.Text = Format(GenStart_Date, "dd/MM/yyyy")
                     End If
                     If Trim(oAL.Item(21).ToString) <> "" Then
@@ -307,6 +308,7 @@ Partial Class PRG_LI_GRP_POLY_MEMBERS
                         myarrData = Split(Trim(oAL.Item(21).ToString), "/")
                         GenEnd_Date = CDate(Format(Val(myarrData(1)), "00") & "/" & Format(Val(myarrData(0)), "00") & "/" & Format(Val(myarrData(2)), "0000"))
                         Me.txtEnd_Date.Text = Format(GenEnd_Date, "dd/MM/yyyy")
+                        txtPolEnd_Date.Text = Me.txtEnd_Date.Text
                     End If
                     Me.txtPrem_Rate.Text = oAL.Item(22)
                     Me.txtPrem_Rate_Per.Text = oAL.Item(23)
@@ -1808,17 +1810,19 @@ Proc_Skip_ANB:
             dblPrem_Amt_ProRata = dblPrem_Amt
         End If
 
-
+       
         'intRisk_Days = DateDiff(DateInterval.Day, GenStart_Date, GenEnd_Date)
         'intDays_Diff = DateDiff(DateInterval.Day, MemJoin_Date, GenEnd_Date)
 
         intRisk_Days = Val(DateDiff(DateInterval.Day, GenStart_Date, GenEnd_Date)) + 0
         intRisk_Days = Val(Me.txtRisk_Days.Text)
+        txtPrem_Period_Yr.Text = txtRisk_Days.Text 'Azeez: Tenor should be equals to risk days at inception of policy
+
         'intDays_Diff = Val(DateDiff(DateInterval.Day, MemJoin_Date, GenEnd_Date)) + 0
         'intDays_Diff = Val(DateDiff(DateInterval.Day, my_Dte_Start, my_Dte_End))
         intDays_Diff = Val(DateDiff(DateInterval.Day, dteStart, dteEnd))
 
-        'Added by Azeez
+        'Added by Azeez 
         'Initially both MemJoin_Date and GenStart_Date looses their value 
         'Start date equals join date for a particular member
         MemJoin_Date = dteStart
@@ -1826,6 +1830,7 @@ Proc_Skip_ANB:
 
         If MemJoin_Date > GenStart_Date And dblPrem_Amt <> 0 And intDays_Diff <> 0 Then
             dblPrem_Amt_ProRata = Format((dblPrem_Amt / intRisk_Days) * intDays_Diff, "#########0.00")
+            txtPrem_Period_Yr.Text = intDays_Diff 'Azeez: Tenor
         End If
 
 
@@ -1985,8 +1990,7 @@ Proc_Skip_ANB:
                 drNewRow("TBIL_POL_MEMB_RATE") = RTrim(Trim(Me.txtPrem_Rate.Text))
                 drNewRow("TBIL_POL_MEMB_RATE_PER") = Val(Trim(Me.txtPrem_Rate_Per.Text))
 
-                'drNewRow("TBIL_POL_MEMB_PREM") = CDbl(txtPrem_Amt.Text)
-                drNewRow("TBIL_POL_MEMB_PREM") = CDbl(dblPrem_Amt_ProRata)
+                drNewRow("TBIL_POL_MEMB_PREM") = CDbl(txtPrem_Amt.Text)
                 drNewRow("TBIL_POL_MEMB_PRO_RATE_PREM") = CDbl(dblPrem_Amt_ProRata)
                 drNewRow("TBIL_POL_MEMB_LOAD") = CDbl(dblLoad_Amt)
 
@@ -2054,8 +2058,7 @@ Proc_Skip_ANB:
                     .Rows(0)("TBIL_POL_MEMB_RATE") = CDbl(Trim(Me.txtPrem_Rate.Text))
                     .Rows(0)("TBIL_POL_MEMB_RATE_PER") = Val(Trim(Me.txtPrem_Rate_Per.Text))
 
-                    '.Rows(0)("TBIL_POL_MEMB_PREM") = CDbl(txtPrem_Amt.Text)
-                    .Rows(0)("TBIL_POL_MEMB_PREM") = CDbl(dblPrem_Amt_ProRata)
+                    .Rows(0)("TBIL_POL_MEMB_PREM") = CDbl(txtPrem_Amt.Text)
                     .Rows(0)("TBIL_POL_MEMB_PRO_RATE_PREM") = CDbl(dblPrem_Amt_ProRata)
                     .Rows(0)("TBIL_POL_MEMB_LOAD") = CDbl(dblLoad_Amt)
                     '.Rows(0)("TBIL_POL_MEMB_EFF_DT") = Convert.ToDateTime(DoConvertToDbDateFormat(txtEffDate.Text))
@@ -4272,7 +4275,7 @@ MyLoop_End:
 
         If (e.Row.RowType = DataControlRowType.DataRow) Then
             Dim lblPrice As Label = CType(e.Row.FindControl("lblTransAmt"), Label)
-            TransAmt = (Convert.ToDecimal(DataBinder.Eval(e.Row.DataItem, "TBIL_POL_MEMB_PREM")))
+            TransAmt = (Convert.ToDecimal(DataBinder.Eval(e.Row.DataItem, "TBIL_POL_MEMB_PRO_RATE_PREM")))
             TotTransAmt = (TotTransAmt + TransAmt)
 
         End If
@@ -4284,7 +4287,7 @@ MyLoop_End:
         'format fields
         Dim ea As GridViewRowEventArgs = CType(e, GridViewRowEventArgs)
         If (ea.Row.RowType = DataControlRowType.DataRow) Then
-            Dim drv As Decimal = Convert.ToDecimal(DataBinder.Eval(e.Row.DataItem, "TBIL_POL_MEMB_PREM"))
+            Dim drv As Decimal = Convert.ToDecimal(DataBinder.Eval(e.Row.DataItem, "TBIL_POL_MEMB_PRO_RATE_PREM"))
 
             If Not Convert.IsDBNull(drv) Then
                 Dim iParsedValue As Decimal = 0

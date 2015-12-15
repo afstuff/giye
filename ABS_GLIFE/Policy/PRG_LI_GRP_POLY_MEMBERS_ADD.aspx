@@ -188,7 +188,8 @@
                                                     &nbsp;<asp:TextBox ID="txtData_Source_Name" Width="40" Visible="false" Enabled="false" runat="server"></asp:TextBox>
                                                     &nbsp;&nbsp;&nbsp;<asp:Label ID="lblRisk_Days" ForeColor="Red" Visible="true" runat="server" Text="Risk Days:"></asp:Label>
                                                     &nbsp;<asp:TextBox ID="txtRisk_Days" Width="60" Visible="true" runat="server"></asp:TextBox>
-                                                     <asp:Label ID="Label1" Text="Effective Date:" runat="server"></asp:Label><asp:TextBox ID="txtAdditionDate" runat="server"></asp:TextBox><script language="JavaScript" type="text/javascript">
+                                                     <asp:Label ID="Label1" Text="Effective Date:" runat="server" Visible="False"></asp:Label>
+                                                    <asp:TextBox ID="txtAdditionDate" runat="server" Visible="False"></asp:TextBox><script language="JavaScript" type="text/javascript">
                                                      new tcal({ 'formname': 'frmLoadMembers', 'controlname': 'txtDeleteDate' });</script> 
 
                                                 </td>
@@ -243,7 +244,8 @@
                                         </tr>
                                         
                                         <tr class="tr_frame" id="HideRow2" runat="server">
-                                            <td align="left" valign="top"><asp:Label ID="lblStart_Date" Text="Start Date" 
+                                            <td align="left" valign="top">
+                                                <asp:Label ID="lblStart_Date" Text="Start Date (Eff. Date)" 
                                                     ToolTip="Start Date (dd/mm/yyyy)" runat="server" Visible="False"></asp:Label></td>
                                             <td align="left" valign="top"><asp:Label ID="lblEnd_Date" Text="End Date" 
                                                     ToolTip="End Date (dd/mm/yyyy)" runat="server" Visible="False"></asp:Label></td>
@@ -339,8 +341,10 @@
                                     <td align="left" colspan="2">
                                         <asp:Label ID="lblSum_Assured" Enabled="false" Text="Sum Assured" ToolTip="" runat="server"></asp:Label>
                                         &nbsp;&nbsp;&nbsp;&nbsp;</td>
-                                    <td align="left" colspan="2">
-                                        &nbsp;</td>
+                                    <td align="left">
+                                    <asp:Label ID="lblEffDate0" Text="Pol. Start Date" runat="server"></asp:Label></td>
+                                    <td align="left">
+                                    <asp:Label ID="lblEffDate1" Text="Pol. End Date" runat="server"></asp:Label></td>
                                 </tr>
 
                                 <tr>
@@ -348,8 +352,14 @@
                                         <asp:TextBox ID="txtSum_Assured" Enabled="false" MaxLength="15" ToolTip="" runat="server"></asp:TextBox><asp:TextBox ID="txtPrem_Amt_Prorata" Visible="false" Enabled="false" MaxLength="15" Width="80px" runat="server"></asp:TextBox><asp:TextBox ID="txtLoad_amt" Visible="false" Enabled="false" MaxLength="15" Width="80px" runat="server"></asp:TextBox>
                                         <asp:TextBox ID="txtGenStart_DateHidden" runat="server" Visible="False"></asp:TextBox>
                                     </td>
-                                    <td align="left" colspan="2">
-                                        &nbsp;</td>
+                                    <td align="left">
+                                        <asp:TextBox ID="txtPolStart_Date" MaxLength="10" 
+                                                    Width="100px" ToolTip="Start Date (dd/mm/yyyy)" runat="server" 
+                                            AutoPostBack="True" Enabled="False"></asp:TextBox></td>
+                                    <td align="left">
+                                        <asp:TextBox ID="txtPolEnd_Date" MaxLength="10" 
+                                                    Width="100px" ToolTip="Start Date (dd/mm/yyyy)" runat="server" 
+                                            AutoPostBack="True" Enabled="False"></asp:TextBox></td>
                                 </tr>
 
                                         <tr>
@@ -375,6 +385,8 @@
                                                         <td align="center" style="width: 40px;">Age</td>
                                                         <td align="center" style="width: 60px;">Rate</td>
                                                         <td align="center" style="width: 80px;">Prem Amt</td>
+                                                         <td align="center" style="width: 80px;">Start Date</td>
+                                                          <td align="center" style="width: 80px;">Prorate Days</td>
                                                         <td align="center" style="width: 80px;">Batch</td>
                                                     </tr>
                                                 </table>
@@ -410,7 +422,7 @@
                                                     <Columns>
                                                         <asp:TemplateField>
         			                                        <ItemTemplate>
-        						                                <asp:CheckBox id="chkSel" runat="server" Width="20px" Checked="true"></asp:CheckBox>
+        						                                <asp:CheckBox id="chkSel" runat="server" Width="15px" Checked="true"></asp:CheckBox>
                                                             </ItemTemplate>                                                            
                                                         </asp:TemplateField>
                                 
@@ -422,12 +434,12 @@
                                                         <asp:BoundField readonly="true" DataField="TBIL_POL_MEMB_BDATE" HeaderText="DOB" ItemStyle-Width="80px" HeaderStyle-HorizontalAlign="Left" convertemptystringtonull="true"  DataFormatString="{0:dd MMM yyyy}" />
                                                         <asp:BoundField readonly="true" DataField="TBIL_POL_MEMB_AGE" HeaderText="Age" ItemStyle-Width="40px" HeaderStyle-HorizontalAlign="Left" convertemptystringtonull="true" />
                                                         <asp:BoundField readonly="true" DataField="TBIL_POL_MEMB_RATE" HeaderText="Prem Rate" ItemStyle-Width="60px" HeaderStyle-HorizontalAlign="Left" convertemptystringtonull="true" />
-                                                         <asp:BoundField readonly="true" DataField="TBIL_POL_MEMB_PREM" HeaderText="Prem Rate" ItemStyle-Width="60px" 
+                                                         <asp:BoundField readonly="true" DataField="TBIL_POL_MEMB_PRO_RATE_PREM" HeaderText="Prem Rate" ItemStyle-Width="60px" 
                                                             HeaderStyle-HorizontalAlign="Left" convertemptystringtonull="true" Visible="false" DataFormatString="{0:N2}"/>
                                                         
                                                         <asp:TemplateField  HeaderText="Prem. Amt" ItemStyle-Width="80px" HeaderStyle-HorizontalAlign="Left" >
                                                           <ItemTemplate >
-                                                           <asp:Label ID="lblTransAmt" runat="server" DataFormatString="{0:N2}" Text='<%#Eval("TBIL_POL_MEMB_PREM") %>' />
+                                                           <asp:Label ID="lblTransAmt" runat="server" DataFormatString="{0:N2}" Text='<%#Eval("TBIL_POL_MEMB_PRO_RATE_PREM") %>' />
                                                           </ItemTemplate>
                                                            <FooterTemplate>
 
@@ -436,7 +448,9 @@
                                                             </FooterTemplate>
 
                                                         </asp:TemplateField>
-                                                      <asp:BoundField readonly="true" DataField="TBIL_POL_MEMB_BATCH_NO" HeaderText="Batch" ItemStyle-Width="80px" HeaderStyle-HorizontalAlign="Left" convertemptystringtonull="true" />
+                                                         <asp:BoundField readonly="true" DataField="TBIL_POL_MEMB_FROM_DT" HeaderText="Batch" ItemStyle-Width="80px"  DataFormatString="{0:dd/MM/yyyy}" HeaderStyle-HorizontalAlign="Left" convertemptystringtonull="true" />
+                                                         <asp:BoundField readonly="true" DataField="TBIL_POL_MEMB_TENOR" HeaderText="Batch" ItemStyle-Width="80px" HeaderStyle-HorizontalAlign="Left" convertemptystringtonull="true" /> 
+                                                          <asp:BoundField readonly="true" DataField="TBIL_POL_MEMB_BATCH_NO" HeaderText="Batch" ItemStyle-Width="80px" HeaderStyle-HorizontalAlign="Left" convertemptystringtonull="true" />
                                                     </Columns>
    
                                                 </asp:GridView>

@@ -143,7 +143,7 @@
                 <td align="center" valign="top" class="td_menu">
                     <table align="center" border="0" class="tbl_menu_new">
                         <tr>
-                            <td align="left" colspan="4" valign="top">
+                            <td align="left" colspan="8" valign="top">
                                 <asp:Label ID="lblMsg" ForeColor="Red" Font-Size="Small" runat="server"></asp:Label>
                             </td>
                         </tr>
@@ -154,10 +154,10 @@
                             <td align="left" valign="top" colspan="1">
                                 <asp:TextBox ID="txtFileNum" Enabled="false" Width="230px" runat="server"></asp:TextBox>
                             </td>
-                            <td align="right" valign="top">
+                            <td align="right" valign="top" colspan="3">
                                 <asp:Label ID="lblPolNum" Text="Policy Number:" Enabled="true" runat="server"></asp:Label>
                             </td>
-                            <td align="left" valign="top" colspan="1">
+                            <td align="left" valign="top" colspan="3">
                                 <asp:TextBox ID="txtPolNum" Enabled="false" Width="250px" runat="server"></asp:TextBox>
                             </td>
                         </tr>
@@ -175,10 +175,10 @@
                                 &nbsp;<asp:TextBox ID="txtBatch_Name" Visible="false" MaxLength="10" Width="20px"
                                     runat="server"></asp:TextBox>
                             </td>
-                            <td align="right" valign="top">
+                            <td align="right" valign="top" colspan="3">
                                 <asp:Label ID="lblQuote_Num" Enabled="true" Text="Proposal No:" runat="server"></asp:Label>
                             </td>
-                            <td align="left" valign="top" colspan="1">
+                            <td align="left" valign="top" colspan="3">
                                 <asp:TextBox ID="txtQuote_Num" Enabled="false" Width="250px" runat="server"></asp:TextBox>
                             </td>
                         </tr>
@@ -192,10 +192,10 @@
                                     runat="server"></asp:Label>&nbsp;&nbsp;<asp:TextBox ID="txtRecNo" Enabled="false"
                                         Width="60px" runat="server" MaxLength="18"></asp:TextBox>
                             </td>
-                            <td nowrap align="right" valign="top">
+                            <td nowrap align="right" valign="top" colspan="3">
                                 <asp:Label ID="lblProduct" Enabled="false" Text="Product Category/Code:" runat="server"></asp:Label>
                             </td>
-                            <td align="left" valign="top" colspan="1">
+                            <td align="left" valign="top" colspan="3">
                                 <asp:TextBox ID="txtProductClass" Visible="true" Enabled="false" MaxLength="10" Width="80"
                                     runat="server"></asp:TextBox>
                                 &nbsp;<asp:TextBox ID="txtProduct_Num" Visible="true" Enabled="false" MaxLength="10"
@@ -203,12 +203,12 @@
                             </td>
                         </tr>
                         <tr>
-                            <td align="left" colspan="4" valign="top" class="myMenu_Title">
+                            <td align="left" colspan="8" valign="top" class="myMenu_Title">
                                 Members Details
                             </td>
                         </tr>
                         <tr id="SB_CONT" runat="server" style="display: none;">
-                            <td align="center" colspan="4" valign="top" style="border-style: ridge;">
+                            <td align="center" colspan="8" valign="top" style="border-style: ridge;">
                                 <div id="SB_DIV" runat="server" align="center" style="background-color: White; color: Black;
                                     font-size: 23px; font-weight: normal;">
                                     &nbsp;<label id="SB_MSG" runat="server"></label>&nbsp;
@@ -216,7 +216,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td align="left" colspan="4">
+                            <td align="left" colspan="8">
                                 <table align="center" border="0" style="width: 100%">
                                     <tr style="background-color: #ADD8E6;">
                                         <td nowrap align="right" valign="top">
@@ -354,7 +354,8 @@
                                         
                                         <tr class="tr_frame" id="HideRow2" runat="server">
                                             <td align="left" valign="top" class="style25"><asp:Label ID="lblStart_Date" Text="Start Date" 
-                                                    ToolTip="Start Date (dd/mm/yyyy)" runat="server" Visible="False"></asp:Label></td>
+                                                    ToolTip="Start Date (dd/mm/yyyy)" runat="server" Visible="False"></asp:Label>
+                                                (Eff. Date)</td>
                                             <td align="left" valign="top" colspan="2"><asp:Label ID="lblEnd_Date" 
                                                     Text="End Date" ToolTip="End Date (dd/mm/yyyy)" runat="server" Visible="False"></asp:Label></td>
                                             <td align="left" valign="top" class="style33">
@@ -459,8 +460,14 @@
                                     <td align="left" colspan="2">
                                         <asp:Label ID="lblSum_Assured" Enabled="false" Text="Sum Assured" ToolTip="" runat="server"></asp:Label>
                                         &nbsp;&nbsp;&nbsp;&nbsp;</td>
-                                    <td align="left" colspan="2">
+                                    <td align="left">
                                     <asp:Label ID="lblEffDate" Text="Effective. Date:" Visible="false" runat="server"></asp:Label>&nbsp;&nbsp;
+                                    </td>
+                                    <td align="left" colspan="4">
+                                    <asp:Label ID="lblEffDate0" Text="Pol. Start Date" runat="server"></asp:Label>
+                                    </td>
+                                    <td align="left">
+                                    <asp:Label ID="lblEffDate1" Text="Pol. End Date" runat="server"></asp:Label>
                                     </td>
                                 </tr>
 
@@ -473,15 +480,25 @@
                                     <td align="left" colspan="2">
                                         <asp:TextBox ID="txtEffDate" runat="server" Visible="false"></asp:TextBox>
                                         </td>
+                                    <td align="left" colspan="2">
+                                        <asp:TextBox ID="txtPolStart_Date" MaxLength="10" 
+                                                    Width="100px" ToolTip="Start Date (dd/mm/yyyy)" runat="server" 
+                                            AutoPostBack="True" Enabled="False"></asp:TextBox>
+                                        </td>
+                                    <td align="left" colspan="2">
+                                        <asp:TextBox ID="txtPolEnd_Date" MaxLength="10" 
+                                                    Width="100px" ToolTip="Start Date (dd/mm/yyyy)" runat="server" 
+                                            AutoPostBack="True" Enabled="False"></asp:TextBox>
+                                        </td>
                                 </tr>
 
                                         <tr>
-                                            <td colspan="4"><hr /></td>
+                                            <td colspan="8"><hr /></td>
                                         </tr>
 
                     
                             <tr>
-                                <td align="center" colspan="4" valign="top">
+                                <td align="center" colspan="8" valign="top">
                                     <table align="center" style="background-color: White; width: 97%;">
                                     
                                         <tr>
@@ -498,188 +515,15 @@
                                                         <td align="center" style="width: 40px;">Age</td>
                                                         <td align="center" style="width: 60px;">Rate</td>
                                                         <td align="center" style="width: 80px;">Prem Amt</td>
+                                                        <td align="center" style="width: 80px;">Start Date</td>
+                                                          <td align="center" style="width: 80px;">Prorate Days</td>
                                                         <td align="center" style="width: 80px;">Batch</td>
-                          <%--          <tr class="tr_frame" style="display: none;">
-                                        <td align="left" valign="top">
-                                            <asp:Label ID="lblMember_SN" Text="Serial No" runat="server"></asp:Label>
-                                        </td>
-                                        <td align="left" valign="top">
-                                            <asp:Label ID="lblGender" Text="Category" runat="server"></asp:Label>
-                                        </td>
-                                        <td align="left" valign="top" colspan="1">
-                                            <asp:Label ID="lblMember_Name" Text="Member Name" runat="server"></asp:Label>
-                                        </td>
-                                        <td align="left" valign="top">
-                                            <asp:Label ID="lblDesignation_Name" Text="Designation" runat="server"></asp:Label>
-                                        </td>
-                                        <td align="left" valign="top">
-                                            <asp:Label ID="lblMember_DOB" Text="Date of Birth / Age" ToolTip="Date of Birth(dd/mm/yyyy)"
-                                                runat="server"></asp:Label>
-                                        </td>
-                                    </tr>
-                                    <tr style="font-size: small; display: none;">
-                                        <td align="left" valign="top">
-                                            <asp:TextBox ID="txtMember_SN" Enabled="false" MaxLength="10" Width="100px" runat="server"></asp:TextBox>
-                                        </td>
-                                        <td align="left" valign="top">
-                                            <asp:DropDownList ID="cboGender" Width="100px" runat="server">
-                                            </asp:DropDownList>
-                                            &nbsp;<asp:TextBox ID="txtGender" Visible="false" Enabled="false" Width="20px" runat="server"></asp:TextBox>&nbsp;<asp:TextBox
-                                                ID="txtGenderName" Visible="false" Enabled="false" Width="20px" runat="server"></asp:TextBox>
-                                        </td>
-                                        <td align="left" valign="top" colspan="1">
-                                            <asp:TextBox ID="txtMember_Name" runat="server" Width="200px"></asp:TextBox>
-                                        </td>
-                                        <td align="left" valign="top">
-                                            <asp:TextBox ID="txtDesignation_Name" Width="150px" runat="server"></asp:TextBox>
-                                        </td>
-                                        <td align="left" valign="top">
-                                            <asp:TextBox ID="txtMember_DOB" MaxLength="10" Width="100px" ToolTip="Date of Birth(dd/mm/yyyy)"
-                                                runat="server"></asp:TextBox>
-                                            &nbsp;<asp:TextBox ID="txtDOB_ANB" Enabled="true" Width="40px" runat="server"></asp:TextBox>
-                                        </td>
-                                    </tr>
-                                    <tr class="tr_frame" style="display: none;">
-                                        <td align="left" valign="top">
-                                            <asp:Label ID="lblStart_Date" Text="Start Date" ToolTip="Start Date (dd/mm/yyyy)"
-                                                runat="server"></asp:Label>
-                                        </td>
-                                        <td align="left" valign="top">
-                                            <asp:Label ID="lblEnd_Date" Text="End Date" ToolTip="End Date (dd/mm/yyyy)" runat="server"></asp:Label>
-                                        </td>
-                                        <td align="left" valign="top" colspan="1">
-                                            <asp:Label ID="lblPrem_Period_Yr" Text="Tenor" ToolTip="" runat="server"></asp:Label>
-                                            &nbsp;&nbsp;&nbsp;&nbsp;<asp:Label ID="lblTotal_Emolument" Text="Total Emolument"
-                                                ToolTip="" runat="server"></asp:Label>
-                                        </td>
-                                        <td align="left" valign="top">
-                                            <asp:Label ID="lblMedical_YN" Text="Req Medical" ToolTip="Any medical examination"
-                                                runat="server"></asp:Label>
-                                        </td>
-                                        <td align="left" valign="top">
-                                            <asp:Label ID="lblPrem_Rate_X" Text="Select Premium Rate" ToolTip="" runat="server"></asp:Label>
-                                        </td>
-                                    </tr>
-                                    <tr style="font-size: small; display: none;">
-                                        <td align="left" valign="top">
-                                            <asp:TextBox ID="txtStart_Date" MaxLength="10" Width="100px" ToolTip="Start Date (dd/mm/yyyy)"
-                                                runat="server"></asp:TextBox>
-                                        </td>
-                                        <td align="left" valign="top">
-                                            <asp:TextBox ID="txtEnd_Date" MaxLength="10" Width="100px" ToolTip="End Date (dd/mm/yyyy)"
-                                                runat="server"></asp:TextBox>
-                                        </td>
-                                        <td align="left" valign="top" colspan="1">
-                                            <asp:TextBox ID="txtPrem_Period_Yr" MaxLength="3" ToolTip="" runat="server" Width="40px"></asp:TextBox>
-                                            &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;<asp:TextBox ID="txtTotal_Emolument" MaxLength="15"
-                                                ToolTip="" runat="server"></asp:TextBox>
-                                        </td>
-                                        <td align="left" valign="top">
-                                            <asp:DropDownList ID="cboMedical_YN" Width="100px" runat="server">
-                                                <asp:ListItem Selected="True" Value="*">(Select item)</asp:ListItem>
-                                                <asp:ListItem Value="Y">Yes</asp:ListItem>
-                                                <asp:ListItem Value="N">No</asp:ListItem>
-                                            </asp:DropDownList>
-                                            &nbsp;<asp:TextBox ID="txtMedical_YN" Visible="false" Width="20px" ToolTip="" runat="server"></asp:TextBox>&nbsp;<asp:TextBox
-                                                ID="txtMedical_YN_Name" Visible="false" Width="20px" ToolTip="" runat="server"></asp:TextBox>
-                                        </td>
-                                        <td align="left" valign="top">
-                                            <asp:DropDownList ID="cboPrem_Rate_Code" Enabled="false" Width="200px" runat="server"
-                                                AutoPostBack="true" OnTextChanged="DoProc_Premium_Code_Change">
-                                            </asp:DropDownList>
-                                        </td>
-                                    </tr>
-                                    <tr style="font-size: small; display: none;">
-                                        <td align="left" colspan="1">
-                                            <asp:Label ID="lblPrem_Rate_Code" Enabled="false" Text="Premium Rate Code:" runat="server"></asp:Label>
-                                        </td>
-                                        <td align="left" colspan="1">
-                                            <asp:TextBox ID="txtPrem_Rate_Code" Visible="true" Enabled="false" Width="80px" runat="server"></asp:TextBox>
-                                            &nbsp;<asp:TextBox ID="txtPrem_Rate_CodeName" Visible="false" Enabled="false" Width="30px"
-                                                runat="server"></asp:TextBox>&nbsp;<asp:TextBox ID="txtPrem_Rate_TypeNum" Visible="true"
-                                                    Enabled="false" MaxLength="1" Width="20px" runat="server"></asp:TextBox>
-                                        </td>
-                                        <td align="left" colspan="1">
-                                            <asp:Label ID="lblPrem_Rate" Enabled="false" Text="Premium Rate:" runat="server"></asp:Label>
-                                            &nbsp;<asp:TextBox ID="txtPrem_Rate" Enabled="false" Width="90px" ToolTip="" runat="server"></asp:TextBox>
-                                        </td>
-                                        <td align="left" colspan="1">
-                                            <asp:Label ID="lblPrem_Rate_Per" Enabled="false" Text="Rate Per:" runat="server"></asp:Label>
-                                            &nbsp;<asp:TextBox ID="txtPrem_Rate_Per" Visible="true" Enabled="false" MaxLength="5"
-                                                Width="60px" ToolTip="" runat="server"></asp:TextBox>
-                                        </td>
-                                        <td align="left" colspan="1">
-                                            <asp:Label ID="lblPrem_Amt" Enabled="false" Text="Prem Amount:" runat="server"></asp:Label>
-                                            &nbsp;<asp:TextBox ID="txtPrem_Amt" Visible="true" Enabled="false" MaxLength="15"
-                                                runat="server"></asp:TextBox>
-                                        </td>--%>
                                     </tr>
                                 </table>
                                 </div>
                                 
                             </td>
                         </tr>
-                  <%--      <tr>
-                            <td align="left" colspan="2">
-                                <asp:Label ID="lblSum_Assured" Enabled="false" Text="Sum Assured" ToolTip="" runat="server"></asp:Label>
-                                &nbsp;&nbsp;<asp:TextBox ID="txtSum_Assured" Enabled="false" MaxLength="15" ToolTip=""
-                                    runat="server"></asp:TextBox>&nbsp;<asp:TextBox ID="txtPrem_Amt_Prorata" Visible="false"
-                                        Enabled="false" MaxLength="15" Width="80px" runat="server"></asp:TextBox>&nbsp;<asp:TextBox
-                                            ID="txtLoad_amt" Visible="false" Enabled="false" MaxLength="15" Width="80px"
-                                            runat="server"></asp:TextBox>
-                            </td>
-                            <td align="right" colspan="2">
-                                <asp:Label ID="lblErr_List" Visible="false" Enabled="true" ForeColor="Red" Text="Error:"
-                                    runat="server"></asp:Label>
-                                &nbsp;<asp:DropDownList ID="cboErr_List" Visible="false" Width="350px" runat="server">
-                                </asp:DropDownList>
-                                &nbsp;
-                            </td>
-                        </tr>--%>
-                        <%--   <tr>
-                            <td align="center" colspan="4" valign="top">
-                               <table align="center" style="background-color: White; width: 97%;">
-                                    <tr>
-                                        <td align="left" colspan="4" valign="top">
-                                            <div align="left" style="background-color: White; color: White; border-bottom-style: ridge;
-                                                height: 35px;">
-                                                <table align="left" border="0" style="background-color: #1C5E55; width: 100%; height: 30px;">
-                                                    <tr style="font-size: medium; font-weight: bold;">
-                                                        <td align="left" style="width: 30px;">
-                                                            &nbsp;
-                                                        </td>
-                                                        <td align="left" style="width: 60px;">
-                                                            &nbsp;
-                                                        </td>
-                                                        <td align="center" style="width: 70px;">
-                                                            Ref.No
-                                                        </td>
-                                                        <td align="center" style="width: 120px;">
-                                                            Member Name
-                                                        </td>
-                                                        <td align="center" style="width: 80px;">
-                                                            Sum Assured
-                                                        </td>
-                                                        <td align="center" style="width: 100px;">
-                                                            DOB
-                                                        </td>
-                                                        <td align="center" style="width: 40px;">
-                                                            Age
-                                                        </td>
-                                                        <td align="center" style="width: 60px;">
-                                                            Rate
-                                                        </td>
-                                                        <td align="center" style="width: 80px;">
-                                                            Prem Amt
-                                                        </td>
-                                                        <td align="center" style="width: 80px;">
-                                                            Batch
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                        </td>
-                                    </tr>--%>
                                     <tr>
                                         <td align="left" valign="top">
                                             <div class="div_grid">
@@ -713,44 +557,20 @@
                                                         <asp:BoundField readonly="true" DataField="TBIL_POL_MEMB_BDATE" HeaderText="DOB" ItemStyle-Width="80px" HeaderStyle-HorizontalAlign="Left" convertemptystringtonull="true"  DataFormatString="{0:dd MMM yyyy}" />
                                                         <asp:BoundField readonly="true" DataField="TBIL_POL_MEMB_AGE" HeaderText="Age" ItemStyle-Width="40px" HeaderStyle-HorizontalAlign="Left" convertemptystringtonull="true" />
                                                         <asp:BoundField readonly="true" DataField="TBIL_POL_MEMB_RATE" HeaderText="Prem Rate" ItemStyle-Width="60px" HeaderStyle-HorizontalAlign="Left" convertemptystringtonull="true" />
-                                                        <asp:BoundField readonly="true" DataField="TBIL_POL_MEMB_PREM" HeaderText="Prem Rate" ItemStyle-Width="60px" 
+                                                        <asp:BoundField readonly="true" DataField="TBIL_POL_MEMB_PRO_RATE_PREM" HeaderText="Prem Rate" ItemStyle-Width="60px" 
                                                             HeaderStyle-HorizontalAlign="Left" convertemptystringtonull="true" Visible="false" DataFormatString="{0:N2}"/>
                                                         
                                                          <asp:TemplateField HeaderText="Prem. Amt" ItemStyle-Width="80px" HeaderStyle-HorizontalAlign="Left">
                                                             <ItemTemplate>
-                                                                <asp:Label ID="lblTransAmt" runat="server" DataFormatString="{0:N2}" Text='<%#Eval("TBIL_POL_MEMB_PREM") %>' />
+                                                                <asp:Label ID="lblTransAmt" runat="server" DataFormatString="{0:N2}" Text='<%#Eval("TBIL_POL_MEMB_PRO_RATE_PREM") %>' />
                                                             </ItemTemplate>
                                                             <FooterTemplate>
                                                                 <asp:Label ID="lbltxtTotal" runat="server" Text="0.00" DataFormatString="{0:N2}" />
                                                             </FooterTemplate>
                                                         </asp:TemplateField>
-  <%--                                                      <asp:CommandField ShowSelectButton="True" ItemStyle-Width="60px" />
-                                                        <asp:BoundField ReadOnly="true" DataField="TBIL_POL_MEMB_REC_ID" HeaderText="Ref.No"
-                                                            ItemStyle-Width="70px" HeaderStyle-HorizontalAlign="Left" ConvertEmptyStringToNull="true" />
-                                                        <asp:BoundField ReadOnly="true" DataField="TBIL_POL_MEMB_NAME" HeaderText="Member Name"
-                                                            ItemStyle-Width="120px" HeaderStyle-HorizontalAlign="Left" ConvertEmptyStringToNull="true" />
-                                                        <asp:BoundField ReadOnly="true" DataField="TBIL_POL_MEMB_TOT_SA" HeaderText="Sum Assured"
-                                                            ItemStyle-Width="100px" HeaderStyle-HorizontalAlign="Left" ConvertEmptyStringToNull="true" />
-                                                        <asp:BoundField ReadOnly="true" DataField="TBIL_POL_MEMB_BDATE" HeaderText="DOB"
-                                                            ItemStyle-Width="80px" HeaderStyle-HorizontalAlign="Left" ConvertEmptyStringToNull="true"
-                                                            DataFormatString="{0:dd MMM yyyy}" />
-                                                        <asp:BoundField ReadOnly="true" DataField="TBIL_POL_MEMB_AGE" HeaderText="Age" ItemStyle-Width="40px"
-                                                            HeaderStyle-HorizontalAlign="Left" ConvertEmptyStringToNull="true" />
-                                                        <asp:BoundField ReadOnly="true" DataField="TBIL_POL_MEMB_RATE" HeaderText="Prem Rate"
-                                                            ItemStyle-Width="60px" HeaderStyle-HorizontalAlign="Left" ConvertEmptyStringToNull="true" />
-                                                        <asp:TemplateField HeaderText="Prem. Amt" ItemStyle-Width="80px" HeaderStyle-HorizontalAlign="Left">
-                                                            <ItemTemplate>
-                                                                <asp:Label ID="lblTransAmt" runat="server" DataFormatString="{0:N2}" Text='<%#Eval("TBIL_POL_MEMB_PREM") %>' />
-                                                            </ItemTemplate>
-                                                            <FooterTemplate>
-                                                                <asp:Label ID="lbltxtTotal" runat="server" Text="0.00" DataFormatString="{0:N2}" />
-                                                            </FooterTemplate>
-                                                        </asp:TemplateField>
-
-                                                        <asp:BoundField DataField="TBIL_POL_MEMB_EFF_DT" HeaderText="Effective Dt" DataFormatString="{0:d}" />
-                                                        <asp:BoundField readonly="true" DataField="TBIL_POL_MEMB_BATCH_NO" HeaderText="Batch" ItemStyle-Width="80px" HeaderStyle-HorizontalAlign="Left" convertemptystringtonull="true" />
---%>
-                                                         <asp:BoundField ReadOnly="true" DataField="TBIL_POL_MEMB_BATCH_NO" HeaderText="Batch"
+                                                           <asp:BoundField readonly="true" DataField="TBIL_POL_MEMB_FROM_DT" HeaderText="Batch" ItemStyle-Width="80px" DataFormatString="{0:dd/MM/yyyy}" HeaderStyle-HorizontalAlign="Left" convertemptystringtonull="true" />
+                                                         <asp:BoundField readonly="true" DataField="TBIL_POL_MEMB_TENOR" HeaderText="Batch" ItemStyle-Width="80px"  HeaderStyle-HorizontalAlign="Left" convertemptystringtonull="true" /> 
+                                                          <asp:BoundField ReadOnly="true" DataField="TBIL_POL_MEMB_BATCH_NO" HeaderText="Batch"
                                                             ItemStyle-Width="80px" HeaderStyle-HorizontalAlign="Left" ConvertEmptyStringToNull="true" />
 
                                                     </Columns>
@@ -764,7 +584,7 @@
                             </tr> 
                             
                             <tr>
-                                <td align="left" colspan="4" valign="top">
+                                <td align="left" colspan="8" valign="top">
                                     <asp:Label ID="lblResult" Text="Result:" runat="server"></asp:Label>
                                     <script language="JavaScript" type="text/javascript">new tcal({ 'formname': 'frmLoadMembers', 'controlname': 'txtDeleteDate' });</script> 
                                     <asp:CheckBox runat="server" ID="chkCRNote"  Text="Create Credit Note"/><asp:Button ID="butDeleteMembers_ASP" CssClass="cmd_butt" Enabled="TRUE" Font-Bold="true" Text="Delete Members" OnClientClick="JSDelItem_ASP()" runat="server" Width="147px"/>

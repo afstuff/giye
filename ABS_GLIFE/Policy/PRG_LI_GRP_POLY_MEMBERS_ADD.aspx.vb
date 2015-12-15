@@ -267,12 +267,14 @@ Partial Class Policy_PRG_LI_GRP_POLY_MEMBERS_ADD
                         GenStart_Date = CDate(Format(Val(myarrData(1)), "00") & "/" & Format(Val(myarrData(0)), "00") & "/" & Format(Val(myarrData(2)), "0000"))
                         Me.txtStart_Date.Text = Format(GenStart_Date, "dd/MM/yyyy")
                         txtGenStart_DateHidden.Text = Me.txtStart_Date.Text
+                        txtPolStart_Date.Text = Me.txtStart_Date.Text
                     End If
                     If Trim(oAL.Item(21).ToString) <> "" Then
                         'GenEnd_Date = CDate(oAL.Item(21).ToString)
                         myarrData = Split(Trim(oAL.Item(21).ToString), "/")
                         GenEnd_Date = CDate(Format(Val(myarrData(1)), "00") & "/" & Format(Val(myarrData(0)), "00") & "/" & Format(Val(myarrData(2)), "0000"))
                         Me.txtEnd_Date.Text = Format(GenEnd_Date, "dd/MM/yyyy")
+                        txtPolEnd_Date.Text = Me.txtEnd_Date.Text
                     End If
                     Me.txtPrem_Rate.Text = oAL.Item(22)
                     Me.txtPrem_Rate_Per.Text = oAL.Item(23)
@@ -408,23 +410,23 @@ Partial Class Policy_PRG_LI_GRP_POLY_MEMBERS_ADD
             Exit Sub
         End If
 
-        If Me.txtAdditionDate.Text = "" Then
-            Me.lblMsg.Text = "Missing effective date"
-            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
-            Exit Sub
-        End If
+        'If Me.txtAdditionDate.Text = "" Then
+        '    Me.lblMsg.Text = "Missing effective date"
+        '    FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+        '    Exit Sub
+        'End If
 
-        Dim str() As String
-        str = DoDate_Process(txtAdditionDate.Text, txtAdditionDate)
-        If (str(2) = Nothing) Then
-            Dim errMsg = str(0).Insert(18, " effective date, ")
-            lblMsg.Text = errMsg.Replace("Javascript:alert('", "").Replace("');", "")
-            lblMsg.Visible = True
-            txtAdditionDate.Focus()
-            Exit Sub
-        Else
-            txtAdditionDate.Text = str(2).ToString()
-        End If
+        'Dim str() As String
+        'str = DoDate_Process(txtAdditionDate.Text, txtAdditionDate)
+        'If (str(2) = Nothing) Then
+        '    Dim errMsg = str(0).Insert(18, " effective date, ")
+        '    lblMsg.Text = errMsg.Replace("Javascript:alert('", "").Replace("');", "")
+        '    lblMsg.Visible = True
+        '    txtAdditionDate.Focus()
+        '    Exit Sub
+        'Else
+        '    txtAdditionDate.Text = str(2).ToString()
+        'End If
 
 
         Call gnGET_SelectedItem(Me.cboData_Source, Me.txtData_Source_SW, Me.txtData_Source_Name, Me.lblMsg)
@@ -571,12 +573,14 @@ Partial Class Policy_PRG_LI_GRP_POLY_MEMBERS_ADD
                 GenStart_Date = CDate(Format(Val(myarrData(1)), "00") & "/" & Format(Val(myarrData(0)), "00") & "/" & Format(Val(myarrData(2)), "0000"))
                 Me.txtStart_Date.Text = Format(GenStart_Date, "dd/MM/yyyy")
                 txtGenStart_DateHidden.Text = Me.txtStart_Date.Text
+                txtPolStart_Date.Text = Me.txtStart_Date.Text
             End If
             If Trim(oAL.Item(21).ToString) <> "" Then
                 'GenEnd_Date = CDate(oAL.Item(21).ToString)
                 myarrData = Split(Trim(oAL.Item(21).ToString), "/")
                 GenEnd_Date = CDate(Format(Val(myarrData(1)), "00") & "/" & Format(Val(myarrData(0)), "00") & "/" & Format(Val(myarrData(2)), "0000"))
                 Me.txtEnd_Date.Text = Format(GenEnd_Date, "dd/MM/yyyy")
+                txtPolEnd_Date.Text = Me.txtEnd_Date.Text
             End If
             Me.txtPrem_Rate.Text = oAL.Item(22)
             Me.txtPrem_Rate_Per.Text = oAL.Item(23)
@@ -1200,51 +1204,52 @@ Partial Class Policy_PRG_LI_GRP_POLY_MEMBERS_ADD
         'Validate Effective Date of Member Addtion
         '****************************************
 
-        If RTrim(Me.txtAdditionDate.Text) = "" Then
-            Me.lblMsg.Text = "Missing Effective Date of Addition ... "
-            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
-            blnRet = False
-            Exit Sub
-        End If
+        'Azeez Comments Start here
+        'If RTrim(Me.txtAdditionDate.Text) = "" Then
+        '    Me.lblMsg.Text = "Missing Effective Date of Addition ... "
+        '    FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+        '    blnRet = False
+        '    Exit Sub
+        'End If
 
-        If RTrim(Me.txtAdditionDate.Text) = "" Or Len(Trim(Me.txtAdditionDate.Text)) <> 10 Then
-            Me.lblMsg.Text = "Missing or Invalid Addition date "
-            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
-            blnRet = False
-            Exit Sub
-        End If
+        'If RTrim(Me.txtAdditionDate.Text) = "" Or Len(Trim(Me.txtAdditionDate.Text)) <> 10 Then
+        '    Me.lblMsg.Text = "Missing or Invalid Addition date "
+        '    FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+        '    blnRet = False
+        '    Exit Sub
+        'End If
 
-        'Validate date
-        myarrData = Split(Me.txtAdditionDate.Text, "/")
-        If myarrData.Count <> 3 Then
-            Me.lblMsg.Text = "Missing or Invalid Added Date. Expecting full date in ddmmyyyy format ..."
-            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
-            blnRet = False
-            Exit Sub
-        End If
+        ''Validate date
+        'myarrData = Split(Me.txtAdditionDate.Text, "/")
+        'If myarrData.Count <> 3 Then
+        '    Me.lblMsg.Text = "Missing or Invalid Added Date. Expecting full date in ddmmyyyy format ..."
+        '    FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+        '    blnRet = False
+        '    Exit Sub
+        'End If
 
-        strMyDay = myarrData(0)
-        strMyMth = myarrData(1)
-        strMyYear = myarrData(2)
+        'strMyDay = myarrData(0)
+        'strMyMth = myarrData(1)
+        'strMyYear = myarrData(2)
 
-        strMyDay = CType(Format(Val(strMyDay), "00"), String)
-        strMyMth = CType(Format(Val(strMyMth), "00"), String)
-        strMyYear = CType(Format(Val(strMyYear), "0000"), String)
+        'strMyDay = CType(Format(Val(strMyDay), "00"), String)
+        'strMyMth = CType(Format(Val(strMyMth), "00"), String)
+        'strMyYear = CType(Format(Val(strMyYear), "0000"), String)
 
-        strMyDte = Trim(strMyDay) & "/" & Trim(strMyMth) & "/" & Trim(strMyYear)
+        'strMyDte = Trim(strMyDay) & "/" & Trim(strMyMth) & "/" & Trim(strMyYear)
 
-        blnStatusX = MOD_GEN.gnTest_TransDate(strMyDte)
-        If blnStatusX = False Then
-            Me.lblMsg.Text = "Incorrect date. Please enter valid date..."
-            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
-            blnRet = False
-            Exit Sub
-        End If
-        Me.txtAdditionDate.Text = RTrim(strMyDte)
-        mydteX = Trim(strMyMth) & "/" & Trim(strMyDay) & "/" & Trim(strMyYear)
-        'add_date_added = General_Date_Validation(txtAdditionDate.Text, "Added")
-        add_date_added = mydteX ' Format(CDate(add_date_added), "MM/dd/yyyy")
-
+        'blnStatusX = MOD_GEN.gnTest_TransDate(strMyDte)
+        'If blnStatusX = False Then
+        '    Me.lblMsg.Text = "Incorrect date. Please enter valid date..."
+        '    FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+        '    blnRet = False
+        '    Exit Sub
+        'End If
+        'Me.txtAdditionDate.Text = RTrim(strMyDte)
+        'mydteX = Trim(strMyMth) & "/" & Trim(strMyDay) & "/" & Trim(strMyYear)
+        ''add_date_added = General_Date_Validation(txtAdditionDate.Text, "Added")
+        'add_date_added = mydteX ' Format(CDate(add_date_added), "MM/dd/yyyy")
+        'Azeez Comments ends here
 
         'myarrData = Split(Me.txtStart_Date.Text, "/")
 
@@ -1263,6 +1268,8 @@ Partial Class Policy_PRG_LI_GRP_POLY_MEMBERS_ADD
         add_start_date = General_Date_Validation(txtStart_Date.Text, "Start")
         add_start_date = Format(CDate(add_start_date), "MM/dd/yyyy")
 
+        Dim policy_start_date As Date
+        policy_start_date = CDate(DoConvertToDbDateFormat(txtPolStart_Date.Text))
         '****************************************
         'Validate End
         '****************************************
@@ -1275,20 +1282,22 @@ Partial Class Policy_PRG_LI_GRP_POLY_MEMBERS_ADD
                 Dim row As GridViewRow = GridView1.Rows(P)
                 myKeyX = myKeyX & row.Cells(2).Text
                 myKeyX = myKeyX & " / "
-
                 myKey = Me.GridView1.Rows(P).Cells(2).Text
 
                 'Delete selected/checked item(s)
                 If Trim(myKey) <> "" Then
                     Me.txtRecNo.Text = myKey
-                    Call Proc_DoAdd_Record()
                     Prem_added = Prem_added + Convert.ToDecimal(Me.GridView1.Rows(P).Cells(8).Text)
                     added_SA = added_SA + Convert.ToDecimal(Me.GridView1.Rows(P).Cells(4).Text)
+                    'Dim add_date = Me.GridView1.Rows(P).Cells(9).Text
+                    add_date_added = CDate(DoConvertToDbDateFormat(Me.GridView1.Rows(P).Cells(10).Text))
                     C = C + 1
 
-                    added_Used_Days = DateDiff(DateInterval.Day, CDate(add_date_added), CDate(add_start_date))
+                    'added_Used_Days = DateDiff(DateInterval.Day, CDate(add_date_added), CDate(add_start_date))
+                    added_Used_Days = DateDiff(DateInterval.Day, add_date_added, policy_start_date)
                     added_Prorata_Days = Convert.ToInt16(txtRisk_Days.Text) - Math.Abs(added_Used_Days)
                     added_Prorata_Premium = Prem_added * (added_Prorata_Days / Convert.ToInt16(txtRisk_Days.Text))
+                    Call Proc_DoAdd_Record()
                 End If
 
             End If
@@ -1768,14 +1777,14 @@ Proc_Skip_ANB:
             Exit Sub
         End If
 
-        If txtAdditionDate.Text = "" Then
-            Me.lblMsg.Text = "Missing or invalid effective date... "
-            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
-            Exit Sub
-        End If
+        'If txtAdditionDate.Text = "" Then
+        '    Me.lblMsg.Text = "Missing or invalid effective date... "
+        '    FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+        '    Exit Sub
+        'End If
 
-        add_date_added = General_Date_Validation(txtAdditionDate.Text, "Effective")
-        add_date_added = Format(CDate(add_date_added), "MM/dd/yyyy")
+        'add_date_added = General_Date_Validation(txtAdditionDate.Text, "Effective")
+        'add_date_added = Format(CDate(add_date_added), "MM/dd/yyyy")
 
 
         Me.txtPrem_Period_Yr.Text = Trim(Me.txtPrem_Period_Yr.Text)
@@ -1994,8 +2003,7 @@ Proc_Skip_ANB:
                 drNewRow("TBIL_POL_MEMB_RATE") = RTrim(Trim(Me.txtPrem_Rate.Text))
                 drNewRow("TBIL_POL_MEMB_RATE_PER") = Val(Trim(Me.txtPrem_Rate_Per.Text))
 
-                ' drNewRow("TBIL_POL_MEMB_PREM") = CDbl(dblPrem_Amt) 'commented inorder to effect the pro rata calculation
-                drNewRow("TBIL_POL_MEMB_PREM") = CDbl(dblPrem_Amt_ProRata)
+                drNewRow("TBIL_POL_MEMB_PREM") = CDbl(dblPrem_Amt)
                 drNewRow("TBIL_POL_MEMB_PRO_RATE_PREM") = CDbl(dblPrem_Amt_ProRata)
                 drNewRow("TBIL_POL_MEMB_LOAD") = CDbl(dblLoad_Amt)
 
@@ -2061,8 +2069,7 @@ Proc_Skip_ANB:
                     .Rows(0)("TBIL_POL_MEMB_RATE") = CDbl(Trim(Me.txtPrem_Rate.Text))
                     .Rows(0)("TBIL_POL_MEMB_RATE_PER") = Val(Trim(Me.txtPrem_Rate_Per.Text))
 
-                    '.Rows(0)("TBIL_POL_MEMB_PREM") = CDbl(dblPrem_Amt)  'commented inorder to effect the pro rata calculation
-                    .Rows(0)("TBIL_POL_MEMB_PREM") = CDbl(dblPrem_Amt_ProRata)
+                    .Rows(0)("TBIL_POL_MEMB_PREM") = CDbl(dblPrem_Amt)
                     .Rows(0)("TBIL_POL_MEMB_PRO_RATE_PREM") = CDbl(dblPrem_Amt_ProRata)
                     .Rows(0)("TBIL_POL_MEMB_LOAD") = CDbl(dblLoad_Amt)
 
@@ -2469,8 +2476,8 @@ Proc_Skip_ANB:
         Catch ex As Exception
 
         End Try
-        add_date_added = General_Date_Validation(txtAdditionDate.Text, "Effective")
-        add_date_added = Format(CDate(add_date_added), "MM/dd/yyyy")
+        'add_date_added = General_Date_Validation(txtAdditionDate.Text, "Effective")
+        'add_date_added = Format(CDate(add_date_added), "MM/dd/yyyy")
         '*************************************************************************************
         'Gather the validated values from the form and pass 
         'to the hashHelper function
@@ -3077,7 +3084,7 @@ MyLoop_End:
             FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
             Return Nothing
         End If
-        Me.txtAdditionDate.Text = RTrim(strMyDte)
+        'Me.txtAdditionDate.Text = RTrim(strMyDte)
         mydteX = Trim(strMyMth) & "/" & Trim(strMyDay) & "/" & Trim(strMyYear)
 
         Return mydteX
@@ -5224,7 +5231,7 @@ MyLoop_End:
 
         If (e.Row.RowType = DataControlRowType.DataRow) Then
             Dim lblPrice As Label = CType(e.Row.FindControl("lblTransAmt"), Label)
-            TransAmt = (Convert.ToDecimal(DataBinder.Eval(e.Row.DataItem, "TBIL_POL_MEMB_PREM")))
+            TransAmt = (Convert.ToDecimal(DataBinder.Eval(e.Row.DataItem, "TBIL_POL_MEMB_PRO_RATE_PREM")))
             TotTransAmt = (TotTransAmt + TransAmt)
 
         End If
@@ -5236,7 +5243,7 @@ MyLoop_End:
         'format fields
         Dim ea As GridViewRowEventArgs = CType(e, GridViewRowEventArgs)
         If (ea.Row.RowType = DataControlRowType.DataRow) Then
-            Dim drv As Decimal = Convert.ToDecimal(DataBinder.Eval(e.Row.DataItem, "TBIL_POL_MEMB_PREM"))
+            Dim drv As Decimal = Convert.ToDecimal(DataBinder.Eval(e.Row.DataItem, "TBIL_POL_MEMB_PRO_RATE_PREM"))
 
             If Not Convert.IsDBNull(drv) Then
                 Dim iParsedValue As Decimal = 0
