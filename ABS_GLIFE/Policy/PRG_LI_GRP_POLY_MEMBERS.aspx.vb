@@ -120,6 +120,7 @@ Partial Class PRG_LI_GRP_POLY_MEMBERS
     Protected deleted_Used_Days As Integer
     Protected deleted_SA As Decimal
     Protected del_date_deleted As Date
+    Protected mem_pol_start_date As Date
 
 
     '*********************************************************
@@ -1198,31 +1199,64 @@ Partial Class PRG_LI_GRP_POLY_MEMBERS
         '****************************************
         'Validate End
         '****************************************
+        Err = ""
+        'Ensuring the visibility of member details
+        If txtStart_Date.Visible = False Then
+            lblMsg.Text = "Please ensure that the details of the member is shown before deletion"
+            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+            Err = "Y"
+            Exit Sub
+        End If
 
-        Dim Prem_Deleted As Decimal = 0
-        deleted_SA = 0
-        For P = 0 To Me.GridView1.Rows.Count - 1
-            If CType(Me.GridView1.Rows(P).FindControl("chkSel"), CheckBox).Checked Then
-                ' Get the currently selected row imports the SelectedRow property.
-                Dim row As GridViewRow = GridView1.Rows(P)
-                myKeyX = myKeyX & row.Cells(2).Text
-                myKeyX = myKeyX & " / "
+            Dim checked_members As Integer
+            checked_members = 0
 
-                myKey = Me.GridView1.Rows(P).Cells(2).Text
+            For P = 0 To Me.GridView1.Rows.Count - 1
+                If CType(Me.GridView1.Rows(P).FindControl("chkSel"), CheckBox).Checked Then
+                    checked_members = checked_members + 1
+                End If
+            Next
+            'Determine the numbers of checkedboxes
+            If checked_members > 1 Then
+                lblMsg.Text = "You can only delete a member at a time"
+                FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+                Err = "Y"
+                Exit Sub
+            End If
 
-                'Delete selected/checked item(s)
-                If Trim(myKey) <> "" Then
-                    Me.txtRecNo.Text = myKey
-                    Err = ""
-                    Prem_Deleted = Prem_Deleted + Convert.ToDecimal(Me.GridView1.Rows(P).Cells(8).Text)
-                    deleted_SA = deleted_SA + Convert.ToDecimal(Me.GridView1.Rows(P).Cells(4).Text)
-                    C = C + 1
+            Dim Prem_Deleted As Decimal = 0
+            deleted_SA = 0
+            For P = 0 To Me.GridView1.Rows.Count - 1
+                If CType(Me.GridView1.Rows(P).FindControl("chkSel"), CheckBox).Checked Then
+                    ' Get the currently selected row imports the SelectedRow property.
+                    Dim row As GridViewRow = GridView1.Rows(P)
+                    myKeyX = myKeyX & row.Cells(2).Text
+                    myKeyX = myKeyX & " / "
+
+                    myKey = Me.GridView1.Rows(P).Cells(2).Text
+
+                    'Delete selected/checked item(s)
+                    If Trim(myKey) <> "" Then
+                        Me.txtRecNo.Text = myKey
+                        Prem_Deleted = Prem_Deleted + Convert.ToDecimal(Me.GridView1.Rows(P).Cells(8).Text)
+                        deleted_SA = deleted_SA + Convert.ToDecimal(Me.GridView1.Rows(P).Cells(4).Text)
+                        mem_pol_start_date = CDate(DoConvertToDbDateFormat(Me.GridView1.Rows(P).Cells(10).Text))
+                        C = C + 1
+                    End If
+
+                If CDate(del_start_date) < mem_pol_start_date Or _
+                                CDate(del_start_date) > CDate(DoConvertToDbDateFormat(txtPolEnd_Date.Text)) Then
+                    lblMsg.Text = "Start date of deletion should be within member policy period"
+                    FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+                    Err = "Y"
+                    txtStart_Date.Focus()
+                    Exit Sub
                 End If
 
                 'Calculate the Prorated Premium as at the point of deletion of member(s)
                 ' deleted_Used_Days = DateDiff(DateInterval.Day, CDate(del_date_deleted), CDate(del_start_date))
                 'CDate(Session("Mem_Pol_Start_Dt") 'Member Policy Start Date
-                deleted_Used_Days = DateDiff(DateInterval.Day, CDate(Session("Mem_Pol_Start_Dt")), CDate(del_start_date))
+                deleted_Used_Days = DateDiff(DateInterval.Day, mem_pol_start_date, CDate(del_start_date))
                 deleted_Prorata_Days = Convert.ToInt16(txtRisk_Days.Text) - Math.Abs(deleted_Used_Days)
                 deleted_Prorata_Premium = Prem_Deleted * (deleted_Prorata_Days / Convert.ToInt16(txtRisk_Days.Text))
 
@@ -1233,34 +1267,35 @@ Partial Class PRG_LI_GRP_POLY_MEMBERS
 
         Next
 
-        If C >= 1 Then
-            'Me.cmdDelItem_ASP.Enabled = False
-            'Me.cmdDelItem.Enabled = False
+            If C >= 1 Then
+                'Me.cmdDelItem_ASP.Enabled = False
+                'Me.cmdDelItem.Enabled = False
 
-            Call Proc_DataBind()
+                Call Proc_DataBind()
 
-            Call Proc_DoNew()
+                Call Proc_DoNew()
 
-            Me.lblMsg.Text = "Record deleted successfully." & " No of item(s) deleted: " & CStr(C)
-            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
-            'Me.textMessage.Text = ""
+                Me.lblMsg.Text = "Record deleted successfully." & " No of item(s) deleted: " & CStr(C)
+                FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+                'Me.textMessage.Text = ""
 
-            Me.lblMsg.Text = "Deleted Item(s): " & myKeyX
+                Me.lblMsg.Text = "Deleted Item(s): " & myKeyX
 
-        Else
-            Me.lblMsg.Text = "Record not deleted ..."
+            Else
+                Me.lblMsg.Text = "Record not deleted ..."
 
-        End If
+            End If
 
-        'Calculate the Prorated Premium as at the point of deletion of member(s)
-        'deleted_Used_Days = DateDiff(DateInterval.Day, CDate(del_date_deleted), CDate(del_start_date))
-        'deleted_Prorata_Days = Convert.ToInt16(txtRisk_Days.Text) - Math.Abs(deleted_Used_Days)
-        'deleted_Prorata_Premium = Prem_Deleted * (deleted_Prorata_Days / Convert.ToInt16(txtRisk_Days.Text))
+            'Calculate the Prorated Premium as at the point of deletion of member(s)
+            'deleted_Used_Days = DateDiff(DateInterval.Day, CDate(del_date_deleted), CDate(del_start_date))
+            'deleted_Prorata_Days = Convert.ToInt16(txtRisk_Days.Text) - Math.Abs(deleted_Used_Days)
+            'deleted_Prorata_Premium = Prem_Deleted * (deleted_Prorata_Days / Convert.ToInt16(txtRisk_Days.Text))
 
     End Sub
 
     Protected Sub Proc_DoDelete_Record(ByRef ErrorInd As String)
-        If (CDate(Session("Mem_Pol_Start_Dt")) = del_date_deleted) Then
+        ' If (CDate(Session("Mem_Pol_Start_Dt")) = del_date_deleted) Then 
+        If (mem_pol_start_date = del_date_deleted) Then
             Me.lblMsg.Text = "Date of deletion must not be equal to member policy start date..."
             FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
             txtStart_Date.Focus()
@@ -1295,6 +1330,7 @@ Partial Class PRG_LI_GRP_POLY_MEMBERS
         ' strSQL = strSQL & ",TBIL_POL_MEMB_EFF_DT = '" & del_date_deleted & "'"
         strSQL = strSQL & ", TBIL_POL_MEMB_PREM ='" & deleted_Prorata_Premium & "'"
         strSQL = strSQL & ", TBIL_POL_MEMB_PRO_RATE_PREM ='" & deleted_Prorata_Premium & "'"
+        strSQL = strSQL & ", TBIL_POL_MEMB_TENOR ='" & deleted_Prorata_Days & "'"
         strSQL = strSQL & ", TBIL_POL_MEMB_FROM_DT = '" & del_date_deleted & "'"
         'strSQL = strSQL & ",TBIL_POL_MEMB_KEYDTE = '" & del_date_deleted & "'"
         strSQL = strSQL & " WHERE TBIL_POL_MEMB_FILE_NO = '" & RTrim(strREC_ID) & "'"
@@ -4287,7 +4323,7 @@ MyLoop_End:
         'format fields
         Dim ea As GridViewRowEventArgs = CType(e, GridViewRowEventArgs)
         If (ea.Row.RowType = DataControlRowType.DataRow) Then
-            Dim drv As Decimal = Convert.ToDecimal(DataBinder.Eval(e.Row.DataItem, "TBIL_POL_MEMB_PRO_RATE_PREM"))
+            Dim drv As Decimal = Convert.ToDecimal(DataBinder.Eval(e.Row.DataItem, "TBIL_POL_MEMB_PREM"))
 
             If Not Convert.IsDBNull(drv) Then
                 Dim iParsedValue As Decimal = 0
