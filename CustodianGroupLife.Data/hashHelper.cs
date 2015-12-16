@@ -335,7 +335,7 @@ namespace CustodianGroupLife.Data
             return ts.TotalDays;
         }
 
-      
+
 
         public static void postFromExcel(String _uploadpath, String _filename, String _username, String _batchno,
             String _minRange, String _maxRange, String _tenor, String _connstring,
@@ -417,7 +417,7 @@ namespace CustodianGroupLife.Data
             string mystr_sn_param = "";
             mystr_sn_param = "GL_MEMBER_SN";
             int mycnt = 0;
-
+            int tenor;
             if (_entry_Date == String.Empty)
                 entry_date = "getdate()";
             else
@@ -883,19 +883,41 @@ namespace CustodianGroupLife.Data
 
                                 //_risk_days = Convert.ToInt16(DateDiff(_genstart_date, _genend_date) + 0);
                                 _days_diff = _risk_days;
+                                tenor = _risk_days; //Azeez: Tenor should be equals to risk days at inception of policy
                                 //_days_diff = Convert.ToInt16(DateDiff(_dtestart, _dteend));
-                               
+
                                 myarrData = _memjoin_date.Split('/');
-                                _memjoin_date = myarrData[2] + "-" + myarrData[1] + "-" + myarrData[0];
+                                _memjoin_date = myarrData[2] + "/" + myarrData[1] + "/" + myarrData[0];
 
                                 //Added by Azeez
                                 //Accurate days difference needed for ProRata calculation
                                 myarrData = _memend_date.Split('/');
-                                _memend_date = myarrData[2] + "-" + myarrData[1] + "-" + myarrData[0];
+                                _memend_date = myarrData[2] + "/" + myarrData[1] + "/" + myarrData[0];
 
-                                 _days_diff = Convert.ToInt16(DateDifference(_memjoin_date, _memend_date));
+                                _days_diff = Convert.ToInt16(DateDifference(_memjoin_date, _memend_date));
 
+
+                                //Azeez: Test if member policy period is within general policy period
+                               
+                                  /*  if ((Convert.ToDateTime(_memjoin_date) < Convert.ToDateTime(_genstart_date)) ||
+                                       Convert.ToDateTime(_memjoin_date) > Convert.ToDateTime(_genend_date))
+                                    {
+                                        strGen_Msg = ("Member start date is not within policy period" + _memjoin_date.ToString());
+                                        _err_msg.Add(ErrRoutine(strGen_Msg).ToString());
+                                        goto MyLoop_End_2;
+                                    }
+
+                                    //Test if member end date is the same with policy end date
+                                    if (Convert.ToDateTime(_memend_date) != Convert.ToDateTime(_genend_date))
+                                    {
+                                        strGen_Msg = ("Member end date should be the same with policy end date" + _memjoin_date.ToString());
+                                        _err_msg.Add(ErrRoutine(strGen_Msg).ToString());
+                                        goto MyLoop_End_2;
+                                    }
+                                */
                                 
+                               
+
                                 if (((Convert.ToDateTime(_memjoin_date) > Convert.ToDateTime(_genstart_date)) && ((dblPrem_Amt != 0) && (_days_diff != 0))))
                                 {
                                     //Convert.ToDecimal(((dblPrem_Amt / _risk_days)
@@ -903,6 +925,7 @@ namespace CustodianGroupLife.Data
 
                                     dblPrem_Amt_ProRata = Convert.ToDouble(((dblPrem_Amt / _risk_days)
                                                     * _days_diff));
+                                    tenor = _days_diff;
 
                                 }
 
@@ -923,7 +946,7 @@ namespace CustodianGroupLife.Data
                                     + ",'" + my_AGE.ToString() + "' "
                                     + ",'" + my_Start_Date.ToString() + "' "
                                     + ",'" + my_End_Date.ToString() + "' "
-                                    + ",null"  //tenor
+                                    + ",'" + tenor + "'"  //tenor
                                     + ",'" + my_Designation.ToString() + "' "
                                     + ",'" + my_Member_Name.ToString() + "' "
                                     + ",'" + my_SA_Factor.ToString() + "' "
@@ -933,8 +956,7 @@ namespace CustodianGroupLife.Data
                                      + ",2005 " // rate code default
                                     + ",'" + dblPrem_Rate.ToString() + "' "
                                     + ",'" + dblPrem_Rate_Per.ToString() + "' "
-                                    //+ ",'" + dblPrem_Amt.ToString() + "' "
-                                    + ",'" + dblPrem_Amt_ProRata.ToString() + "' " //Modified by Azeez
+                                    + ",'" + dblPrem_Amt.ToString() + "' "
                                     + ",'" + dblPrem_Amt_ProRata.ToString() + "' "
                                     + ",'" + dblLoad_Amt + "' "
                                     + ",'" + _data_source_sw + "' "
