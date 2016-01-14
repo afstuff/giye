@@ -386,7 +386,7 @@
                                                         <td align="center" style="width: 60px;">Rate</td>
                                                         <td align="center" style="width: 80px;">Prem Amt</td>
                                                          <td align="center" style="width: 80px;">Start Date</td>
-                                                          <td align="center" style="width: 80px;">Prorate Days</td>
+                                                          <td align="center" style="width: 80px;">Prorata Days</td>
                                                         <td align="center" style="width: 80px;">Batch</td>
                                                     </tr>
                                                 </table>

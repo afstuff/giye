@@ -3157,41 +3157,55 @@ END_MOP_RTN:
                                     'dblTmp_AmtX = 0
                                     'dblTmp_Amt = Proc_DoLoading(pv_objOLEConn, my_Rate_Type, my_Applied_On, my_Load_Amt, dblDisc_Load_Prem_Rate, dblDisc_Load_Rate_Per, dblDisc_Load_Percent)
                                     'dblTmp_AmtX = Proc_DoLoading_Add_Member(pv_objOLEConn, my_Rate_Type, my_Applied_On, my_Load_Amt, dblDisc_Load_Prem_Rate, dblDisc_Load_Rate_Per, dblDisc_Load_Percent, strCover_Num)
-                                    dblTotal_Disc_Amt_LC = dblTotal_disc_Amt_LC + (dblTmp_Amt + dblTmp_AmtX)
+                                    dblTmp_Amt = 0
+                                    dblTmp_AmtX = 0
+                                    dblTmp_Amt = Proc_DoDiscount(pv_objOLEConn, my_Rate_Type, my_Applied_On, my_Load_Amt, dblDisc_Load_Prem_Rate, dblDisc_Load_Rate_Per, dblDisc_Load_Percent)
+                                    dblTmp_AmtX = Proc_DoDiscount_Add_Member(pv_objOLEConn, my_Rate_Type, my_Applied_On, my_Load_Amt, dblDisc_Load_Prem_Rate, dblDisc_Load_Rate_Per, dblDisc_Load_Percent, strCover_Num)
+                                    dblTotal_Disc_Amt_LC = dblTotal_Disc_Amt_LC + (dblTmp_Amt + dblTmp_AmtX)
                                 Case "L"    ' LOADING
-                                    If IsNumeric(CType(objOLEDR_DL("TBIL_POL_DISC_LOAD_VALUE_LC") & vbNullString, String)) Then
-                                        dblTmp_Amt = CType(objOLEDR_DL("TBIL_POL_DISC_LOAD_VALUE_LC") & vbNullString, Double)
-                                    End If
+                                    'Azeez  Comment start here
+                                    'If IsNumeric(CType(objOLEDR_DL("TBIL_POL_DISC_LOAD_VALUE_LC") & vbNullString, String)) Then
+                                    '    dblTmp_Amt = CType(objOLEDR_DL("TBIL_POL_DISC_LOAD_VALUE_LC") & vbNullString, Double)
+                                    'End If
+                                    'Azeez Comment ends here
                                     'dblTmp_Amt = 0
                                     'dblTmp_AmtX = 0
                                     'dblTmp_Amt = Proc_DoLoading(pv_objOLEConn, my_Rate_Type, my_Applied_On, my_Load_Amt, dblDisc_Load_Prem_Rate, dblDisc_Load_Rate_Per, dblDisc_Load_Percent)
                                     'dblTmp_AmtX = Proc_DoLoading_Add_Member(pv_objOLEConn, my_Rate_Type, my_Applied_On, my_Load_Amt, dblDisc_Load_Prem_Rate, dblDisc_Load_Rate_Per, dblDisc_Load_Percent, strCover_Num)
+                                    'Azeez Comment start here
                                     dblTotal_Load_Amt_LC = dblTotal_Load_Amt_LC + (dblTmp_Amt + dblTmp_AmtX)
+                                    'Azeez Comment ends here
                             End Select
 
                         Case "F"    'USE FIXED RATE
                             Select Case UCase(Trim(CType(objOLEDR_DL("TBIL_POL_DISC_LOAD_TYPE") & vbNullString, String)))
                                 Case "D"    ' DISCOUNT
+                                    dblTmp_Amt = 0
+                                    dblTmp_AmtX = 0
+                                    dblTmp_Amt = Proc_DoDiscount(pv_objOLEConn, my_Rate_Type, my_Applied_On, my_Load_Amt, dblDisc_Load_Prem_Rate, dblDisc_Load_Rate_Per, dblDisc_Load_Percent)
+                                    dblTmp_AmtX = Proc_DoDiscount_Add_Member(pv_objOLEConn, my_Rate_Type, my_Applied_On, my_Load_Amt, dblDisc_Load_Prem_Rate, dblDisc_Load_Rate_Per, dblDisc_Load_Percent, strCover_Num)
+                                    dblTotal_Disc_Amt_LC = dblTotal_Disc_Amt_LC + (dblTmp_Amt + dblTmp_AmtX)
+                                Case "L"    ' LOADING
                                     'dblTmp_Amt = Proc_DoLoading(pv_objOLEConn, my_Rate_Type, my_Applied_On, my_Load_Amt, dblDisc_Load_Prem_Rate, dblDisc_Load_Rate_Per, dblDisc_Load_Percent)
                                     'dblTmp_AmtX = Proc_DoLoading_Add_Member(pv_objOLEConn, my_Rate_Type, my_Applied_On, my_Load_Amt, dblDisc_Load_Prem_Rate, dblDisc_Load_Rate_Per, dblDisc_Load_Percent, strCover_Num)
-                                    'dblTotal_Disc_Amt_LC = dblTotal_Disc_Amt_LC + (dblTmp_Amt + dblTmp_AmtX)
-                                Case "L"    ' LOADING
-                                    dblTmp_Amt = Proc_DoLoading(pv_objOLEConn, my_Rate_Type, my_Applied_On, my_Load_Amt, dblDisc_Load_Prem_Rate, dblDisc_Load_Rate_Per, dblDisc_Load_Percent)
-                                    dblTmp_AmtX = Proc_DoLoading_Add_Member(pv_objOLEConn, my_Rate_Type, my_Applied_On, my_Load_Amt, dblDisc_Load_Prem_Rate, dblDisc_Load_Rate_Per, dblDisc_Load_Percent, strCover_Num)
-                                    dblTotal_Load_Amt_LC = dblTotal_Load_Amt_LC + (dblTmp_Amt + dblTmp_AmtX)
+                                    'dblTotal_Load_Amt_LC = dblTotal_Load_Amt_LC + (dblTmp_Amt + dblTmp_AmtX)
                             End Select
 
                         Case "R"    'USE RATE RATE
                             Select Case UCase(Trim(CType(objOLEDR_DL("TBIL_POL_DISC_LOAD_TYPE") & vbNullString, String)))
                                 Case "D"    ' DISCOUNT
-                                    dblTmp_Amt = Proc_DoLoading(pv_objOLEConn, my_Rate_Type, my_Applied_On, my_Load_Amt, dblDisc_Load_Prem_Rate, dblDisc_Load_Rate_Per, dblDisc_Load_Percent)
-                                    dblTmp_AmtX = Proc_DoLoading_Add_Member(pv_objOLEConn, my_Rate_Type, my_Applied_On, my_Load_Amt, dblDisc_Load_Prem_Rate, dblDisc_Load_Rate_Per, dblDisc_Load_Percent, strCover_Num)
+                                    dblTmp_Amt = 0
+                                    dblTmp_AmtX = 0
+                                    dblTmp_Amt = Proc_DoDiscount(pv_objOLEConn, my_Rate_Type, my_Applied_On, my_Load_Amt, dblDisc_Load_Prem_Rate, dblDisc_Load_Rate_Per, dblDisc_Load_Percent)
+                                    dblTmp_AmtX = Proc_DoDiscount_Add_Member(pv_objOLEConn, my_Rate_Type, my_Applied_On, my_Load_Amt, dblDisc_Load_Prem_Rate, dblDisc_Load_Rate_Per, dblDisc_Load_Percent, strCover_Num)
                                     dblTotal_Disc_Amt_LC = dblTotal_Disc_Amt_LC + (dblTmp_Amt + dblTmp_AmtX)
                                     '
                                 Case "L"    ' LOADING
-                                    dblTmp_Amt = Proc_DoLoading(pv_objOLEConn, my_Rate_Type, my_Applied_On, my_Load_Amt, dblDisc_Load_Prem_Rate, dblDisc_Load_Rate_Per, dblDisc_Load_Percent)
-                                    dblTmp_AmtX = Proc_DoLoading_Add_Member(pv_objOLEConn, my_Rate_Type, my_Applied_On, my_Load_Amt, dblDisc_Load_Prem_Rate, dblDisc_Load_Rate_Per, dblDisc_Load_Percent, strCover_Num)
-                                    dblTotal_Load_Amt_LC = dblTotal_Load_Amt_LC + (dblTmp_Amt + dblTmp_AmtX)
+                                    'Azeez Comment Start here
+                                    'dblTmp_Amt = Proc_DoLoading(pv_objOLEConn, my_Rate_Type, my_Applied_On, my_Load_Amt, dblDisc_Load_Prem_Rate, dblDisc_Load_Rate_Per, dblDisc_Load_Percent)
+                                    'dblTmp_AmtX = Proc_DoLoading_Add_Member(pv_objOLEConn, my_Rate_Type, my_Applied_On, my_Load_Amt, dblDisc_Load_Prem_Rate, dblDisc_Load_Rate_Per, dblDisc_Load_Percent, strCover_Num)
+                                    'dblTotal_Load_Amt_LC = dblTotal_Load_Amt_LC + (dblTmp_Amt + dblTmp_AmtX)
+                                    'Azeez Commentsend here
                             End Select
 
                     End Select
@@ -4069,6 +4083,147 @@ Proc_End_Rtn:
 
     End Function
 
+    Private Function Proc_DoDiscount(ByVal pv_objOLEConn As OleDbConnection, ByVal pvRate_Type As String, ByVal pvApplied_On As String, ByVal pvLoad_Amt As Double, ByVal pvLoad_Rate As Double, ByVal pvLoad_Rate_Per As Integer, ByVal pvLoad_Percent As Double) As Double
+
+        strTable = strTableName
+        strTable = "TBIL_GRP_POLICY_MEMBERS"
+
+        Dim myRID As String = ""
+        Dim mySN As String = ""
+
+        Dim myLoad_Amt As Double = 0
+        Dim myLoadAmt_Cal As Double = 0 'Azeez added this to avoid interupting my load
+        Dim myResult As Double = 0
+        Dim mySA_Amt As Double = 0
+        Dim myAmt As Double = 0
+        Dim myFixed_Amt As Double = 0
+        Dim myPercent As Double = 0
+        Dim myRate As Double = 0
+        Dim myPer As Double = 0
+
+        Dim myole_cmd As OleDbCommand
+        Dim mystr As String = ""
+
+        Dim myCNT_T As Integer = 0
+        Dim myCNT As Integer = 0
+        Dim myC As Integer = 0
+
+        Dim oAL_ID As New ArrayList
+        Dim oAL_Rec As New ArrayList
+
+        myFixed_Amt = Val(pvLoad_Amt)
+        myPercent = Val(pvLoad_Percent)
+        myRate = Val(pvLoad_Rate)
+        myPer = Val(pvLoad_Rate_Per)
+
+        myLoad_Amt = 0
+        myCNT_T = 0
+        myCNT = 0
+
+
+        mystr = ""
+        mystr = "SELECT TBIL_POL_MEMB_REC_ID, TBIL_POL_MEMB_SNO, TBIL_POL_MEMB_TOT_SA, TBIL_POL_MEMB_PREM, TBIL_POL_MEMB_PRO_RATE_PREM, TBIL_POL_MEMB_LOAD"
+        mystr = mystr & " FROM " & strTable
+        mystr = mystr & " WHERE TBIL_POL_MEMB_FILE_NO = '" & RTrim(txtFileNum.Text) & "'"
+        mystr = mystr & " AND TBIL_POL_MEMB_PROP_NO = '" & RTrim(txtQuote_Num.Text) & "'"
+        mystr = mystr & " AND TBIL_POL_MEMB_BATCH_NO = '" & RTrim(txtBatch_Num.Text) & "'"
+        mystr = mystr & " AND TBIL_POL_MEMB_STATUS IN('Q')"
+        mystr = mystr & " ORDER BY TBIL_POL_MEMB_REC_ID"
+
+        myole_cmd = New OleDbCommand(mystr, pv_objOLEConn)
+        Dim myole_dr As OleDbDataReader
+
+        myole_dr = myole_cmd.ExecuteReader()
+
+        Do While myole_dr.Read
+
+            mySA_Amt = Val(0)
+            myAmt = Val(0)
+            myResult = Val(0)
+
+            myRID = CType(myole_dr("TBIL_POL_MEMB_REC_ID") & vbNullString, String)
+            mySN = CType(myole_dr("TBIL_POL_MEMB_SNO") & vbNullString, String)
+
+            If IsNumeric(CType(myole_dr("TBIL_POL_MEMB_TOT_SA") & vbNullString, String)) Then
+                mySA_Amt = CType(myole_dr("TBIL_POL_MEMB_TOT_SA") & vbNullString, Double)
+            End If
+
+            If IsNumeric(CType(myole_dr("TBIL_POL_MEMB_PREM") & vbNullString, String)) Then
+                'myAmt = CType(myole_dr("TBIL_POL_MEMB_PREM") & vbNullString, Double)
+            End If
+            If IsNumeric(CType(myole_dr("TBIL_POL_MEMB_PRO_RATE_PREM") & vbNullString, String)) Then
+                myAmt = CType(myole_dr("TBIL_POL_MEMB_PRO_RATE_PREM") & vbNullString, Double)
+            End If
+
+            If IsNumeric(CType(myole_dr("TBIL_POL_MEMB_LOAD") & vbNullString, String)) Then
+                myLoadAmt_Cal = CType(myole_dr("TBIL_POL_MEMB_LOAD") & vbNullString, Double)
+            End If
+
+            Select Case UCase(pvRate_Type)
+                Case "A"
+                    myResult = Val(myFixed_Amt)
+                Case "F"
+                    Select Case UCase(pvApplied_On)
+                        Case "S"    'Sum Assured
+                            If mySA_Amt <> 0 And myPercent <> 0 And myPer <> 0 Then
+                                myResult = mySA_Amt * myPercent / myPer
+                            End If
+                        Case "P"    'Basic Premium
+                            If myAmt <> 0 And myPercent <> 0 And myPer <> 0 Then
+                                myResult = myAmt * myPercent / myPer
+                            End If
+                        Case "T"    'Total Premium
+                            ' NO CALCULATION SPECIFICATION
+                            myResult = (myAmt + myLoadAmt_Cal) * myPercent / myPer
+                    End Select
+                Case "R"
+                    Select Case UCase(pvApplied_On)
+                        Case "S"    'Sum Assured
+                            If mySA_Amt <> 0 And myRate <> 0 And myPer <> 0 Then
+                                myResult = mySA_Amt * myRate / myPer
+                            End If
+                        Case "P"    'Basic Premium
+                            If myAmt <> 0 And myRate <> 0 And myPer <> 0 Then
+                                myResult = myAmt * myRate / myPer
+                            End If
+                        Case "T"    'Total Premium
+                            ' NO CALCULATION SPECIFICATION
+                            myResult = (myAmt + myLoadAmt_Cal) * myPercent / myPer
+                    End Select
+            End Select
+
+            myLoad_Amt = myLoad_Amt + myResult
+
+            myCNT_T = myCNT_T + 1
+            oAL_ID.Insert(myCNT_T - 1, myRID)
+            oAL_Rec.Insert(myCNT_T - 1, myResult.ToString)
+
+        Loop
+
+        myole_dr = Nothing
+        myole_cmd.Dispose()
+        myole_cmd = Nothing
+
+
+        If myCNT_T <= 0 Then
+            GoTo Proc_End_Rtn
+        End If
+
+        myCNT = 0
+Proc_End_Rtn:
+
+        'myole_cmd.Dispose()
+        myole_cmd = Nothing
+
+        oAL_ID.Clear()
+        oAL_ID = Nothing
+        oAL_Rec.Clear()
+        oAL_Rec = Nothing
+
+        Return myLoad_Amt
+
+    End Function
+
     Private Function Proc_DoLoading_Add_Member(ByVal pv_objOLEConn As OleDbConnection, ByVal pvRate_Type As String, ByVal pvApplied_On As String, ByVal pvLoad_Amt As Double, ByVal pvLoad_Rate As Double, ByVal pvLoad_Rate_Per As Integer, ByVal pvLoad_Percent As Double, ByVal pvCover_Num As String) As Double
 
         strTable = strTableName
@@ -4233,6 +4388,147 @@ Proc_End_Rtn:
 
     End Function
 
+    Private Function Proc_DoDiscount_Add_Member(ByVal pv_objOLEConn As OleDbConnection, ByVal pvRate_Type As String, ByVal pvApplied_On As String, ByVal pvLoad_Amt As Double, ByVal pvLoad_Rate As Double, ByVal pvLoad_Rate_Per As Integer, ByVal pvLoad_Percent As Double, ByVal pvCover_Num As String) As Double
+
+        strTable = strTableName
+        strTable = "TBIL_GRP_ADD_COVER_MEMBERS"
+
+        Dim myRID As String = ""
+        Dim mySN As String = ""
+
+        Dim myLoad_Amt As Double = 0
+
+        Dim myResult As Double = 0
+        Dim mySA_Amt As Double = 0
+        Dim myAmt As Double = 0
+        Dim myFixed_Amt As Double = 0
+        Dim myPercent As Double = 0
+        Dim myRate As Double = 0
+        Dim myPer As Double = 0
+
+        Dim myole_cmd As OleDbCommand
+        Dim mystr As String = ""
+
+        Dim myCNT_T As Integer = 0
+        Dim myCNT As Integer = 0
+        Dim myC As Integer = 0
+
+        Dim oAL_ID As New ArrayList
+        Dim oAL_Rec As New ArrayList
+
+
+        myFixed_Amt = Val(pvLoad_Amt)
+        myPercent = Val(pvLoad_Percent)
+        myRate = Val(pvLoad_Rate)
+        myPer = Val(pvLoad_Rate_Per)
+
+        myLoad_Amt = 0
+        myCNT_T = 0
+        myCNT = 0
+
+
+        mystr = ""
+        mystr = "SELECT TBIL_ADD_COV_MEMB_REC_ID, TBIL_ADD_COV_MEMB_SNO, TBIL_ADD_COV_MEMB_SA, TBIL_ADD_COV_MEMB_RATE, TBIL_ADD_COV_MEMB_PRO_RATE_PREM "
+        mystr = mystr & " FROM " & strTable
+        mystr = mystr & " WHERE TBIL_ADD_COV_MEMB_FILE_NO = '" & RTrim(txtFileNum.Text) & "'"
+        mystr = mystr & " AND TBIL_ADD_COV_MEMB_PROP_NO = '" & RTrim(txtQuote_Num.Text) & "'"
+        mystr = mystr & " AND TBIL_ADD_COV_MEMB_BATCH_NO = '" & RTrim(txtBatch_Num.Text) & "'"
+        mystr = mystr & " AND TBIL_ADD_COV_MEMB_CD = '" & RTrim(pvCover_Num) & "'"
+        mystr = mystr & " AND TBIL_ADD_COV_MEMB_STATUS IN('Q')"
+        mystr = mystr & " ORDER BY TBIL_ADD_COV_MEMB_REC_ID"
+
+
+        myole_cmd = New OleDbCommand(mystr, pv_objOLEConn)
+        Dim myole_dr As OleDbDataReader
+
+        myole_dr = myole_cmd.ExecuteReader()
+
+        Do While myole_dr.Read
+
+            mySA_Amt = Val(0)
+            myAmt = Val(0)
+            myResult = Val(0)
+
+            myRID = CType(myole_dr("TBIL_ADD_COV_MEMB_REC_ID") & vbNullString, String)
+            mySN = CType(myole_dr("TBIL_ADD_COV_MEMB_SNO") & vbNullString, String)
+
+            '
+            If IsNumeric(CType(myole_dr("TBIL_ADD_COV_MEMB_SA") & vbNullString, String)) Then
+                mySA_Amt = CType(myole_dr("TBIL_ADD_COV_MEMB_SA") & vbNullString, Double)
+            End If
+
+            If IsNumeric(CType(myole_dr("TBIL_ADD_COV_MEMB_RATE") & vbNullString, String)) Then
+                'myAmt = CType(myole_dr("TBIL_ADD_COV_MEMB_RATE") & vbNullString, Double)
+            End If
+            If IsNumeric(CType(myole_dr("TBIL_ADD_COV_MEMB_PRO_RATE_PREM") & vbNullString, String)) Then
+                myAmt = CType(myole_dr("TBIL_ADD_COV_MEMB_PRO_RATE_PREM") & vbNullString, Double)
+            End If
+
+            Select Case UCase(pvRate_Type)
+                Case "A"
+                    myResult = Val(myFixed_Amt)
+                Case "F"
+                    Select Case UCase(pvApplied_On)
+                        Case "S"    'Sum Assured
+                            If mySA_Amt <> 0 And myPercent <> 0 And myPer <> 0 Then
+                                myResult = mySA_Amt * myPercent / myPer
+                            End If
+                        Case "P"    'Basic Premium
+                            If myAmt <> 0 And myPercent <> 0 And myPer <> 0 Then
+                                myResult = myAmt * myPercent / myPer
+                            End If
+                        Case "T"    'Total Premium
+                            ' NO CALCULATION SPECIFICATION
+                            myResult = (myAmt + myLoad_Amt) * myPercent / myPer
+                    End Select
+                Case "R"
+                    Select Case UCase(pvApplied_On)
+                        Case "S"    'Sum Assured
+                            If mySA_Amt <> 0 And myRate <> 0 And myPer <> 0 Then
+                                myResult = mySA_Amt * myRate / myPer
+                            End If
+                        Case "P"    'Basic Premium
+                            If myAmt <> 0 And myRate <> 0 And myPer <> 0 Then
+                                myResult = myAmt * myRate / myPer
+                            End If
+                        Case "T"    'Total Premium
+                            ' NO CALCULATION SPECIFICATION
+                            myResult = (myAmt + myLoad_Amt) * myPercent / myPer
+                    End Select
+            End Select
+
+
+            myLoad_Amt = myLoad_Amt + myResult
+
+            myCNT_T = myCNT_T + 1
+            oAL_ID.Insert(myCNT_T - 1, myRID)
+            oAL_Rec.Insert(myCNT_T - 1, myResult.ToString)
+
+        Loop
+
+        myole_dr = Nothing
+        myole_cmd.Dispose()
+        myole_cmd = Nothing
+
+
+        If myCNT_T <= 0 Then
+            GoTo Proc_End_Rtn
+        End If
+
+        myCNT = 0
+Proc_End_Rtn:
+
+        'myole_cmd.Dispose()
+        myole_cmd = Nothing
+
+        oAL_ID.Clear()
+        oAL_ID = Nothing
+        oAL_Rec.Clear()
+        oAL_Rec = Nothing
+
+        Return myLoad_Amt
+
+    End Function
 
     Private Sub Proc_DoSave_DocItem(ByVal pvRecType As String, ByVal pvCoverNum As String, ByVal pvTransAmt As Double, ByVal pv_objOLEConn As OleDbConnection)
 
@@ -4313,5 +4609,61 @@ Proc_End_Rtn:
         'Response.Redirect(pvURL)
 
     End Sub
+
+    'Private Function Proc_Get_Loading() As Double
+    '    Dim mystrCONN As String = CType(Session("connstr"), String)
+    '    Dim objOLEConn As New OleDbConnection(mystrCONN)
+    '    Try
+    '        'open connection to database
+    '        objOLEConn.Open()
+    '    Catch ex As Exception
+    '        Me.lblMsg.Text = "Unable to connect to database. Reason: " & ex.Message
+    '        objOLEConn = Nothing
+    '        Exit Function
+    '    End Try
+
+    '    strREC_ID = Trim(strF_ID)
+    '    strREC_ID = Trim(Me.txtFileNum.Text)
+
+    '    strQ_ID = Trim(Me.txtQuote_Num.Text)
+    '    strP_ID = Trim(Me.txtPolNum.Text)
+    '    dblLoading_Prem = 0
+    '    dblLoading_Misc_Prem = 0
+    '    dblDiscount_Prem = 0
+    '    dblDiscount_Misc_Prem = 0
+
+
+    '    strTable = "TBIL_GRP_POLICY_MEMBERS"
+
+    '    strSQL = ""
+    '    strSQL = strSQL & "SELECT isnull(TBIL_POL_MEMB_LOAD,0) AS TOT_LOADING"
+    '    strSQL = strSQL & " FROM " & strTable & ""
+    '    strSQL = strSQL & " WHERE TBIL_POL_MEMB_FILE_NO = '" & RTrim(Me.txtFileNum.Text) & "'"
+    '    strSQL = strSQL & " AND TBIL_POL_MEMB_PROP_NO = '" & RTrim(Me.txtQuote_Num.Text) & "'"
+    '    strSQL = strSQL & " AND TBIL_POL_MEMB_BATCH_NO = '" & RTrim(Me.txtBatch_Num.Text) & "'"
+    '    strSQL = strSQL & " AND TBIL_POL_MEMB_MDLE IN('G')"
+
+
+    '    Dim objMem_Cmd As OleDbCommand = New OleDbCommand(strSQL, objOLEConn)
+    '    objMem_Cmd.CommandType = CommandType.Text
+    '    Dim objMem_DR As OleDbDataReader
+    '    objMem_DR = objMem_Cmd.ExecuteReader()
+    '    If (objMem_DR.Read()) Then
+    '        dblLoading_Prem = Val(objMem_DR("TOT_LOADING") & vbNullString)
+    '    Else
+    '        dblLoading_Prem = Val(0)
+    '    End If
+
+    '    objMem_DR.Close()
+    '    objMem_Cmd.Dispose()
+
+    '    objMem_DR = Nothing
+    '    objMem_Cmd = Nothing
+    '    If objOLEConn.State = ConnectionState.Open Then
+    '        objOLEConn.Close()
+    '    End If
+    '    objOLEConn = Nothing
+    '    Return dblLoading_Prem
+    'End Function
 
 End Class

@@ -254,11 +254,15 @@
                             </tr>
 
                             <tr>
-                                <td align="right" valign="top"><asp:Label ID="lblCalc_Net_Prem_LC" Text="Net Premium LC" runat="server"></asp:Label></td>
-                                <td align="left" valign="top"><asp:TextBox ID="txtCalc_Net_Prem_LC" Enabled="false" MaxLength="15" runat="server"></asp:TextBox>
+                                <td align="right" valign="top"><asp:Label ID="lblCalc_Net_Prem_LC" 
+                                        Text="Net Premium LC" runat="server" Visible="False"></asp:Label></td>
+                                <td align="left" valign="top"><asp:TextBox ID="txtCalc_Net_Prem_LC" Enabled="false" 
+                                        MaxLength="15" runat="server" Visible="False"></asp:TextBox>
                                 </td>
-                                <td align="right" valign="top"><asp:Label ID="lblCalc_Net_Prem_FC" Text="Net Premium FC:" runat="server"></asp:Label></td>
-                                <td align="left" valign="top"><asp:TextBox ID="txtCalc_Net_Prem_FC" Enabled="false" MaxLength="15" runat="server"></asp:TextBox>
+                                <td align="right" valign="top"><asp:Label ID="lblCalc_Net_Prem_FC" 
+                                        Text="Net Premium FC:" runat="server" Visible="False"></asp:Label></td>
+                                <td align="left" valign="top"><asp:TextBox ID="txtCalc_Net_Prem_FC" Enabled="false" 
+                                        MaxLength="15" runat="server" Visible="False"></asp:TextBox>
                                 </td>
                             </tr>
 
