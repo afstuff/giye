@@ -185,6 +185,7 @@ Partial Class PRG_LI_GRP_POLY_MEMBERS
     Dim myTerm As String = ""
     Dim dteDOB As Date = Now '
     Dim Err As String
+    Dim tenor As Integer
 
 
 
@@ -253,12 +254,17 @@ Partial Class PRG_LI_GRP_POLY_MEMBERS
             HideRow2.Visible = False
             HideRow3.Visible = False
             Call Proc_DoNew()
-            Me.txtRisk_Days.Text = "365"
+            If DateTime.IsLeapYear(Year(DateTime.Now)) Then
+                Me.txtRisk_Days.Text = "366"
+            Else
+                Me.txtRisk_Days.Text = "365"
+            End If
+            'Me.txtRisk_Days.Text = "365"
             Me.txtDOB_ANB.Text = "0"
             Me.txtData_Source_SW.Text = ""
             Me.txtData_Source_Name.Text = ""
             Me.txtFile_Upload.Text = ""
-            'Me.txtPrem_Period_Yr.Text = "1" 'Azeez: Tenor is calculated in days not yearly
+            Me.txtPrem_Period_Yr.Text = "1"
             Me.txtBatch_Num.Text = ""
             Me.txtXLS_Data_Start_No.Text = "1"
             Me.txtXLS_Data_End_No.Text = "1000"
@@ -1407,8 +1413,10 @@ Partial Class PRG_LI_GRP_POLY_MEMBERS
                            subctrl.ID = "txtPrem_Rate_TypeNum" Or _
                            subctrl.ID = "txtPrem_SA_Factor" Or _
                            subctrl.ID = "txtRisk_Days" Or _
-                            subctrl.ID = "txtStart_Date" Or _
+                           subctrl.ID = "txtStart_Date" Or _
                            subctrl.ID = "txtEnd_Date" Or _
+                           subctrl.ID = "txtPolStart_Date" Or _
+                           subctrl.ID = "txtPolEnd_Date" Or _
                            subctrl.ID = "txtGenStart_DateHidden" Or _
                            subctrl.ID = "xyz_123" Then
                             'Control(ID) : txtAction
@@ -1434,9 +1442,12 @@ Partial Class PRG_LI_GRP_POLY_MEMBERS
                             CType(subctrl, TextBox).Text = ""
                         End If
                     End If
+
+                    '"cboPrem_Rate_Code" Added to avoid empty rate code if user decides to upload after manually input
                     If TypeOf subctrl Is System.Web.UI.WebControls.DropDownList Then
                         If subctrl.ID = "cboData_Source" Or _
                            subctrl.ID = "cboBatch_Num" Or _
+                           subctrl.ID = "cboPrem_Rate_Code" Or _
                            subctrl.ID = "xyz_123" Then
                         Else
                             CType(subctrl, DropDownList).SelectedIndex = -1
@@ -1737,6 +1748,22 @@ Proc_Skip_ANB:
             Exit Sub
         End If
 
+        'Test if member start date is within policy period
+        If dteStart < CDate(DoConvertToDbDateFormat(txtPolStart_Date.Text)) Or _
+                               dteStart > CDate(DoConvertToDbDateFormat(txtPolEnd_Date.Text)) Then
+            lblMsg.Text = "Member start date is not within policy period"
+            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+            txtStart_Date.Focus()
+            Exit Sub
+        End If
+
+        'Test if member end date is the same with policy end date
+        If dteEnd <> CDate(DoConvertToDbDateFormat(txtPolEnd_Date.Text)) Then
+            lblMsg.Text = "Member end date should be the same with policy end date"
+            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+            txtEnd_Date.Focus()
+            Exit Sub
+        End If
 
         'If RTrim(Me.txtEffDate.Text) = "" Or Len(Trim(Me.txtEffDate.Text)) <> 10 Then
         '    Me.lblMsg.Text = "Missing or Invalid date - " & Me.txtEffDate.Text
@@ -1852,7 +1879,7 @@ Proc_Skip_ANB:
 
         intRisk_Days = Val(DateDiff(DateInterval.Day, GenStart_Date, GenEnd_Date)) + 0
         intRisk_Days = Val(Me.txtRisk_Days.Text)
-        txtPrem_Period_Yr.Text = txtRisk_Days.Text 'Azeez: Tenor should be equals to risk days at inception of policy
+        tenor = CInt(txtRisk_Days.Text) 'Azeez: Tenor should be equals to risk days at inception of policy
 
         'intDays_Diff = Val(DateDiff(DateInterval.Day, MemJoin_Date, GenEnd_Date)) + 0
         'intDays_Diff = Val(DateDiff(DateInterval.Day, my_Dte_Start, my_Dte_End))
@@ -1866,7 +1893,7 @@ Proc_Skip_ANB:
 
         If MemJoin_Date > GenStart_Date And dblPrem_Amt <> 0 And intDays_Diff <> 0 Then
             dblPrem_Amt_ProRata = Format((dblPrem_Amt / intRisk_Days) * intDays_Diff, "#########0.00")
-            txtPrem_Period_Yr.Text = intDays_Diff 'Azeez: Tenor
+            tenor = intDays_Diff 'Azeez: Tenor
         End If
 
 
@@ -2013,7 +2040,8 @@ Proc_Skip_ANB:
                 '    drNewRow("TBIL_POL_MEMB_EFF_DT") = Convert.ToDateTime(DoConvertToDbDateFormat(txtEffDate.Text))
                 'End If
 
-                drNewRow("TBIL_POL_MEMB_TENOR") = Val(Me.txtPrem_Period_Yr.Text)
+                'drNewRow("TBIL_POL_MEMB_TENOR") = Val(Me.txtPrem_Period_Yr.Text)
+                drNewRow("TBIL_POL_MEMB_TENOR") = tenor
                 drNewRow("TBIL_POL_MEMB_DESIG") = Left(RTrim(Me.txtDesignation_Name.Text), 40)
                 drNewRow("TBIL_POL_MEMB_NAME") = Left(RTrim(Me.txtMember_Name.Text), 98)
 
@@ -2081,7 +2109,8 @@ Proc_Skip_ANB:
                         .Rows(0)("TBIL_POL_MEMB_TO_DT") = dteEnd
                     End If
 
-                    .Rows(0)("TBIL_POL_MEMB_TENOR") = Val(Me.txtPrem_Period_Yr.Text)
+                    '.Rows(0)("TBIL_POL_MEMB_TENOR") = Val(Me.txtPrem_Period_Yr.Text)
+                    .Rows(0)("TBIL_POL_MEMB_TENOR") = tenor
                     .Rows(0)("TBIL_POL_MEMB_DESIG") = Left(RTrim(Me.txtDesignation_Name.Text), 40)
                     .Rows(0)("TBIL_POL_MEMB_NAME") = Left(RTrim(Me.txtMember_Name.Text), 98)
 
@@ -2509,6 +2538,7 @@ Proc_Skip_ANB:
         'Added by Azeez
         'Initially GenStart_Date looses value 
         GenStart_Date = Convert.ToDateTime(DoConvertToDbDateFormat(txtGenStart_DateHidden.Text))
+        GenEnd_Date = Convert.ToDateTime(DoConvertToDbDateFormat(txtPolEnd_Date.Text))
 
 
         'call the hashhelper function and pass the form values into it
@@ -4129,7 +4159,9 @@ MyLoop_End:
             '    Me.txtEffDate.Text = Format(CType(objOLEDR("TBIL_POL_MEMB_EFF_DT"), DateTime), "dd/MM/yyyy")
             'End If
 
-            Me.txtPrem_Period_Yr.Text = RTrim(CType(objOLEDR("TBIL_POL_MEMB_TENOR") & vbNullString, String))
+            'Azeez: Tenor was commented because in database in calculated in days while it is needed as yearly(1) to get prem rate
+
+            'Me.txtPrem_Period_Yr.Text = RTrim(CType(objOLEDR("TBIL_POL_MEMB_TENOR") & vbNullString, String))
             Me.txtDesignation_Name.Text = RTrim(CType(objOLEDR("TBIL_POL_MEMB_DESIG") & vbNullString, String))
             Me.txtMember_Name.Text = RTrim(CType(objOLEDR("TBIL_POL_MEMB_NAME") & vbNullString, String))
 

@@ -195,7 +195,7 @@
                                                         AutoPostBack="True">
                                                         <asp:ListItem Selected="True" Value="*">(Select item)</asp:ListItem>
                                                         <asp:ListItem Value="GL">Group Life</asp:ListItem>
-                                                        <asp:ListItem Value="PD">PD</asp:ListItem>
+                                                        <asp:ListItem Value="PD">Permanent Disability</asp:ListItem>
                                                         <asp:ListItem Value="FU">Funeral</asp:ListItem>
                                                         <asp:ListItem Value="CI">Critical illness</asp:ListItem>
                                                     </asp:DropDownList>

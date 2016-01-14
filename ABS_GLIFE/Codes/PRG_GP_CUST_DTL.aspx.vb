@@ -1042,4 +1042,21 @@ MyRtn_Ok:
         End If
     End Sub
 
+    Protected Sub cmdNew_ASP_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdNew_ASP.Click
+        Me.txtRecNo.Text = ""
+        Me.txtCustID.Text = ""
+        Me.txtCustClass.Text = ""
+        Me.txtCustNum.Text = ""
+        Me.txtCustName.Text = ""
+        Me.txtShortName.Text = ""
+        Me.txtCustAddr01.Text = ""
+        Me.txtCustAddr02.Text = ""
+        Me.txtCustPhone01.Text = ""
+        Me.txtCustPhone02.Text = ""
+        Me.txtCustEmail01.Text = ""
+        Me.txtCustEmail02.Text = ""
+        cboCustModule.SelectedIndex = 0
+        cboCustClass.SelectedIndex = 0
+        cboTransList.SelectedIndex = 0
+    End Sub
 End Class
