@@ -211,6 +211,9 @@ Partial Class Reinsurance_GRP_REINSURANCE
                 drNewRow("TBGL_DESC") = Me.txtTBGL_DESC.Text.Trim()
                 drNewRow("TBGL_SHRT_DESC") = Me.txtTBGL_SHRT_DESC.Text.Trim()
 
+                drNewRow("TBGL_COMPANY_TYPE") = ddnCompanyType.SelectedValue
+                drNewRow("TBGL_MODULE") = ddnCompanyType.SelectedValue
+
                 drNewRow("TBGL_ADRES1") = Me.txtTBGL_ADRES1.Text.Trim()
                 drNewRow("TBGL_ADRES2") = Me.txtTBGL_ADRES2.Text.Trim()
                 'drNewRow("TBGL_BRANCH") = Me.txtTBGL_BRANCH.Text.Trim()
@@ -243,6 +246,8 @@ Partial Class Reinsurance_GRP_REINSURANCE
                     .Rows(0)("TBGL_DESC") = Me.txtTBGL_DESC.Text.Trim()
                     .Rows(0)("TBGL_SHRT_DESC") = Me.txtTBGL_SHRT_DESC.Text.Trim()
                     '.Rows(0)("TBGL_BRANCH") = Me.txtTBGL_BRANCH.Text.Trim()
+                    .Rows(0)("TBGL_COMPANY_TYPE") = ddnCompanyType.SelectedValue
+                    .Rows(0)("TBGL_MODULE") = ddnCompanyType.SelectedValue
                     .Rows(0)("TBGL_ADRES1") = Me.txtTBGL_ADRES1.Text.Trim()
                     .Rows(0)("TBGL_ADRES2") = Me.txtTBGL_ADRES2.Text.Trim()
                     .Rows(0)("TBGL_PHONE1") = Me.txtTBGL_PHONE1.Text.Trim()
@@ -483,6 +488,8 @@ Partial Class Reinsurance_GRP_REINSURANCE
                 txtTBGL_DESC.Text = dr("TBGL_DESC").ToString()
                 txtTBGL_SHRT_DESC.Text = dr("TBGL_SHRT_DESC").ToString()
                 'txtTBGL_BRANCH.Text = dr("TBGL_BRANCH").ToString()
+                ddnCompanyType.SelectedValue = dr("TBGL_COMPANY_TYPE").ToString()
+                ddnReinsuranceMdl.SelectedValue = dr("TBGL_MODULE").ToString()
                 txtTBGL_ADRES1.Text = dr("TBGL_ADRES1").ToString()
                 txtTBGL_ADRES2.Text = dr("TBGL_ADRES2").ToString()
                 txtTBGL_PHONE1.Text = dr("TBGL_PHONE1").ToString()

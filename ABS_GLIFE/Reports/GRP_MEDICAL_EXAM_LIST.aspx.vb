@@ -53,7 +53,7 @@ Partial Class Reports_GRP_MEDICAL_EXAM_LIST
         End If
 
         Dim url As String = HttpContext.Current.Request.Url.AbsoluteUri
-        rParams(0) = "rptMEDICAL_UNDER_CLASS_TEST"
+        rParams(0) = "rptGRP_MEDICAL_UNDER_CLASS_TEST"
         rParams(1) = "pPOLICYNUMBER="
         rParams(2) = txtPolicyNumber.Text + "&"
         rParams(3) = url

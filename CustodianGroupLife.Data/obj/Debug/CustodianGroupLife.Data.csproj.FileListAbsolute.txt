@@ -13,3 +13,8 @@ C:\AFRIK\giye\CustodianGroupLife.Data\bin\Debug\CustodianGroupLife.Data.pdb
 C:\AFRIK\giye\CustodianGroupLife.Data\obj\Debug\ResolveAssemblyReference.cache
 C:\AFRIK\giye\CustodianGroupLife.Data\obj\Debug\CustodianGroupLife.Data.dll
 C:\AFRIK\giye\CustodianGroupLife.Data\obj\Debug\CustodianGroupLife.Data.pdb
+C:\AFRIK_PROJ\giye\CustodianGroupLife.Data\bin\Debug\CustodianGroupLife.Data.dll
+C:\AFRIK_PROJ\giye\CustodianGroupLife.Data\bin\Debug\CustodianGroupLife.Data.pdb
+C:\AFRIK_PROJ\giye\CustodianGroupLife.Data\obj\Debug\CustodianGroupLife.Data.csprojResolveAssemblyReference.cache
+C:\AFRIK_PROJ\giye\CustodianGroupLife.Data\obj\Debug\CustodianGroupLife.Data.dll
+C:\AFRIK_PROJ\giye\CustodianGroupLife.Data\obj\Debug\CustodianGroupLife.Data.pdb
