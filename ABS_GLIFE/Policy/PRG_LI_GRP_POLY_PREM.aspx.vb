@@ -96,7 +96,7 @@ Partial Class PRG_LI_GRP_POLY_PREM
             Me.txtPrem_Rate_Applied_On.Text = "S"
             Me.txtPrem_Is_SA_From_PremNum.Text = "N"
             'Call gnProc_DDL_Get(Me.cboPrem_Is_SA_From_Prem, RTrim(Me.txtPrem_Is_SA_From_PremNum.Text))
-            Me.txtPrem_Life_CoverNum.Text = "Y"
+            'Me.txtPrem_Life_CoverNum.Text = "Y"
             'Me.cboPrem_Life_Cover.SelectedIndex = 2
 
             Me.cmdPrev.Enabled = True
@@ -596,12 +596,12 @@ Partial Class PRG_LI_GRP_POLY_PREM
         Call MOD_GEN.gnInitialize_Numeric(Me.txtPrem_Exchange_Rate)
 
 
-        Call gnGET_SelectedItem(Me.cboPrem_Life_Cover, Me.txtPrem_Life_CoverNum, Me.txtPrem_Life_CoverName, Me.lblMsg)
-        If Me.txtPrem_Life_CoverNum.Text = "" Then
-            Me.lblMsg.Text = "Missing " & Me.lblPrem_Life_Cover.Text
-            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
-            Exit Sub
-        End If
+        'Call gnGET_SelectedItem(Me.cboPrem_Life_Cover, Me.txtPrem_Life_CoverNum, Me.txtPrem_Life_CoverName, Me.lblMsg)
+        'If Me.txtPrem_Life_CoverNum.Text = "" Then
+        '    Me.lblMsg.Text = "Missing " & Me.lblPrem_Life_Cover.Text
+        '    FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+        '    Exit Sub
+        'End If
 
         Select Case UCase(Me.txtProduct_Num.Text)
             Case "F001", "F002"
@@ -614,22 +614,22 @@ Partial Class PRG_LI_GRP_POLY_PREM
                 Me.txtPrem_Enrollee_Num.Text = "0"
         End Select
 
-        Call gnGET_SelectedItem(Me.cboPrem_Allocation_YN, Me.txtPrem_Allocation_YN, Me.txtPrem_Allocation_YN_Name, Me.lblMsg)
-        If Me.txtPrem_Allocation_YN.Text = "" Then
-            'txtPrem_Allocation_YN.Text = "N"
-            Me.lblMsg.Text = "Missing " & Me.lblPrem_Allocation_YN.Text
-            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
-            Exit Sub
-        End If
+        'Call gnGET_SelectedItem(Me.cboPrem_Allocation_YN, Me.txtPrem_Allocation_YN, Me.txtPrem_Allocation_YN_Name, Me.lblMsg)
+        'If Me.txtPrem_Allocation_YN.Text = "" Then
+        '    'txtPrem_Allocation_YN.Text = "N"
+        '    Me.lblMsg.Text = "Missing " & Me.lblPrem_Allocation_YN.Text
+        '    FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+        '    Exit Sub
+        'End If
 
 
-        Call gnGET_SelectedItem(Me.cboPrem_Bonus_YN, Me.txtPrem_Bonus_YN, Me.txtPrem_Bonus_YN_Name, Me.lblMsg)
-        If Me.txtPrem_Bonus_YN.Text = "" Then
-            'txtPrem_Bonus_YN.Text = "N"
-            Me.lblMsg.Text = "Missing " & Me.lblPrem_Bonus_YN.Text
-            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
-            Exit Sub
-        End If
+        'Call gnGET_SelectedItem(Me.cboPrem_Bonus_YN, Me.txtPrem_Bonus_YN, Me.txtPrem_Bonus_YN_Name, Me.lblMsg)
+        'If Me.txtPrem_Bonus_YN.Text = "" Then
+        '    'txtPrem_Bonus_YN.Text = "N"
+        '    Me.lblMsg.Text = "Missing " & Me.lblPrem_Bonus_YN.Text
+        '    FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+        '    Exit Sub
+        'End If
 
         Call gnGET_SelectedItem(Me.cboPrem_Rate_Type, Me.txtPrem_Rate_TypeNum, Me.txtPrem_Rate_TypeName, Me.lblMsg)
         If Me.txtPrem_Rate_TypeNum.Text = "" Then
@@ -773,15 +773,15 @@ Partial Class PRG_LI_GRP_POLY_PREM
         Call MOD_GEN.gnInitialize_Numeric(Me.txtPrem_SA_FC)
 
         Call MOD_GEN.gnInitialize_Numeric(Me.txtPrem_Life_Cover_SA_LC)
-        If Me.txtPrem_Life_CoverNum.Text = "N" Then
-            Me.txtPrem_Life_CoverNum.Text = "N"
-        Else
-            If Val(Me.txtPrem_Life_Cover_SA_LC.Text) = 0 And Trim(Me.txtPrem_Rate_Applied_On.Text) = "S" Then
-                Me.lblMsg.Text = "Missing Life Cover SA... - xxx"
-                FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
-                Exit Sub
-            End If
-        End If
+        'If Me.txtPrem_Life_CoverNum.Text = "N" Then
+        '    Me.txtPrem_Life_CoverNum.Text = "N"
+        'Else
+        '    If Val(Me.txtPrem_Life_Cover_SA_LC.Text) = 0 And Trim(Me.txtPrem_Rate_Applied_On.Text) = "S" Then
+        '        Me.lblMsg.Text = "Missing Life Cover SA... - xxx"
+        '        FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+        '        Exit Sub
+        '    End If
+        'End If
         If Val(Me.txtPrem_Life_Cover_SA_LC.Text) = 0 And Trim(Me.txtPrem_Rate_Applied_On.Text) = "S" Then
             Me.lblMsg.Text = "Missing Life Cover SA..."
             FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
@@ -987,7 +987,7 @@ SKIP_Next_88:
 
 
                 'new fields
-                drNewRow("TBIL_POL_PRM_LIFE_COVER") = Trim(Me.txtPrem_Life_CoverNum.Text)
+                'drNewRow("TBIL_POL_PRM_LIFE_COVER") = Trim(Me.txtPrem_Life_CoverNum.Text)
                 drNewRow("TBIL_POL_SA_FROM_PRM") = Trim(Me.txtPrem_Is_SA_From_PremNum.Text)
                 drNewRow("TBIL_POL_PRM_RT_TAB_FIX") = Trim(Me.txtPrem_Rate_TypeNum.Text)
                 drNewRow("TBIL_POL_PRM_RT_FIXED") = Trim(Me.txtPrem_Fixed_Rate.Text)
@@ -1015,8 +1015,8 @@ SKIP_Next_88:
                 drNewRow("TBIL_POL_PRM_RT_APPLIED_ON") = Trim(Me.txtPrem_Rate_Applied_On.Text)
 
                 'new fields
-                drNewRow("TBIL_POL_PRM_RT_BONUS_CD") = Trim(Me.txtPrem_Bonus_YN.Text)
-                drNewRow("TBIL_POL_PRM_ALLOC_CD") = Trim(Me.txtPrem_Allocation_YN.Text)
+                'drNewRow("TBIL_POL_PRM_RT_BONUS_CD") = Trim(Me.txtPrem_Bonus_YN.Text)
+                'drNewRow("TBIL_POL_PRM_ALLOC_CD") = Trim(Me.txtPrem_Allocation_YN.Text)
                 drNewRow("TBIL_POL_PRM_SCH_TERM") = Trim(Me.txtPrem_School_Term.Text)
                 drNewRow("TBIL_POL_PRM_FEE_PRD") = Val(Me.txtPrem_Sch_Fee_Prd.Text)
 
@@ -1080,7 +1080,7 @@ SKIP_Next_88:
                     .Rows(0)("TBIL_POL_PRM_MTH_CONTRIB_FC") = Trim(Me.txtPrem_Mth_Contrib_FC.Text)
 
                     'new fields
-                    .Rows(0)("TBIL_POL_PRM_LIFE_COVER") = Trim(Me.txtPrem_Life_CoverNum.Text)
+                    '.Rows(0)("TBIL_POL_PRM_LIFE_COVER") = Trim(Me.txtPrem_Life_CoverNum.Text)
                     .Rows(0)("TBIL_POL_SA_FROM_PRM") = Trim(Me.txtPrem_Is_SA_From_PremNum.Text)
                     .Rows(0)("TBIL_POL_PRM_RT_TAB_FIX") = Trim(Me.txtPrem_Rate_TypeNum.Text)
                     .Rows(0)("TBIL_POL_PRM_RT_FIXED") = Trim(Me.txtPrem_Fixed_Rate.Text)
@@ -1108,8 +1108,8 @@ SKIP_Next_88:
                     .Rows(0)("TBIL_POL_PRM_RT_APPLIED_ON") = Trim(Me.txtPrem_Rate_Applied_On.Text)
 
                     'new fields
-                    .Rows(0)("TBIL_POL_PRM_RT_BONUS_CD") = Trim(Me.txtPrem_Bonus_YN.Text)
-                    .Rows(0)("TBIL_POL_PRM_ALLOC_CD") = Trim(Me.txtPrem_Allocation_YN.Text)
+                    '.Rows(0)("TBIL_POL_PRM_RT_BONUS_CD") = Trim(Me.txtPrem_Bonus_YN.Text)
+                    '.Rows(0)("TBIL_POL_PRM_ALLOC_CD") = Trim(Me.txtPrem_Allocation_YN.Text)
                     .Rows(0)("TBIL_POL_PRM_SCH_TERM") = Trim(Me.txtPrem_School_Term.Text)
                     .Rows(0)("TBIL_POL_PRM_FEE_PRD") = Val(Me.txtPrem_Sch_Fee_Prd.Text)
 
@@ -1284,7 +1284,7 @@ SKIP_Next_88:
 
 
 
-        strHas_Life_Cover = Trim(Me.txtPrem_Life_CoverNum.Text)
+        'strHas_Life_Cover = Trim(Me.txtPrem_Life_CoverNum.Text)
         'txtPrem_Rate_TypeNum.Text = "T"
         strRate_Type = Trim(Me.txtPrem_Rate_TypeNum.Text)
         'Response.Write("<br />Rate Type: " & strRate_Type)
@@ -2140,8 +2140,8 @@ Skip_C001:
             Call gnProc_DDL_Get(Me.cboPrem_SA_Currency, RTrim(Me.txtPrem_SA_CurrencyCode.Text))
             Me.txtPrem_Exchange_Rate.Text = RTrim(CType(objOLEDR("TBIL_POL_PRM_EXCHG_RATE") & vbNullString, String))
 
-            Me.txtPrem_Life_CoverNum.Text = RTrim(CType(objOLEDR("TBIL_POL_PRM_LIFE_COVER") & vbNullString, String))
-            Call gnProc_DDL_Get(Me.cboPrem_Life_Cover, RTrim(Me.txtPrem_Life_CoverNum.Text))
+            'Me.txtPrem_Life_CoverNum.Text = RTrim(CType(objOLEDR("TBIL_POL_PRM_LIFE_COVER") & vbNullString, String))
+            'Call gnProc_DDL_Get(Me.cboPrem_Life_Cover, RTrim(Me.txtPrem_Life_CoverNum.Text))
 
             Me.txtPrem_MOP_Rate.Text = RTrim(CType(objOLEDR("TBIL_POL_PRM_MOP_RATE") & vbNullString, String))
             Me.txtPrem_Exchange_Rate.Text = RTrim(CType(objOLEDR("TBIL_POL_PRM_EXCHG_RATE") & vbNullString, String))
@@ -2242,11 +2242,11 @@ Skip_C001:
             Me.txtPrem_Free_LiveCover_Lmt_LC.Text = RTrim(CType(objOLEDR("TBIL_POL_PRM_FREE_LIFECOVER_LMT_LC") & vbNullString, String))
             Me.txtPrem_Free_LiveCover_Lmt_FC.Text = RTrim(CType(objOLEDR("TBIL_POL_PRM_FREE_LIFECOVER_LMT_FC") & vbNullString, String))
 
-            Me.txtPrem_Bonus_YN.Text = RTrim(CType(objOLEDR("TBIL_POL_PRM_RT_BONUS_CD") & vbNullString, String))
-            Call gnProc_DDL_Get(Me.cboPrem_Bonus_YN, RTrim(Me.txtPrem_Bonus_YN.Text))
+            'Me.txtPrem_Bonus_YN.Text = RTrim(CType(objOLEDR("TBIL_POL_PRM_RT_BONUS_CD") & vbNullString, String))
+            'Call gnProc_DDL_Get(Me.cboPrem_Bonus_YN, RTrim(Me.txtPrem_Bonus_YN.Text))
 
-            Me.txtPrem_Allocation_YN.Text = RTrim(CType(objOLEDR("TBIL_POL_PRM_ALLOC_CD") & vbNullString, String))
-            Call gnProc_DDL_Get(Me.cboPrem_Allocation_YN, RTrim(Me.txtPrem_Allocation_YN.Text))
+            'Me.txtPrem_Allocation_YN.Text = RTrim(CType(objOLEDR("TBIL_POL_PRM_ALLOC_CD") & vbNullString, String))
+            'Call gnProc_DDL_Get(Me.cboPrem_Allocation_YN, RTrim(Me.txtPrem_Allocation_YN.Text))
 
             Me.txtPrem_School_Term.Text = RTrim(CType(objOLEDR("TBIL_POL_PRM_SCH_TERM") & vbNullString, String))
             Call gnProc_DDL_Get(Me.cboPrem_School_Term, RTrim(Me.txtPrem_School_Term.Text))
@@ -2351,4 +2351,29 @@ Skip_C001:
 
     End Sub
 
+    Protected Sub txtPrem_Start_Date_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtPrem_Start_Date.TextChanged
+        If txtPrem_Start_Date.Text <> "" Then
+            Dim str() As String
+            str = DoDate_Process(txtPrem_Start_Date.Text, txtPrem_Start_Date)
+            If (str(2) = Nothing) Then
+                Dim errMsg = str(0).Insert(18, " start date, ")
+                lblMsg.Text = errMsg.Replace("Javascript:alert('", "").Replace("');", "")
+                lblMsg.Visible = True
+                txtPrem_Start_Date.Focus()
+                Exit Sub
+            Else
+                txtPrem_End_Date.Text = DateAdd(DateInterval.Day, 365, CDate(DoConvertToDbDateFormat(txtPrem_Start_Date.Text)))
+                txtPrem_End_Date.Text = DoConvertToDMY(txtPrem_End_Date.Text)
+            End If
+        End If
+    End Sub
+
+    Public Function DoConvertToDMY(ByVal dateValue As String) As String
+        Dim newDate = String.Empty
+        If dateValue <> String.Empty Then
+            Dim dDate = dateValue.Split(CType("/", Char))
+            newDate = dDate(1) + "/" + dDate(0) + "/" + dDate(2)
+        End If
+        Return newDate
+    End Function
 End Class

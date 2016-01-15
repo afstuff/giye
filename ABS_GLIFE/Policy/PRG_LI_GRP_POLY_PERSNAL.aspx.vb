@@ -117,7 +117,7 @@ Partial Class PRG_LI_GRP_POLY_PERSNAL
             Call Proc_DoNew()
             Me.cmdPrev.Enabled = False
             Me.cmdNext.Enabled = False
-
+            txtRetirement_Age.Text = "65"
             Me.txtTrans_Date.Text = Format(Now, "dd/MM/yyyy")
             If Me.txtProStatus.Text = "" Then
                 Me.txtProStatus.Text = "P"
@@ -811,7 +811,7 @@ Partial Class PRG_LI_GRP_POLY_PERSNAL
 
         Me.txtRecNo.Text = "0"
         Me.txtTrans_Date.Text = Format(Now, "dd/MM/yyyy")
-
+        txtRetirement_Age.Text = "65"
         Me.lblQuote_Num.Enabled = True
         Me.txtQuote_Num.Enabled = True
 
@@ -1075,10 +1075,7 @@ Proc_Skip_Check:
                 Exit Sub
             End If
         Else
-            Me.lblMsg.Text = "Retention not be empty"
-            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
-            txtRetention.Focus()
-            Exit Sub
+            txtRetention.Text = "0.00"
         End If
 
         If txtFreeMedCovLmt.Text <> "" Then
@@ -1089,10 +1086,7 @@ Proc_Skip_Check:
                 Exit Sub
             End If
         Else
-            Me.lblMsg.Text = "Free medical cover limit not be empty"
-            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
-            txtFreeMedCovLmt.Focus()
-            Exit Sub
+            txtFreeMedCovLmt.Text = "0.00"
         End If
 
         If txtCompShare.Text <> "" Then
@@ -1103,13 +1097,8 @@ Proc_Skip_Check:
                 Exit Sub
             End If
         Else
-            Me.lblMsg.Text = "CIA share must not be empty"
-            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
-            txtCompShare.Focus()
-            Exit Sub
+            txtCompShare.Text = "0.00"
         End If
-
-
 
         Me.txtQuote_Num.Text = LTrim(RTrim(Me.txtQuote_Num.Text))
         'If Trim(Me.txtQuote_Num.Text) = "" Then
@@ -2459,6 +2448,7 @@ PUpdate_Date1:
         If txtRetention.Text <> "" Then
             If IsNumeric(txtRetention.Text) Then
                 txtRetention.Text = Format(txtRetention.Text, "Standard")
+                txtFreeMedCovLmt.Focus()
             Else
                 Me.lblMsg.Text = "Retention must be numeric"
                 FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
@@ -2472,6 +2462,7 @@ PUpdate_Date1:
         If txtFreeMedCovLmt.Text <> "" Then
             If IsNumeric(txtFreeMedCovLmt.Text) Then
                 txtFreeMedCovLmt.Text = Format(txtFreeMedCovLmt.Text, "Standard")
+                txtCompShare.Focus()
             Else
                 Me.lblMsg.Text = "Free medical cover limit must be numeric"
                 FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
