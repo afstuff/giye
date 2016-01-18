@@ -121,9 +121,73 @@ Partial Class Reports_GRP_MEDICAL_EXAM_LIST
     Protected Sub cmdSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdSearch.Click
         If LTrim(RTrim(Me.txtSearch.Value)) = "Search..." Then
         ElseIf LTrim(RTrim(Me.txtSearch.Value)) <> "" Then
-            Call gnProc_Populate_Box("GL_ASSURED_HELP_SP", "001", Me.cboSearch, RTrim(Me.txtSearch.Value))
+            'Call gnProc_Populate_Box("GL_ASSURED_HELP_SP", "001", Me.cboSearch, RTrim(Me.txtSearch.Value))
+            'DoSearch(txtSearch.Value)
+
+            Dim ds As DataSet = GET_INSURED(Me.txtSearch.Value)
+            Dim dt As DataTable = ds.Tables(0)
+            cboSearch.DataSource = dt
+            Dim dr As DataRow = dt.NewRow()
+            dr.Item("MyFld_Text") = "...Select..."
+            dr.Item("TBIL_POLY_POLICY_NO") = ""
+            dt.Rows.InsertAt(dr, 0)
+
+
+            cboSearch.DataValueField = "TBIL_POLY_POLICY_NO"
+            cboSearch.DataTextField = "MyFld_Text"
+            cboSearch.DataBind()
+
+
         End If
     End Sub
+
+    Public Sub DoSearch(ByVal sValue As String)
+
+        Dim mystrCONN As String = CType(Session("connstr"), String)
+        Dim objOLEConn As New OleDbConnection(mystrCONN)
+
+        Try
+            'open connection to database
+            objOLEConn.Open()
+        Catch ex As Exception
+            Me.lblMsg.Text = "Unable to connect to database. Reason: " & ex.Message
+            objOLEConn = Nothing
+            'Return strErrMsg
+            Exit Sub
+        End Try
+
+
+        'strREC_ID = Trim(FVstrRefNum)
+
+
+        Dim sql As String = "SELECT PT.TBIL_POLY_REC_ID ,PT.TBIL_POLY_FILE_NO AS MyFld_Value , " _
++ "RTRIM(ISNULL(INSRD.TBIL_INSRD_SURNAME,'')) + ' ' +  RTRIM(ISNULL(INSRD.TBIL_INSRD_FIRSTNAME,'')) + ' - ' + " _
++ "RTRIM(ISNULL(PT.TBIL_POLY_FILE_NO,'')) + ' - ' + RTRIM(ISNULL(PT.TBIL_POLY_PROPSAL_NO,'')) + ' - ' + " _
++ "RTRIM(ISNULL(PT.TBIL_POLY_POLICY_NO,'')) + ' ' + RTRIM('') AS MyFld_Text ,PT.TBIL_POLY_PROPSAL_NO , " _
++ "PT.TBIL_POLY_POLICY_NO as MyFld_Value ,PT.TBIL_POLY_ASSRD_CD ,INSRD.TBIL_INSRD_MDLE FROM TBIL_GRP_POLICY_DET PT LEFT " _
++ " JOIN TBIL_INS_DETAIL AS INSRD ON INSRD.TBIL_INSRD_CODE = PT.TBIL_POLY_ASSRD_CD WHERE (INSRD.TBIL_INSRD_SURNAME " _
++ "LIKE '%' " + sValue + " '%' OR INSRD.TBIL_INSRD_FIRSTNAME LIKE '%' " + sValue + " '%') AND " _
++ "INSRD.TBIL_INSRD_MDLE IN('GRP','G') ORDER BY INSRD.TBIL_INSRD_SURNAME, INSRD.TBIL_INSRD_FIRSTNAME"
+
+        Dim objOLECmd As OleDbCommand = New OleDbCommand(sql, objOLEConn)
+        objOLECmd.CommandTimeout = 180
+        objOLECmd.CommandType = CommandType.Text
+
+        Dim Adapter As OleDbDataAdapter = New OleDbDataAdapter()
+        Adapter.SelectCommand = objOLECmd
+        Dim Ds As DataSet = New DataSet()
+        Adapter.Fill(Ds)
+        objOLEConn.Close()
+        Dim dt As DataTable
+        dt = Ds.Tables(0)
+
+        cboSearch.DataSource = dt
+        cboSearch.DataValueField = "MyFld_Value"
+        cboSearch.DataTextField = "MyFld_Text"
+        cboSearch.DataBind()
+
+    End Sub
+
 
     Protected Sub cboSearch_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboSearch.SelectedIndexChanged
         Try
@@ -195,7 +259,7 @@ Partial Class Reports_GRP_MEDICAL_EXAM_LIST
         If (objOLEDR.Read()) Then
             strErrMsg = "true"
 
-            Me.txtPolicyNumber.Text = RTrim(CType(objOLEDR("TBIL_POLY_FILE_NO") & vbNullString, String))
+            Me.txtPolicyNumber.Text = RTrim(CType(objOLEDR("TBIL_POLY_POLICY_NO") & vbNullString, String))
 
 
         Else
