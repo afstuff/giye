@@ -1296,7 +1296,7 @@ Partial Class Policy_PRG_LI_GRP_POLY_LOAD_DISC
 
             Select Case UCase(Me.txtLoad_Disc_Prem_Rate_TypeNum.Text)
                 Case "A"
-                    myResult = Val(Me.txtLoad_Disc_Amt)
+                    myResult = Val(Me.txtLoad_Disc_Amt.Text)
                 Case "F"
                     Select Case UCase(Me.txtLoad_Disc_Applied_On.Text)
                         Case "S"    'Sum Assured
@@ -1459,7 +1459,7 @@ Proc_End_Rtn:
 
             Select Case UCase(Me.txtLoad_Disc_Prem_Rate_TypeNum.Text)
                 Case "A"
-                    myResult = Val(Me.txtLoad_Disc_Amt)
+                    myResult = Val(Me.txtLoad_Disc_Amt.Text)
                 Case "F"
                     Select Case UCase(Me.txtLoad_Disc_Applied_On.Text)
                         Case "S"    'Sum Assured

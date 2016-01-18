@@ -220,6 +220,7 @@ Partial Class Policy_PRG_LI_GRP_POLY_MEMBERS_ADD
             HideRow1.Visible = False
             HideRow2.Visible = False
             HideRow3.Visible = False
+            cboMedical_YN.SelectedValue = "N"
             Call Proc_DoNew()
             If DateTime.IsLeapYear(Year(DateTime.Now)) Then
                 Me.txtRisk_Days.Text = "366"
@@ -1474,6 +1475,7 @@ Partial Class Policy_PRG_LI_GRP_POLY_MEMBERS_ADD
                         If subctrl.ID = "cboData_Source" Or _
                            subctrl.ID = "cboBatch_Num" Or _
                            subctrl.ID = "cboPrem_Rate_Code" Or _
+                           subctrl.ID = "cboMedical_YN" Or _
                            subctrl.ID = "xyz_123" Then
                         Else
                             CType(subctrl, DropDownList).SelectedIndex = -1
@@ -2039,7 +2041,8 @@ Proc_Skip_ANB:
 
                 drNewRow("TBIL_POL_MEMB_FLAG") = "A"
                 drNewRow("TBIL_POL_MEMB_OPERID") = CType(myUserIDX, String)
-                drNewRow("TBIL_POL_MEMB_KEYDTE") = add_date_added
+                'drNewRow("TBIL_POL_MEMB_KEYDTE") = add_date_added
+                drNewRow("TBIL_POL_MEMB_KEYDTE") = Now
                 obj_DT.Rows.Add(drNewRow)
                 'obj_DT.AcceptChanges()
                 intC = objDA.Update(obj_DT)
@@ -5427,13 +5430,13 @@ MyLoop_End:
         lblEnd_Date.Visible = True
         lblPrem_Period_Yr.Visible = True
         lblTotal_Emolument.Visible = True
-        lblMedical_YN.Visible = True
+        'lblMedical_YN.Visible = True
         lblPrem_Rate_X.Visible = True
         txtStart_Date.Visible = True
         txtEnd_Date.Visible = True
         txtPrem_Period_Yr.Visible = True
         txtTotal_Emolument.Visible = True
-        cboMedical_YN.Visible = True
+        'cboMedical_YN.Visible = True
         cboPrem_Rate_Code.Visible = True
         lblPrem_Rate_Code.Visible = True
         txtPrem_Rate_Code.Visible = True
@@ -5470,13 +5473,13 @@ MyLoop_End:
         lblEnd_Date.Visible = False
         lblPrem_Period_Yr.Visible = False
         lblTotal_Emolument.Visible = False
-        lblMedical_YN.Visible = False
+        'lblMedical_YN.Visible = False
         lblPrem_Rate_X.Visible = False
         txtStart_Date.Visible = False
         txtEnd_Date.Visible = False
         txtPrem_Period_Yr.Visible = False
         txtTotal_Emolument.Visible = False
-        cboMedical_YN.Visible = False
+        'cboMedical_YN.Visible = False
         cboPrem_Rate_Code.Visible = False
         lblPrem_Rate_Code.Visible = False
         txtPrem_Rate_Code.Visible = False

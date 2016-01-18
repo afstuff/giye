@@ -221,7 +221,7 @@
                                                 </td>
                             </tr>
 
-                                            <tr>
+                                            <tr runat="server" id="HideRowSAFactor">
                                                 <td nowrap align="left" valign="top" class="style18">
                                                     <asp:Label ID="lblSAFactor" 
                                                         Text="S A Factor" runat="server"></asp:Label>
@@ -247,7 +247,7 @@
                                                     &nbsp;</td>
                                             </tr>
 
-                                            <tr>
+                                            <tr runat="server" id="HideRowTotStaffNo">
                                                 <td nowrap align="left" valign="top" class="style6"><asp:Label ID="lblTotNoStaff" 
                                                         Text="Total Number of staff:" runat="server"></asp:Label></td>
                                                 <td align="left" valign="top" colspan="1" class="style7">                                                    
