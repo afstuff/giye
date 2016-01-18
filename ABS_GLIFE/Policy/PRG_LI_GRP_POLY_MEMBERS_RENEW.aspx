@@ -124,7 +124,7 @@
                         </tr>
                         <tr>
                             <td align="center" colspan="4" valign="top" style="height: 26px">
-                                &nbsp;&nbsp;<a href="#" onclick="javascript:JSDO_RETURN('PRG_GP_PROP_POLICY.aspx?menu=GL_QUOTE')">Go
+                                &nbsp;&nbsp;<a href="#" onclick="javascript:JSDO_RETURN('../MENU_GL.aspx?menu=GL_RENEWAL')">Go
                                     to Menu</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:Button ID="btnRenewClaim" runat="server" OnClientClick="return confirm('WARNING: Record will be permanently BE RENEWED! Are you sure you want to renew policy!');" 
                                         Height="44px" Text="Renew" Width="135px" Font-Bold="True" Font-Size="Large" />
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

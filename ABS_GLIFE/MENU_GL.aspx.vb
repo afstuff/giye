@@ -241,16 +241,12 @@ Partial Class MENU_GL
                 AddMenuItem("", "Credit Note Print", "Reports/PRG_LI_GRP_DN_RPT.aspx?TTYPE=CN")
                 AddMenuItem("", "Credit Note Without Commission Print", "Reports/PRG_LI_GRP_DN_RPT.aspx?TTYPE=CNNOCOM")
                 AddMenuItem("", "", "") 'blank link
-                AddMenuItem("", "Medical Examination Requirement List", "Reports/GRP_MED_1101.aspx?TTYPE=GRP_RPT_MED_1101")
+                'AddMenuItem("", "Medical Examination Requirement List", "Reports/GRP_MED_1101.aspx?TTYPE=GRP_RPT_MED_1101")
 
-                AddMenuItem("", "Group Medical Examination Test Requirement List", "Reports/GRP_MEDICAL_EXAM_LIST.aspx")
+                AddMenuItem("", "Medical Examination Requirement List", "Reports/GRP_MEDICAL_EXAM_LIST.aspx")
 
                 'AddMenuItem("", "Policy Schedule", "")
                 AddMenuItem("", "Print Policy Schedule", "POLICY/PRG_LI_GRP_QUOT_SCHEDULE.aspx?opt=POLY_SCHDLE")
-
-                AddMenuItem("", "Print ReAssurance Certificate", "Reports/PRG_LI_RE_ASSURANCE_CERT_RPT.aspx?opt=REASS_CERT")
-
-
                 AddMenuItem("", "Policy Register", "")
                 AddMenuItem("", "Premium Report", "")
                 AddMenuItem("", "Renewal Register", "")
@@ -329,16 +325,17 @@ Partial Class MENU_GL
                 AddMenuItem("", "UNDER_LINE", "") 'blank link
                 AddMenuItem("", "", "") 'blank link
                 'AddMenuItem("", "MENU CAPTION", "PAGE URL")
-                AddMenuItem("Transactions", "ReAssurer Data Entry", "")
-                AddMenuItem("", "Facultative Data Entry", "")
+                AddMenuItem("Transactions", "ReAssurer Data Entry", "Reinsurance/GRP_REINSURANCE.aspx")
+                'AddMenuItem("Transactions", "ReAssurer Data Entry", "")
+                'AddMenuItem("", "Facultative Data Entry", "")
                 AddMenuItem("", "", "") 'blank link
-                AddMenuItem("Reports", "ReAssurance Report", "Reinsurance/GRP_REINS_1101.aspx?TTYPE=GRP_RPT_REINS_1101")
-                AddMenuItem("", "ReAssurance Register", "Reinsurance/GRP_REINS_1101.aspx?TTYPE=GRP_RPT_REINS_1102")
-                AddMenuItem("", "ReInsurance Data Entry", "Reinsurance/GRP_REINSURANCE.aspx")
-                AddMenuItem("", "ReAssurer Bordeareaux", "")
-                AddMenuItem("", "Definite Certificate", "")
+                AddMenuItem("Reports", "Print ReAssurance Certificate", "Reports/PRG_LI_RE_ASSURANCE_CERT_RPT.aspx?opt=REASS_CERT")
+                'AddMenuItem("Reports", "ReAssurance Report", "Reinsurance/GRP_REINS_1101.aspx?TTYPE=GRP_RPT_REINS_1101")
+                'AddMenuItem("", "ReAssurance Register", "Reinsurance/GRP_REINS_1101.aspx?TTYPE=GRP_RPT_REINS_1102")
+
+                'AddMenuItem("", "ReAssurer Bordeareaux", "")
                 AddMenuItem("", "", "") 'blank link
-                AddMenuItem("", "UNDER_LINE", "") 'blank link
+                'AddMenuItem("", "UNDER_LINE", "") 'blank link
                 AddMenuItem("", "Returns to Previous Page", "menu_gl.aspx?menu=home")
 
             Case "GL_SEC"
@@ -357,8 +354,9 @@ Partial Class MENU_GL
                 STRMENU_TITLE = "+++ Group Life Renewal +++ "
                 AddMenuItem("", "Returns to Previous Page", "menu_gl.aspx?menu=home")
                 AddMenuItem("", "UNDER_LINE", "") 'blank link
-                AddMenuItem("Renewal", "Pre-Renewal Processing", "")
-                AddMenuItem("", "Renew Scheme", "Policy/PRG_LI_GRP_POLY_MEMBERS_RENEW.aspx")
+                AddMenuItem("Renewal", "Renew Scheme", "Policy/PRG_LI_GRP_POLY_MEMBERS_RENEW.aspx")
+                'AddMenuItem("", "Pre-Renewal Processing", "")
+
 
 
         End Select
