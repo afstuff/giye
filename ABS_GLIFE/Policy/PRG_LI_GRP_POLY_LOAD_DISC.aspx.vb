@@ -397,6 +397,7 @@ Partial Class Policy_PRG_LI_GRP_POLY_LOAD_DISC
         strSQL = strSQL & " FROM " & strTable & "  AS PT "
         strSQL = strSQL & " WHERE TBIL_POL_DISC_FILE_NO = '" & RTrim(strF_ID) & "'"
         strSQL = strSQL & " AND TBIL_POL_DISC_PROP_NO = '" & RTrim(strQ_ID) & "'"
+        strSQL = strSQL & " AND TBIL_POL_DISC_LOAD_BATCH_NO = '" & RTrim(txtBatch_Num.Text) & "'"
         strSQL = strSQL & " ORDER BY TBIL_POL_DISC_REC_ID"
 
 
@@ -419,6 +420,7 @@ Partial Class Policy_PRG_LI_GRP_POLY_LOAD_DISC
         objDA.SelectCommand.Parameters.Add("p01", OleDbType.VarChar, 50).Value = "LST"
         objDA.SelectCommand.Parameters.Add("p02", OleDbType.VarChar, 50).Value = strREC_ID
         objDA.SelectCommand.Parameters.Add("p03", OleDbType.VarChar, 50).Value = strQ_ID
+        objDA.SelectCommand.Parameters.Add("p04", OleDbType.VarChar, 50).Value = txtBatch_Num.Text
 
 
         'Dim m_cbCommandBuilder As System.Data.OleDb.OleDbCommandBuilder
@@ -1073,6 +1075,7 @@ Partial Class Policy_PRG_LI_GRP_POLY_LOAD_DISC
 
                 drNewRow("TBIL_POL_DISC_LOAD_VALUE_LC") = Val(Trim(Me.txtLoad_Disc_SA_LC.Text))
                 drNewRow("TBIL_POL_DISC_LOAD_VALUE_FC") = Val(Trim(Me.txtLoad_Disc_SA_FC.Text))
+                drNewRow("TBIL_POL_DISC_LOAD_BATCH_NO") = Trim(Me.txtBatch_Num.Text)
 
 
                 drNewRow("TBIL_POL_DISC_LOAD_FLAG") = "A"
@@ -1120,6 +1123,8 @@ Partial Class Policy_PRG_LI_GRP_POLY_LOAD_DISC
 
                     .Rows(0)("TBIL_POL_DISC_COVER_CD") = RTrim(Me.txtCover_Num.Text)
                     .Rows(0)("TBIL_POL_DISC_RATE") = Val(Me.txtCover_Rate.Text)
+                    .Rows(0)("TBIL_POL_DISC_LOAD_BATCH_NO") = Trim(Me.txtBatch_Num.Text)
+
 
                     .Rows(0)("TBIL_POL_DISC_RATE_PER") = RTrim(Me.txtCover_Rate_Per.Text)
 
@@ -1296,7 +1301,7 @@ Partial Class Policy_PRG_LI_GRP_POLY_LOAD_DISC
 
             Select Case UCase(Me.txtLoad_Disc_Prem_Rate_TypeNum.Text)
                 Case "A"
-                    myResult = Val(Me.txtLoad_Disc_Amt)
+                    myResult = Val(Me.txtLoad_Disc_Amt.Text)
                 Case "F"
                     Select Case UCase(Me.txtLoad_Disc_Applied_On.Text)
                         Case "S"    'Sum Assured
@@ -1459,7 +1464,7 @@ Proc_End_Rtn:
 
             Select Case UCase(Me.txtLoad_Disc_Prem_Rate_TypeNum.Text)
                 Case "A"
-                    myResult = Val(Me.txtLoad_Disc_Amt)
+                    myResult = Val(Me.txtLoad_Disc_Amt.Text)
                 Case "F"
                     Select Case UCase(Me.txtLoad_Disc_Applied_On.Text)
                         Case "S"    'Sum Assured
@@ -1592,6 +1597,8 @@ Proc_End_Rtn:
         objOLECmd.Parameters.Add("p01", OleDbType.VarChar, 3).Value = LTrim(RTrim(FVstrGetType))
         objOLECmd.Parameters.Add("p02", OleDbType.VarChar, 30).Value = strREC_ID
         objOLECmd.Parameters.Add("p03", OleDbType.VarChar, 20).Value = Val(FVstrRecNo)
+        objOLECmd.Parameters.Add("p04", OleDbType.VarChar, 20).Value = Trim(txtBatch_Num.Text)
+
 
         Dim objOLEDR As OleDbDataReader
 

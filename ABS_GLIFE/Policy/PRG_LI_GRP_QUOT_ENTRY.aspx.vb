@@ -167,11 +167,23 @@ Partial Class Policy_PRG_LI_GRP_QUOT_ENTRY
         txtSAFactor.Text = ""
         'Me.cmdSave_ASP.Enabled = True
         cmdDel_ASP.Enabled = False
+        lblSAFactor.Visible = True
+        lblTotNoStaff.Visible = True
+        txtSAFactor.Visible = True
+        txtTotNoStaff.Visible = True
+        txtSumAssured.Enabled = False
+        HideRowSAFactor.Visible = True
+        HideRowTotStaffNo.Visible = True
     End Sub
 
     Private Sub Proc_DoSave(ByRef ErrorInd As String)
         Dim PremiumAmount As Double
-        PremiumAmount = (CDbl(txtRate.Text) / CDbl(cboRate_Per.SelectedValue)) * CDbl(txtSumAssured.Text)
+        If txtRate.Text = 0 Then
+            PremiumAmount = (CDbl(cboRate_Per.SelectedValue) / CDbl(cboRate_Per.SelectedValue)) * CDbl(txtSumAssured.Text)
+        Else
+            PremiumAmount = (CDbl(txtRate.Text) / CDbl(cboRate_Per.SelectedValue)) * CDbl(txtSumAssured.Text)
+        End If
+        ' PremiumAmount = (CDbl(txtRate.Text) / CDbl(cboRate_Per.SelectedValue)) * CDbl(txtSumAssured.Text)
         txtPremium.Text = PremiumAmount
 
 
@@ -801,13 +813,18 @@ Partial Class Policy_PRG_LI_GRP_QUOT_ENTRY
                 txtSAFactor.Visible = False
                 txtTotNoStaff.Visible = False
                 txtSumAssured.Enabled = True
+                HideRowSAFactor.Visible = False
+                HideRowTotStaffNo.Visible = False
             Else
                 lblSAFactor.Visible = True
                 lblTotNoStaff.Visible = True
                 txtSAFactor.Visible = True
                 txtTotNoStaff.Visible = True
                 txtSumAssured.Enabled = False
+                HideRowSAFactor.Visible = True
+                HideRowTotStaffNo.Visible = True
             End If
+            txtTotEmolument.Focus()
         End If
     End Sub
 

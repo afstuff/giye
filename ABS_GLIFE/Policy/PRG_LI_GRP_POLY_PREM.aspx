@@ -122,7 +122,7 @@
                                                     &nbsp;<asp:Label ID="lblDOB_Format" Enabled="false" Text="dd/mm/yyyy" runat="server"></asp:Label></td>
                                                 <td align="left" valign="top" colspan="1"><asp:Label ID="lblDOB_ANB" Enabled="true" Text="Age (ANB):" runat="server"></asp:Label>
                                                 </td>
-                                                <td align="left" valign="top" colspan="3"><asp:TextBox ID="txtDOB_ANB" Enabled="false" Width="40px" runat="server"></asp:TextBox>
+                                                <td align="left" valign="top"><asp:TextBox ID="txtDOB_ANB" Enabled="false" Width="40px" runat="server"></asp:TextBox>
                                                 </td>
                                     </tr>
 
@@ -139,7 +139,8 @@
 
                             <tr>
                                                 <td align="left" valign="top"><asp:Label ID="lblPrem_Start_Date" Text="Commencement Date:" runat="server"></asp:Label></td>
-                                                <td align="left" valign="top"><asp:TextBox ID="txtPrem_Start_Date" MaxLength="10" runat="server"></asp:TextBox>
+                                                <td align="left" valign="top"><asp:TextBox ID="txtPrem_Start_Date" MaxLength="10" 
+                                                        runat="server" AutoPostBack="True"></asp:TextBox>
                                                     &nbsp;<asp:Label ID="lblPrem_Start_Date_Format" Visible="true" Text="dd/mm/yyyy" runat="server"></asp:Label></td>
                                                 <td align="left" valign="top"><asp:Label ID="lblPrem_End_Date" Enabled="true" Text="Expiry Date:" runat="server"></asp:Label></td>
                                                 <td align="left" valign="top"><asp:TextBox ID="txtPrem_End_Date" MaxLength="10" Enabled="true" runat="server"></asp:TextBox>
@@ -175,6 +176,15 @@
                                 <td align="left" valign="top" colspan="1">
                                     <asp:TextBox ID="txtPrem_SA_Factor" MaxLength="3" Width="40px" runat="server"></asp:TextBox>
                                 </td>
+                                <td align="left" valign="top" colspan="1">
+                                    
+                                    <asp:Label ID="lblPrem_Enrollee_Num" Text="No of Enrollee:" runat="server"></asp:Label>
+                                    
+                                </td>
+                                <td>
+                                    <asp:TextBox ID="txtPrem_Enrollee_Num"  MaxLength="4" Width="40px" runat="server"></asp:TextBox>
+                                    <asp:Label ID="lblPrem_Enrollee_Num_Rmks" ForeColor="Red" Text="Applicable to Funeral Product" runat="server"></asp:Label>
+                                </td>
                             </tr>
 
                             <tr>
@@ -189,40 +199,13 @@
                             </tr>
 
                             <tr>
-                                <td align="left" valign="top"><asp:Label ID="lblPrem_Life_Cover" Text="Any Life Cover:" runat="server"></asp:Label></td>
+                                <td align="left" valign="top">&nbsp;</td>
                                 <td align="left" valign="top" colspan="1">
-                                    <asp:DropDownList ID="cboPrem_Life_Cover" Width="80px" runat="server">
-                                        <asp:ListItem Selected="False" Value="*">(Select)</asp:ListItem>
-                                        <asp:ListItem Value="N">NO</asp:ListItem>
-                                        <asp:ListItem Selected="True" Value="Y">YES</asp:ListItem>
-                                    </asp:DropDownList>
-                                    &nbsp;<asp:TextBox ID="txtPrem_Life_CoverNum" Text="Y" Visible="false" Enabled="false" MaxLength="1" Width="20px" runat="server"></asp:TextBox>
-                                    &nbsp;<asp:TextBox ID="txtPrem_Life_CoverName" Visible="false" Enabled="false" MaxLength="1" Width="20px" runat="server"></asp:TextBox>
-                                </td>
-                                <td align="left" valign="top"><asp:Label ID="lblPrem_Enrollee_Num" Text="No of Enrollee:" runat="server"></asp:Label></td>
-                                <td align="left" valign="top"><asp:TextBox ID="txtPrem_Enrollee_Num"  MaxLength="4" Width="40px" runat="server"></asp:TextBox>
-                                    &nbsp;<asp:Label ID="lblPrem_Enrollee_Num_Rmks" ForeColor="Red" Text="Applicable to Funeral Product" runat="server"></asp:Label></td>
+                                    &nbsp;&nbsp;</td>
+                                <td align="left" valign="top">&nbsp;</td>
+                                <td align="left" valign="top">&nbsp;</td>
                             </tr>
                             
-                            <tr>
-                                <td nowrap align="left" valign="top"><asp:Label ID="lblPrem_Allocation_YN" Text="Is Allocation Applicable:" ToolTip="Is Allocation applicable to this product..." runat="server"></asp:Label></td>
-                                <td align="left" valign="top" colspan="1">
-                                    <asp:DropDownList ID="cboPrem_Allocation_YN" Width="80px" ToolTip="Is Allocation applicable to this product..." runat="server">
-                                        <asp:ListItem Selected="True" Value="*">(Select)</asp:ListItem>
-                                        <asp:ListItem Value="N">NO</asp:ListItem>
-                                        <asp:ListItem Value="Y">YES</asp:ListItem>
-                                    </asp:DropDownList>
-                                    &nbsp;<asp:TextBox ID="txtPrem_Allocation_YN" Visible="false" Enabled="false" MaxLength="1" Width="20px"  runat="server"></asp:TextBox>&nbsp;<asp:TextBox ID="txtPrem_Allocation_YN_Name" Visible="false" Enabled="false" MaxLength="1" Width="20px"  runat="server"></asp:TextBox></td>
-                                <td nowrap align="left" valign="top"><asp:Label ID="lblPrem_Bonus_YN" Text="Is Bonus Applicable:" ToolTip="Is Allocation applicable to this product..." runat="server"></asp:Label></td>
-                                <td align="left" valign="top" colspan="1">
-                                    <asp:DropDownList ID="cboPrem_Bonus_YN" Width="80px" ToolTip="Is Bonus applicable to this product..." runat="server">
-                                        <asp:ListItem Selected="True" Value="*">(Select)</asp:ListItem>
-                                        <asp:ListItem Value="N">NO</asp:ListItem>
-                                        <asp:ListItem Value="Y">YES</asp:ListItem>
-                                    </asp:DropDownList>
-                                    &nbsp;<asp:TextBox ID="txtPrem_Bonus_YN" Visible="true" Enabled="false" MaxLength="1" Width="20px"  runat="server"></asp:TextBox>&nbsp;<asp:TextBox ID="txtPrem_Bonus_YN_Name" Visible="false" Enabled="false" MaxLength="1" Width="20px"  runat="server"></asp:TextBox></td>
-                            </tr>
-
                             <tr>
                                 <td align="left" valign="top"><asp:Label ID="lblPrem_Rate_Type" Text="Premium Rate Type:" runat="server"></asp:Label></td>
                                 <td align="left" valign="top" colspan="1">
