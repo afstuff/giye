@@ -3080,6 +3080,7 @@ END_MOP_RTN:
         'End If
         strSQL = strSQL & " AND DL_TBL.TBIL_POL_DISC_PROP_NO = '" & RTrim(strQ_ID) & "'"
         'strSQL = strSQL & " AND DL_TBL.TBIL_POL_DISC_POLY_NO = '" & RTrim(strP_ID) & "'"
+        strSQL = strSQL & " AND DL_TBL.TBIL_POL_DISC_LOAD_BATCH_NO = '" & RTrim(txtBatch_Num.Text) & "'"
         strSQL = strSQL & " AND DL_TBL.TBIL_POL_DISC_LOAD_TYPE IN('D')"
         'strSQL = strSQL & " AND DL_TBL.TBIL_POL_DISC_LOAD_INV_GRP IN('G')"
 
@@ -3348,6 +3349,7 @@ END_MOP_RTN:
         'strSQL = strSQL & " AND DL_TBL.TBIL_POL_DISC_REC_ID = '" & Val(FVstrRecNo) & "'"
         'End If
         strSQL = strSQL & " AND DL_TBL.TBIL_POL_DISC_PROP_NO = '" & RTrim(strQ_ID) & "'"
+        strSQL = strSQL & " AND DL_TBL.TBIL_POL_DISC_LOAD_BATCH_NO = '" & RTrim(txtBatch_Num.Text) & "'"
         'strSQL = strSQL & " AND DL_TBL.TBIL_POL_DISC_POLY_NO = '" & RTrim(strP_ID) & "'"
         strSQL = strSQL & " AND DL_TBL.TBIL_POL_DISC_LOAD_TYPE IN('L')"
 
@@ -4188,7 +4190,7 @@ Proc_End_Rtn:
                             End If
                         Case "T"    'Total Premium
                             ' NO CALCULATION SPECIFICATION
-                            myResult = (myAmt + myLoadAmt_Cal) * myPercent / myPer
+                            myResult = (myAmt + myLoadAmt_Cal) * myRate / myPer
                     End Select
             End Select
 
