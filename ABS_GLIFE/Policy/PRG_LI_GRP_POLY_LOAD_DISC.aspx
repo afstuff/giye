@@ -272,6 +272,7 @@
                             
                                                         <asp:BoundField readonly="true" DataField="TBIL_POL_DISC_REC_ID" HeaderText="Ref.No" HeaderStyle-HorizontalAlign="Left" convertemptystringtonull="true" />
                                                         <asp:BoundField readonly="true" DataField="TBIL_POL_DISC_LOAD_TYPE_NAME" HeaderText="L/D Type" HeaderStyle-HorizontalAlign="Left" convertemptystringtonull="true" />
+                                                         <asp:BoundField readonly="true" DataField="TBIL_POL_DISC_LOAD_PCENT" HeaderText="Percent %" HeaderStyle-HorizontalAlign="Left" convertemptystringtonull="true" />
                                                         <asp:BoundField readonly="true" DataField="TBIL_POL_DISC_LOAD_RT_AMT_CD" HeaderText="Rate Type" HeaderStyle-HorizontalAlign="Left" convertemptystringtonull="true" />                                                        
                                                         <asp:BoundField readonly="true" DataField="TBIL_POL_DISC_RATE" HeaderText="Rate %" HeaderStyle-HorizontalAlign="Left" convertemptystringtonull="true" />
                                                         <asp:BoundField readonly="true" DataField="TBIL_POL_DISC_RATE_PER" HeaderText="Rate Per" HeaderStyle-HorizontalAlign="Left" convertemptystringtonull="true" />                                                        
