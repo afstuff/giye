@@ -1496,7 +1496,7 @@ Partial Class Policy_PRG_LI_GRP_POLY_PREM_CALC
         strSQL = strSQL & " AND TBIL_POL_MEMB_PROP_NO = '" & RTrim(Me.txtQuote_Num.Text) & "'"
         'strSQL = strSQL & " AND TBIL_FUN_POLY_NO = '" & RTrim(strP_ID) & "'"
         strSQL = strSQL & " AND TBIL_POL_MEMB_BATCH_NO = '" & RTrim(Me.txtBatch_Num.Text) & "'"
-        strSQL = strSQL & " AND TBIL_POL_MEMB_MDLE IN('G')"
+        strSQL = strSQL & " AND TBIL_POL_MEMB_MDLE IN('G') AND TBIL_POL_MEMB_FLAG NOT IN('D','W')"
 
 
         Dim objMem_Cmd As OleDbCommand = New OleDbCommand(strSQL, objOLEConn)

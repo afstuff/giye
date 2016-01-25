@@ -756,7 +756,7 @@ Partial Class PRG_LI_GRP_POLY_MEMBERS
         'strSQL = strSQL & " and TBIL_POL_MEMB_POLY_NO = '" & RTrim(Me.txtPolNum.Text) & "'"
         strSQL = strSQL & " and TBIL_POL_MEMB_BATCH_NO = '" & RTrim(Me.txtBatch_Num.Text) & "'"
         'strSQL = strSQL & " and TBIL_POL_MEMB_STATUS in('Q')"
-        strSQL = strSQL & " AND TBIL_POL_MEMB_FLAG NOT IN('D')" 'do not include deleted items
+        strSQL = strSQL & " AND TBIL_POL_MEMB_FLAG NOT IN('D','W')" 'do not include dead and withdrawn member items
 
         strSQL = strSQL & " ORDER BY TBIL_POL_MEMB_FILE_NO, TBIL_POL_MEMB_BATCH_NO, TBIL_POL_MEMB_SNO"
 
@@ -816,7 +816,7 @@ Partial Class PRG_LI_GRP_POLY_MEMBERS
         strSQL = strSQL & " AND TBIL_POL_MEMB_PROP_NO = '" & RTrim(strQ_ID) & "'"
         strSQL = strSQL & " AND TBIL_POL_MEMB_BATCH_NO = '" & RTrim(Me.txtBatch_Num.Text) & "'"
         strSQL = strSQL & " AND TBIL_POL_MEMB_MDLE IN('G')"
-        strSQL = strSQL & " AND TBIL_POL_MEMB_FLAG NOT IN('D')" 'do not include deleted items
+        strSQL = strSQL & " AND TBIL_POL_MEMB_FLAG NOT IN('D','W')" 'do not include dead and deleted members
         strSQL = strSQL & " ORDER BY TBIL_POL_MEMB_FILE_NO, TBIL_POL_MEMB_BATCH_NO, TBIL_POL_MEMB_SNO"
 
 
@@ -1333,7 +1333,7 @@ Partial Class PRG_LI_GRP_POLY_MEMBERS
         strSQL = ""
         'strSQL = "DELETE FROM " & strTable
         strSQL = "Update " & strTable
-        strSQL = strSQL & " SET TBIL_POL_MEMB_FLAG = 'D'"
+        strSQL = strSQL & " SET TBIL_POL_MEMB_FLAG = 'W'"
         ' strSQL = strSQL & ",TBIL_POL_MEMB_EFF_DT = '" & del_date_deleted & "'"
         strSQL = strSQL & ", TBIL_POL_MEMB_PREM ='" & deleted_Prorata_Premium & "'"
         strSQL = strSQL & ", TBIL_POL_MEMB_PRO_RATE_PREM ='" & deleted_Prorata_Premium & "'"
@@ -4410,7 +4410,8 @@ MyLoop_End:
         Session("optpolid") = Trim(Me.txtPolNum.Text).ToString
 
         Dim pvURL As String = ""
-        pvURL = "prg_li_grp_poly_prem.aspx?q=x"
+        'pvURL = "prg_li_grp_poly_prem.aspx?q=x"
+        pvURL = "prg_li_grp_poly_co_assurers.aspx?q=x"
 
         'pvURL = pvURL & "&optfileid=" & Trim(Me.txtFileNum.Text)
         'pvURL = pvURL & "&optpolid=" & Trim(Me.txtPolNum.Text)
