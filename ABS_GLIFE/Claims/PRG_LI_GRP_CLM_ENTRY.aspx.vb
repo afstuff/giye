@@ -19,6 +19,7 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
     Protected strF_ID As String
     Protected strQ_ID As String
     Protected strP_ID As String
+    Protected strM_NO As String
 
     Protected strP_TYPE As String
     Protected strP_DESC As String
@@ -66,6 +67,49 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
         Catch ex As Exception
             strP_TYPE = "ERR_TYPE"
             strP_DESC = "ERR_DESC"
+        End Try
+
+        Try
+            strF_ID = CType(Request.QueryString("optfileid"), String)
+            strF_ID = CType(Session("optfileid"), String)
+        Catch ex As Exception
+            strF_ID = ""
+        End Try
+
+        Try
+            strQ_ID = CType(Request.QueryString("optquotid"), String)
+            strQ_ID = CType(Session("optquotid"), String)
+        Catch ex As Exception
+            strQ_ID = ""
+        End Try
+
+        Try
+            strP_ID = CType(Request.QueryString("optpolid"), String)
+            strP_ID = CType(Session("optpolid"), String)
+        Catch ex As Exception
+            strP_ID = ""
+        End Try
+
+        Try
+            strM_NO = CType(Request.QueryString("optmemno"), String)
+            strM_NO = CType(Session("optmemno"), String)
+        Catch ex As Exception
+            strM_NO = ""
+        End Try
+
+
+
+        If Trim(strP_ID) <> "" Then
+            GetPolicyDetailsByNumber(strP_ID)
+            Proc_DataBindGrid()
+            'strStatus = Proc_DoOpenRecord(RTrim("FIL"), strP_ID, Session("optrecid"))
+        End If
+
+        Try
+            strM_NO = CType(Request.QueryString("optmemno"), String)
+            strM_NO = CType(Session("optmemno"), String)
+        Catch ex As Exception
+            strM_NO = ""
         End Try
 
         STRPAGE_TITLE = "Master Codes Setup - " & strP_DESC
@@ -598,6 +642,8 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
                 strErrMsg = "true"
 
                 txtPolicyNumber.Text = RTrim(CType(objOledr("TBIL_POLY_POLICY_NO") & vbNullString, String))
+                txtFileNum.Text = RTrim(CType(objOledr("TBIL_POLY_FILE_NO") & vbNullString, String))
+                txtQuote_Num.Text = RTrim(CType(objOledr("TBIL_POLY_PROPSAL_NO") & vbNullString, String))
                 txtUWY.Text = CType(objOledr("TBIL_POLY_UNDW_YR") & vbNullString, String)
                 txtProductCode.Text = CType(objOledr("TBIL_POLY_PRDCT_CD") & vbNullString, String)
 
@@ -1626,4 +1672,23 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
         objOLEDR_DL = Nothing
         Return myResult
     End Function
+
+    Protected Sub Cmd_Add_Benfry_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles Cmd_Add_Benfry.Click
+        If txtMemberName.Text = "" Then
+            lblMsg.Text = "Please select a member"
+            FirstMsg = "Javascript:alert('" + lblMsg.Text + "')"
+            Exit Sub
+        End If
+        Session("optfileid") = Trim(Me.txtFileNum.Text).ToString
+        Session("optquotid") = Trim(Me.txtQuote_Num.Text).ToString
+        Session("optpolid") = Trim(Me.txtPolicyNumber.Text).ToString
+        Session("optmemno") = Trim(Me.txtMemStaffNo.Text).ToString
+        Session("optrecid") = Trim(Me.txtRecNo.Text).ToString
+        Dim pvURL As String = ""
+        'pvURL = "prg_li_grp_poly_medic_info.aspx?q=x"
+        'pvURL = "prg_li_grp_add_members.aspx?q=x"
+        pvURL = "~/Policy/PRG_LI_GRP_POLY_BENEFRY.aspx?q=x"
+        Response.Redirect(pvURL)
+        'Response.Redirect("~/Policy/PRG_LI_GRP_POLY_BENEFRY.aspx")
+    End Sub
 End Class

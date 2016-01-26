@@ -315,6 +315,16 @@
                         </tr>
                         <tr>
                             <td align="left" valign="top" class="style1" colspan="4">
+                                    <asp:Button ID="Cmd_Add_Benfry" runat="server" Text="Add Beneficiary" 
+                                        style="float:right;" />
+                                <asp:TextBox ID="txtFileNum" runat="server" TabIndex="9" Width="135px" 
+                                        Visible="False"></asp:TextBox>
+                                <asp:TextBox ID="txtQuote_Num" runat="server" TabIndex="9" Width="103px" 
+                                        Visible="False"></asp:TextBox>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="left" valign="top" class="style1" colspan="4">
                                 &nbsp;<asp:Panel ID="Panel1" runat="server">
                                     <asp:Label ID="lblClaimDec0" runat="server" Text="Filter Option:"></asp:Label>
                                     <asp:DropDownList ID="DdnFilter" runat="server" Width="250px">
