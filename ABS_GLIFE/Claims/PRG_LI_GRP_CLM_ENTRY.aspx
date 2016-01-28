@@ -457,6 +457,23 @@
                                                 <HeaderStyle HorizontalAlign="Left"></HeaderStyle>
                                                 <ItemStyle Width="10px"></ItemStyle>
                                             </asp:BoundField>
+                                              <asp:BoundField ReadOnly="true" DataField="TBIL_POL_MEMB_FLAG" HeaderText="STATUS"
+                                               ItemStyle-Width="60px" HeaderStyle-HorizontalAlign="Left"
+                                                ConvertEmptyStringToNull="true" Visible="True">
+                                                <HeaderStyle HorizontalAlign="Left"></HeaderStyle>
+                                                <ItemStyle Width="60px"></ItemStyle>
+                                            </asp:BoundField>
+                                            <%--<asp:TemplateField HeaderText="Status" ItemStyle-Width="80px" HeaderStyle-HorizontalAlign="Left">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblStatus" runat="server" Text="" />
+                                                </ItemTemplate>--%>
+                                               <%-- <FooterTemplate>
+                                                    <asp:Label ID="lbltxtTotal" runat="server" Text="0.00" DataFormatString="{0:N2}" />
+                                                </FooterTemplate>--%>
+                                                <%--<HeaderStyle HorizontalAlign="Left"></HeaderStyle>
+                                                <ItemStyle Width="80px"></ItemStyle>
+                                            </asp:TemplateField>--%>
+                                            
                                         </Columns>
                                     </asp:GridView>
                                 </div>
