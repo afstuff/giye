@@ -2338,15 +2338,8 @@ Skip_C001:
         Session("optpolid") = Trim(Me.txtPolNum.Text).ToString
 
         Dim pvURL As String = ""
-        'pvURL = "prg_li_indv_poly_benefry.aspx?q=x"
-        pvURL = "prg_li_grp_poly_members.aspx?q=x"
-        'Select Case Trim(Me.txtProduct_Num.Text)
-        '    Case "F001", "F002"
-        '        pvURL = "prg_li_indv_poly_funeral.aspx?q=x"
-        'End Select
-        'pvURL = pvURL & "&optfileid=" & Trim(Me.txtFileNum.Text)
-        'pvURL = pvURL & "&optpolid=" & Trim(Me.txtPolNum.Text)
-        'pvURL = pvURL & "&optquotid=" & Trim(Me.txtQuote_Num.Text)
+        'pvURL = "prg_li_grp_poly_members.aspx?q=x"
+        pvURL = "prg_li_grp_poly_co_assurers.aspx?q=x"
         Response.Redirect(pvURL)
 
     End Sub

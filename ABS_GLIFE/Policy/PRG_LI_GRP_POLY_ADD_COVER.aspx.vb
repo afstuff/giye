@@ -1286,7 +1286,7 @@ Partial Class Policy_PRG_LI_GRP_POLY_ADD_COVER
 
                 drNewRow("TBIL_POL_ADD_FILE_NO") = RTrim(Me.txtFileNum.Text)
                 drNewRow("TBIL_POL_ADD_PROP_NO") = RTrim(Me.txtQuote_Num.Text)
-                'drNewRow("TBIL_POL_ADD_POLY_NO") = RTrim(Me.txtPolNum.Text)
+                drNewRow("TBIL_POL_ADD_POLY_NO") = RTrim(Me.txtPolNum.Text)
 
                 drNewRow("TBIL_POL_ADD_PRDCT_CD") = RTrim(Me.txtProduct_Num.Text)
                 drNewRow("TBIL_POL_ADD_COVER_CD") = RTrim(Me.txtCover_Num.Text)
@@ -1319,7 +1319,7 @@ Partial Class Policy_PRG_LI_GRP_POLY_ADD_COVER
                 drNewRow("TBIL_POL_ADD_RATE_APPLY") = Trim(Me.txtAdd_Prem_Rate_Applied_On_Num.Text)
                 drNewRow("TBIL_POL_ADD_SA_RT_AMT_CD") = RTrim(Me.txtAdd_SA_RT_AMT_CD.Text)
                 drNewRow("TBIL_POL_ADD_PCENT_SA") = Val(RTrim(Me.txtAdd_PCENT_SA.Text))
-
+                drNewRow("TBIL_POL_ADD_BATCH_NO") = RTrim(Me.txtBatch_Num.Text)
                 drNewRow("TBIL_POL_ADD_FLAG") = "A"
                 drNewRow("TBIL_POL_ADD_OPERID") = CType(myUserIDX, String)
                 drNewRow("TBIL_POL_ADD_KEYDTE") = Now
@@ -1347,7 +1347,7 @@ Partial Class Policy_PRG_LI_GRP_POLY_ADD_COVER
 
                     .Rows(0)("TBIL_POL_ADD_FILE_NO") = RTrim(Me.txtFileNum.Text)
                     .Rows(0)("TBIL_POL_ADD_PROP_NO") = RTrim(Me.txtQuote_Num.Text)
-                    '.Rows(0)("TBIL_POL_ADD_POLY_NO") = RTrim(Me.txtPolNum.Text)
+                    .Rows(0)("TBIL_POL_ADD_POLY_NO") = RTrim(Me.txtPolNum.Text)
 
                     .Rows(0)("TBIL_POL_ADD_PRDCT_CD") = RTrim(Me.txtProduct_Num.Text)
                     .Rows(0)("TBIL_POL_ADD_COVER_CD") = RTrim(Me.txtCover_Num.Text)
@@ -1379,6 +1379,7 @@ Partial Class Policy_PRG_LI_GRP_POLY_ADD_COVER
                     .Rows(0)("TBIL_POL_ADD_RATE_APPLY") = Trim(Me.txtAdd_Prem_Rate_Applied_On_Num.Text)
                     .Rows(0)("TBIL_POL_ADD_SA_RT_AMT_CD") = RTrim(Me.txtAdd_SA_RT_AMT_CD.Text)
                     .Rows(0)("TBIL_POL_ADD_PCENT_SA") = Val(RTrim(Me.txtAdd_PCENT_SA.Text))
+                    .Rows(0)("TBIL_POL_ADD_BATCH_NO") = RTrim(Me.txtBatch_Num.Text)
 
                     .Rows(0)("TBIL_POL_ADD_FLAG") = "C"
                     '.Rows(0)("TBIL_POL_ADD_OPERID") = CType(myUserIDX, String)

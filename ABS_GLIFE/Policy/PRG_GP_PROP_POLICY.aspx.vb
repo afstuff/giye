@@ -99,12 +99,12 @@ Partial Class PRG_GP_PROP_POLICY
         Select Case pvMenu.ToUpper
 
             Case "GL_QUOTE"
-                STRMENU_TITLE = "+++ Quotation Entry Menu +++ "
+                STRMENU_TITLE = "+++ Quotation/Policy Entry Menu +++ "
                 AddMenuItem("", "Returns to Previous Page", "../menu_gl.aspx?menu=home")
                 AddMenuItem("", "UNDER_LINE", "") 'blank link
                 AddMenuItem("", "", "") 'blank link
-                AddMenuItem("Quotation", "New Quotation Entry", "PRG_LI_GRP_POLY_PERSNAL.aspx?optid=NEW")
-                AddMenuItem("", "Change Quotation", "PRG_LI_GRP_POLY_PERSNAL.aspx?optid=CHG")
+                AddMenuItem("Quotation", "New Quotation/Policy Entry", "PRG_LI_GRP_POLY_PERSNAL.aspx?optid=NEW")
+                AddMenuItem("", "Change Quotation/Policy", "PRG_LI_GRP_POLY_PERSNAL.aspx?optid=CHG")
                 'AddMenuItem("", "Delete Quotation", "PRG_LI_INDV_POLY_PERSNAL.aspx?optid=DEL")
                 AddMenuItem("", "Delete Quotation", "")
                 'AddMenuItem("", "UNDER_LINE", "") 'blank link

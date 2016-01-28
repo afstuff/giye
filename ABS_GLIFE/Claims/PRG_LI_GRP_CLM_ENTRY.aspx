@@ -133,6 +133,8 @@
                             </td>
                             <td align="left" valign="top" class="style2">
                                 <asp:TextBox ID="txtUWY" runat="server" Width="80px" Enabled="False"></asp:TextBox>
+                                <asp:TextBox ID="txtMemStaffNo" Visible="false" Enabled="false" MaxLength="18" Width="40"
+                                    runat="server"></asp:TextBox>
                             </td>
                             <td align="left" valign="top" class="style3">
                                 <asp:Label ID="Label2" runat="server" Text="Product Code:"></asp:Label>
@@ -160,6 +162,34 @@
                                 <asp:ImageButton ID="butCal1" runat="server" OnClientClick="OpenModal_Cal('../Calendar1.aspx?popup=YES',this.form.name,'txtTrans_Date','txtTrans_Date')"
                                     ImageUrl="~/I_LIFE/img/cal.gif" Height="17" Visible="False" />
                                 <asp:Label ID="lblTrans_Date_Format1" Text="dd/mm/yyyy" runat="server"></asp:Label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="left" valign="top" class="style1">
+                                <asp:Label ID="lblFreeCovLmt" runat="server" Text="Free Cover Limit: "></asp:Label>
+                            </td>
+                            <td align="left" valign="top" class="style2">
+                                <asp:TextBox ID="txtFreeCovLmt" runat="server" Enabled="False"></asp:TextBox>
+                            </td>
+                            <td align="left" valign="top" class="style3">
+                                <asp:Label ID="lblRetention" runat="server" Text="Retention: "></asp:Label>
+                            </td>
+                            <td align="left" valign="top" class="style2">
+                                <asp:TextBox ID="txtRetention" runat="server" Enabled="False"></asp:TextBox>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="left" valign="top" class="style1">
+                                <asp:Label ID="lblTotSA" runat="server" Text="Total Sum Assured: "></asp:Label>
+                            </td>
+                            <td align="left" valign="top" class="style2">
+                                <asp:TextBox ID="txtTotSA" runat="server" Enabled="False"></asp:TextBox>
+                            </td>
+                            <td align="left" valign="top" class="style3">
+                                <asp:Label ID="lblTotPrem" runat="server" Text="Total Premium: "></asp:Label>
+                            </td>
+                            <td align="left" valign="top" class="style2">
+                                <asp:TextBox ID="txtTotPrem" runat="server" Enabled="False"></asp:TextBox>
                             </td>
                         </tr>
                         <tr>
@@ -193,13 +223,15 @@
                                 <asp:Label ID="lblBasicSumClaimsLC" runat="server" Text="B. Sum Claimed LC:"></asp:Label>
                             </td>
                             <td align="left" valign="top" class="style2">
-                                <asp:TextBox ID="txtBasicSumClaimsLC" runat="server" TabIndex="5"></asp:TextBox>
+                                <asp:TextBox ID="txtBasicSumClaimsLC" runat="server" TabIndex="5" 
+                                    Enabled="False"></asp:TextBox>
                             </td>
                             <td align="left" valign="top" class="style3">
                                 <asp:Label ID="lblBasicSumClaimsFC" runat="server" Text="B. Claimed FC:"></asp:Label>
                             </td>
                             <td align="left" valign="top">
-                                <asp:TextBox ID="txtBasicSumClaimsFC" runat="server" TabIndex="6"></asp:TextBox>
+                                <asp:TextBox ID="txtBasicSumClaimsFC" runat="server" TabIndex="6" 
+                                    Enabled="False"></asp:TextBox>
                             </td>
                         </tr>
                         <tr>
@@ -207,13 +239,13 @@
                                 <asp:Label ID="lblPremPaidLC" runat="server" Text="Prem. Paid LC:"></asp:Label>
                             </td>
                             <td align="left" valign="top" class="style2">
-                                <asp:TextBox ID="txtPremPaidLC" runat="server" TabIndex="7"></asp:TextBox>
+                                <asp:TextBox ID="txtPremPaidLC" runat="server" TabIndex="7" Enabled="False"></asp:TextBox>
                             </td>
                             <td align="left" valign="top" class="style3">
                                 <asp:Label ID="lblPremPaidFC" runat="server" Text="Prem. Paid FC:"></asp:Label>
                             </td>
                             <td align="left" valign="top" class="style2">
-                                <asp:TextBox ID="txtPremPaidFC" runat="server" TabIndex="8"></asp:TextBox>
+                                <asp:TextBox ID="txtPremPaidFC" runat="server" TabIndex="8" Enabled="False"></asp:TextBox>
                             </td>
                         </tr>
                         <tr>
@@ -221,13 +253,15 @@
                                 <asp:Label ID="lblPremiumLoadedLC" runat="server" Text="Prem. Loaded LC:"></asp:Label>
                             </td>
                             <td align="left" valign="top" class="style2">
-                                <asp:TextBox ID="txtPremiumLoadedLC" runat="server" TabIndex="7"></asp:TextBox>
+                                <asp:TextBox ID="txtPremiumLoadedLC" runat="server" TabIndex="7" 
+                                    Enabled="False"></asp:TextBox>
                             </td>
                             <td align="left" valign="top" class="style3">
                                 <asp:Label ID="lblPremiumLoadedFC" runat="server" Text="Prem. Loaded FC:"></asp:Label>
                             </td>
                             <td align="left" valign="top" class="style2">
-                                <asp:TextBox ID="txtPremiumLoadedFC" runat="server" TabIndex="8"></asp:TextBox>
+                                <asp:TextBox ID="txtPremiumLoadedFC" runat="server" TabIndex="8" 
+                                    Enabled="False"></asp:TextBox>
                             </td>
                         </tr>
                         <tr>
@@ -235,7 +269,8 @@
                                 <asp:Label ID="lblMemberName" runat="server" Text="Member Name:"></asp:Label>
                             </td>
                             <td align="left" valign="top" class="style2">
-                                <asp:TextBox ID="txtMemberName" runat="server" TabIndex="9" Width="271px"></asp:TextBox>
+                                <asp:TextBox ID="txtMemberName" runat="server" TabIndex="9" Width="271px" 
+                                    Enabled="False"></asp:TextBox>
                             </td>
                             <td align="left" valign="top" class="style3">
                                 <asp:Label ID="lblSysModule" runat="server" Text="System Module:"></asp:Label>
@@ -251,13 +286,13 @@
                                 <asp:Label ID="lblAssuredAge" runat="server" Text="Assured Age:"></asp:Label>
                             </td>
                             <td align="left" valign="top" class="style2">
-                                <asp:TextBox ID="txtAssuredAge" runat="server" TabIndex="9"></asp:TextBox>
+                                <asp:TextBox ID="txtAssuredAge" runat="server" TabIndex="9" Enabled="False"></asp:TextBox>
                             </td>
                             <td align="left" valign="top" class="style3">
                                 <asp:Label ID="lblLossType" runat="server" Text="Loss Type:"></asp:Label>
                             </td>
                             <td align="left" valign="top" class="style2">
-                                <asp:DropDownList ID="DdnLossType" runat="server" TabIndex="12">
+                                <asp:DropDownList ID="DdnLossType" runat="server" TabIndex="12" Width="108px">
                                     <asp:ListItem Selected="True">-- Select Item --</asp:ListItem>
                                 </asp:DropDownList>
                             </td>
@@ -279,17 +314,13 @@
                             </td>
                         </tr>
                         <tr>
-                            <td align="left" valign="top" class="style1">
-                                &nbsp;
-                            </td>
-                            <td align="left" valign="top" class="style2">
-                                &nbsp;
-                            </td>
-                            <td align="left" valign="top" class="style2">
-                                &nbsp;
-                            </td>
-                            <td align="left" valign="top" class="style2">
-                                &nbsp;
+                            <td align="left" valign="top" class="style1" colspan="4">
+                                    <asp:Button ID="Cmd_Add_Benfry" runat="server" Text="Add Beneficiary" 
+                                        style="float:right;" />
+                                <asp:TextBox ID="txtFileNum" runat="server" TabIndex="9" Width="135px" 
+                                        Visible="False"></asp:TextBox>
+                                <asp:TextBox ID="txtQuote_Num" runat="server" TabIndex="9" Width="103px" 
+                                        Visible="False"></asp:TextBox>
                             </td>
                         </tr>
                         <tr>
@@ -299,17 +330,18 @@
                                     <asp:DropDownList ID="DdnFilter" runat="server" Width="250px">
                                         <asp:ListItem Value="0">All</asp:ListItem>
                                         <asp:ListItem Value="1">Insured Name</asp:ListItem>
+                                        <asp:ListItem Value="2">Member No.</asp:ListItem>
                                     </asp:DropDownList>
                                     <asp:TextBox ID="txtSvalue" runat="server" Width="250px"></asp:TextBox>
                                     <asp:Button ID="searchBtn" runat="server" Text="Search" />
                                 </asp:Panel>
                             </td>
                         </tr>
-                        <tr>
+                       <%-- <tr>
                             <td align="left" valign="top" class="style1" colspan="4">
                                 <div align="left" style="background-color: White; color: White; border-bottom-style: ridge;
                                     height: 35px;">
-                                    <table align="left" border="0" style="background-color: #1C5E55; width: 100%; height: 30px;">
+                                   <table align="left" border="0" style="background-color: #1C5E55; width: 100%; height: 30px;">
                                         <tr style="font-size: medium; font-weight: bold;">
                                             <td align="left" style="width: 30px;">
                                                 &nbsp;
@@ -339,15 +371,16 @@
                                     </table>
                                 </div>
                             </td>
-                        </tr>
+                        </tr>--%>
                         <tr>
                             <td align="left" valign="top" class="style1" colspan="4">
                                 <div class="div_grid" style="height: 350px; overflow: scroll;">
                                     <asp:GridView ID="GridView1" CellPadding="2" runat="server" CssClass="grd_ctrl" DataKeyNames="TBIL_POL_MEMB_REC_ID"
-                                        HorizontalAlign="Left" AutoGenerateColumns="False" AllowPaging="false" PagerSettings-Position="TopAndBottom"
+                                        HorizontalAlign="Left" AutoGenerateColumns="False" PagerSettings-Position="TopAndBottom"
                                         PagerSettings-Mode="NextPreviousFirstLast" PagerSettings-FirstPageText="First"
-                                        PagerSettings-NextPageText="Next" PagerSettings-PreviousPageText="Previous" PagerSettings-LastPageText="Last"
-                                        EmptyDataText="No data available..." GridLines="Both" ShowHeader="false" ShowFooter="True">
+                                        PagerSettings-NextPageText="Next" 
+                                        PagerSettings-PreviousPageText="Previous" PagerSettings-LastPageText="Last"
+                                        EmptyDataText="No data available..." ShowFooter="True">
                                         <PagerStyle CssClass="grd_page_style" />
                                         <HeaderStyle CssClass="grd_header_style" />
                                         <RowStyle CssClass="grd_row_style" />
@@ -360,16 +393,22 @@
                                         <Columns>
                                             <asp:TemplateField>
                                                 <ItemTemplate>
-                                                    <asp:CheckBox ID="chkSel" runat="server" Width="30px"></asp:CheckBox>
+                                                    <asp:CheckBox ID="chkSel" runat="server"></asp:CheckBox>
                                                 </ItemTemplate>
+                                                <ItemStyle Width="10px" />
                                             </asp:TemplateField>
                                             <asp:CommandField ShowSelectButton="True" ItemStyle-Width="60px">
-                                                <ItemStyle Width="60px"></ItemStyle>
+                                                <ItemStyle Width="40px"></ItemStyle>
                                             </asp:CommandField>
                                             <asp:BoundField ReadOnly="true" DataField="TBIL_POL_MEMB_REC_ID" HeaderText="Ref.No"
                                                 ItemStyle-Width="70px" HeaderStyle-HorizontalAlign="Left" ConvertEmptyStringToNull="true">
                                                 <HeaderStyle HorizontalAlign="Left"></HeaderStyle>
                                                 <ItemStyle Width="70px"></ItemStyle>
+                                            </asp:BoundField>
+                                            <asp:BoundField ReadOnly="true" DataField="TBIL_POL_MEMB_STAFF_NO" HeaderText="Member No."
+                                                ItemStyle-Width="120px" HeaderStyle-HorizontalAlign="Left" ConvertEmptyStringToNull="true">
+                                                <HeaderStyle HorizontalAlign="Left"></HeaderStyle>
+                                                <ItemStyle Width="80px"></ItemStyle>
                                             </asp:BoundField>
                                             <asp:BoundField ReadOnly="true" DataField="TBIL_POL_MEMB_NAME" HeaderText="Member Name"
                                                 ItemStyle-Width="120px" HeaderStyle-HorizontalAlign="Left" ConvertEmptyStringToNull="true">
@@ -377,7 +416,7 @@
                                                 <ItemStyle Width="120px"></ItemStyle>
                                             </asp:BoundField>
                                             <asp:BoundField ReadOnly="true" DataField="TBIL_POL_MEMB_TOT_SA" HeaderText="Sum Assured"
-                                                ItemStyle-Width="100px" HeaderStyle-HorizontalAlign="Left" ConvertEmptyStringToNull="true">
+                                                ItemStyle-Width="100px" HeaderStyle-HorizontalAlign="Left" ConvertEmptyStringToNull="true" DataFormatString="{0:N2}">
                                                 <HeaderStyle HorizontalAlign="Left"></HeaderStyle>
                                                 <ItemStyle Width="100px"></ItemStyle>
                                             </asp:BoundField>
@@ -385,12 +424,12 @@
                                                 ItemStyle-Width="80px" HeaderStyle-HorizontalAlign="Left" ConvertEmptyStringToNull="true"
                                                 DataFormatString="{0:dd MMM yyyy}">
                                                 <HeaderStyle HorizontalAlign="Left"></HeaderStyle>
-                                                <ItemStyle Width="80px"></ItemStyle>
+                                                <ItemStyle Width="60px"></ItemStyle>
                                             </asp:BoundField>
                                             <asp:BoundField ReadOnly="true" DataField="TBIL_POL_MEMB_AGE" HeaderText="Age" ItemStyle-Width="40px"
                                                 HeaderStyle-HorizontalAlign="Left" ConvertEmptyStringToNull="true">
                                                 <HeaderStyle HorizontalAlign="Left"></HeaderStyle>
-                                                <ItemStyle Width="40px"></ItemStyle>
+                                                <ItemStyle Width="20px"></ItemStyle>
                                             </asp:BoundField>
                                             <asp:BoundField ReadOnly="true" DataField="TBIL_POL_MEMB_RATE" HeaderText="Prem Rate"
                                                 ItemStyle-Width="60px" HeaderStyle-HorizontalAlign="Left" ConvertEmptyStringToNull="true">
@@ -416,8 +455,25 @@
                                             <asp:BoundField ReadOnly="true" DataField="TBIL_POL_MEMB_BATCH_NO" HeaderText="Batch"
                                                 ItemStyle-Width="80px" HeaderStyle-HorizontalAlign="Left" ConvertEmptyStringToNull="true">
                                                 <HeaderStyle HorizontalAlign="Left"></HeaderStyle>
-                                                <ItemStyle Width="80px"></ItemStyle>
+                                                <ItemStyle Width="10px"></ItemStyle>
                                             </asp:BoundField>
+                                              <asp:BoundField ReadOnly="true" DataField="TBIL_POL_MEMB_FLAG" HeaderText="STATUS"
+                                               ItemStyle-Width="60px" HeaderStyle-HorizontalAlign="Left"
+                                                ConvertEmptyStringToNull="true" Visible="True">
+                                                <HeaderStyle HorizontalAlign="Left"></HeaderStyle>
+                                                <ItemStyle Width="60px"></ItemStyle>
+                                            </asp:BoundField>
+                                            <%--<asp:TemplateField HeaderText="Status" ItemStyle-Width="80px" HeaderStyle-HorizontalAlign="Left">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblStatus" runat="server" Text="" />
+                                                </ItemTemplate>--%>
+                                               <%-- <FooterTemplate>
+                                                    <asp:Label ID="lbltxtTotal" runat="server" Text="0.00" DataFormatString="{0:N2}" />
+                                                </FooterTemplate>--%>
+                                                <%--<HeaderStyle HorizontalAlign="Left"></HeaderStyle>
+                                                <ItemStyle Width="80px"></ItemStyle>
+                                            </asp:TemplateField>--%>
+                                            
                                         </Columns>
                                     </asp:GridView>
                                 </div>

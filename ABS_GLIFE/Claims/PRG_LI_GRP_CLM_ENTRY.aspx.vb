@@ -19,6 +19,7 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
     Protected strF_ID As String
     Protected strQ_ID As String
     Protected strP_ID As String
+    Protected strM_NO As String
 
     Protected strP_TYPE As String
     Protected strP_DESC As String
@@ -66,6 +67,49 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
         Catch ex As Exception
             strP_TYPE = "ERR_TYPE"
             strP_DESC = "ERR_DESC"
+        End Try
+
+        Try
+            strF_ID = CType(Request.QueryString("optfileid"), String)
+            strF_ID = CType(Session("optfileid"), String)
+        Catch ex As Exception
+            strF_ID = ""
+        End Try
+
+        Try
+            strQ_ID = CType(Request.QueryString("optquotid"), String)
+            strQ_ID = CType(Session("optquotid"), String)
+        Catch ex As Exception
+            strQ_ID = ""
+        End Try
+
+        Try
+            strP_ID = CType(Request.QueryString("optpolid"), String)
+            strP_ID = CType(Session("optpolid"), String)
+        Catch ex As Exception
+            strP_ID = ""
+        End Try
+
+        Try
+            strM_NO = CType(Request.QueryString("optmemno"), String)
+            strM_NO = CType(Session("optmemno"), String)
+        Catch ex As Exception
+            strM_NO = ""
+        End Try
+
+
+
+        If Trim(strP_ID) <> "" Then
+            GetPolicyDetailsByNumber(strP_ID)
+            Proc_DataBindGrid()
+            'strStatus = Proc_DoOpenRecord(RTrim("FIL"), strP_ID, Session("optrecid"))
+        End If
+
+        Try
+            strM_NO = CType(Request.QueryString("optmemno"), String)
+            strM_NO = CType(Session("optmemno"), String)
+        Catch ex As Exception
+            strM_NO = ""
         End Try
 
         STRPAGE_TITLE = "Master Codes Setup - " & strP_DESC
@@ -174,7 +218,7 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
         'strSQL = strSQL & " AND TBIL_POL_MEMB_PROP_NO = '" & RTrim(strQ_ID) & "'"
         'strSQL = strSQL & " AND TBIL_POL_MEMB_BATCH_NO = '" & RTrim(Me.txtBatch_Num.Text) & "'"
         strSQL = strSQL & " AND TBIL_POL_MEMB_MDLE IN('G')"
-        strSQL = strSQL & " AND TBIL_POL_MEMB_FLAG NOT IN('D')" 'do not include deleted items
+        'strSQL = strSQL & " AND TBIL_POL_MEMB_FLAG NOT IN('D','W')" 'do not include dead and withdrawn members
         strSQL = strSQL & " ORDER BY TBIL_POL_MEMB_FILE_NO, TBIL_POL_MEMB_BATCH_NO, TBIL_POL_MEMB_SNO"
 
 
@@ -237,6 +281,15 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
             TotTransAmt = (TotTransAmt + TransAmt)
 
         End If
+
+        'If (e.Row.RowType = DataControlRowType.DataRow) Then
+        '    Dim lblPrice As Label = CType(e.Row.FindControl("lblStatus"), Label)
+        '    TransAmt = (DataBinder.Eval(e.Row.DataItem, "TBIL_POL_MEMB_PREM"))
+        '    TotTransAmt = (TotTransAmt + TransAmt)
+
+        'End If
+
+
         If (e.Row.RowType = DataControlRowType.Footer) Then
             Dim lblTotal As Label = CType(e.Row.FindControl("lbltxtTotal"), Label)
             lblTotal.Text = String.Format(System.Globalization.CultureInfo.CurrentCulture, "{0:N}", New Object() {TotTransAmt})
@@ -250,12 +303,27 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
             If Not Convert.IsDBNull(drv) Then
                 Dim iParsedValue As Decimal = 0
                 If Decimal.TryParse(drv.ToString, iParsedValue) Then
-                    Dim cell As TableCell = ea.Row.Cells(8)
+                    Dim cell As TableCell = ea.Row.Cells(9)
                     cell.Text = String.Format(System.Globalization.CultureInfo.CurrentCulture, "{0:N}", New Object() {iParsedValue})
                 End If
             End If
-        End If
 
+            Dim status As String = DataBinder.Eval(e.Row.DataItem, "TBIL_POL_MEMB_FLAG")
+            Dim DisplayStatus = ""
+            If Not Convert.IsDBNull(status) Then
+                'Dim iParsedValue As Decimal = 0
+                If (status = "A" Or status = "C") Then
+                    DisplayStatus = "Active"
+                ElseIf status = "W" Then
+                    DisplayStatus = "Withdrawn"
+                ElseIf status = "D" Then
+                    DisplayStatus = "Deceased"
+                End If
+                ' If Decimal.TryParse(drv.ToString, iParsedValue) Then
+                Dim mycell As TableCell = ea.Row.Cells(12)
+                mycell.Text = String.Format(System.Globalization.CultureInfo.CurrentCulture, "{0:N}", New Object() {DisplayStatus})
+            End If
+        End If
     End Sub
 
     Protected Sub GridView1_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles GridView1.SelectedIndexChanged
@@ -269,8 +337,8 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
         strStatus = Proc_DoOpenRecord(RTrim("FIL"), Me.txtPolicyNumber.Text, Val(RTrim(Me.txtRecNo.Text)))
 
         Dim lblPrice1 As Label = GridView1.FooterRow.FindControl("lbltxtTotal")
-        txtPremPaidLC.Text = lblPrice1.Text
-        txtPremPaidFC.Text = lblPrice1.Text
+        'txtPremPaidLC.Text = lblPrice1.Text
+        'txtPremPaidFC.Text = lblPrice1.Text
 
         txtPremPaidLC.Enabled = False
         txtPremPaidFC.Enabled = False
@@ -331,12 +399,27 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
             'Me.txtFileNum.Text = RTrim(CType(objOLEDR("TBIL_POL_MEMB_FILE_NO") & vbNullString, String))
             'Call Proc_DDL_Get(Me.ddlGroup, RTrim(Me.txtGroupNum.Text))
             Me.txtRecNo.Text = RTrim(CType(objOLEDR("TBIL_POL_MEMB_REC_ID") & vbNullString, String))
+            Me.txtMemStaffNo.Text = RTrim(CType(objOLEDR("TBIL_POL_MEMB_STAFF_NO") & vbNullString, String))
 
             Me.txtAssuredAge.Text = RTrim(CType(objOLEDR("TBIL_POL_MEMB_AGE") & vbNullString, String))
-            Me.txtBasicSumClaimsLC.Text = RTrim(CType(objOLEDR("TBIL_POL_MEMB_TOT_SA") & vbNullString, String))
-            Me.txtBasicSumClaimsFC.Text = RTrim(CType(objOLEDR("TBIL_POL_MEMB_TOT_SA") & vbNullString, String))
-            txtMemberName.Text = RTrim(CType(objOLEDR("TBIL_POL_MEMB_NAME") & vbNullString, String))
+            'Me.txtBasicSumClaimsLC.Text = RTrim(CType(objOLEDR("TBIL_POL_MEMB_TOT_SA") & vbNullString, String))
+            'Me.txtBasicSumClaimsFC.Text = RTrim(CType(objOLEDR("TBIL_POL_MEMB_TOT_SA") & vbNullString, String))
+            If Not IsDBNull(objOLEDR("TBIL_POL_MEMB_TOT_SA")) Then
+                Me.txtBasicSumClaimsLC.Text = Format(objOLEDR("TBIL_POL_MEMB_TOT_SA"), "Standard")
+                Me.txtBasicSumClaimsFC.Text = Format(objOLEDR("TBIL_POL_MEMB_TOT_SA"), "Standard")
+            End If
 
+            txtMemberName.Text = RTrim(CType(objOLEDR("TBIL_POL_MEMB_NAME") & vbNullString, String))
+            If Not IsDBNull(objOLEDR("TBIL_POL_MEMB_PREM")) Then
+                Me.txtPremPaidLC.Text = Format(objOLEDR("TBIL_POL_MEMB_PREM"), "Standard")
+                Me.txtPremPaidFC.Text = Format(objOLEDR("TBIL_POL_MEMB_PREM"), "Standard")
+            End If
+            Dim batchNo As String
+            batchNo = CType(objOLEDR("TBIL_POL_MEMB_BATCH_NO"), String)
+            txtPremiumLoadedLC.Text = CType(Cal_Med_Prem_Load(txtPolicyNumber.Text, batchNo, txtProductCode.Text, _
+                                                              CDbl(txtPremPaidLC.Text), CDbl(txtBasicSumClaimsLC.Text), _
+                                                              CDbl(txtTotPrem.Text), CDbl(txtTotSA.Text)), String)
+            txtPremiumLoadedFC.Text = txtPremiumLoadedLC.Text
             'Me.txtData_Source_SW.Text = RTrim(CType(objOLEDR("TBIL_POL_MEMB_FILE_UPLOAD_SW") & vbNullString, String))
             'Call gnProc_DDL_Get(Me.cboData_Source, RTrim(Me.txtData_Source_SW.Text))
 
@@ -418,7 +501,7 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
             'End If
 
             strOPT = "2"
-            Me.lblMsg.Text = "Status: Data Modification"
+            lblMsg.Text = "Status: Data Modification"
 
         Else
             'Me.lblFileNum.Enabled = True
@@ -433,7 +516,7 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
             'Me.cmdNext.Enabled = False
 
             strOPT = "1"
-            Me.lblMsg.Text = "Status: New Entry..."
+            lblMsg.Text = "Status: New Entry..."
 
         End If
 
@@ -490,8 +573,8 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
         '    'Call gnProc_Populate_Box("PRO_ASSURED_HELP_SP", "001", Me.cboSearch, RTrim(Me.txtSearch.Value))
         '    Call gnProc_Populate_Box("GL_ASSURED_HELP_SP", "001", Me.cboSearch, RTrim(Me.txtSearch.Value))
         'End If
-        If LTrim(RTrim(Me.txtSearch.Value)) = "Search..." Then
-        ElseIf LTrim(RTrim(Me.txtSearch.Value)) <> "" Then
+        If LTrim(RTrim(txtSearch.Value)) = "Search..." Then
+        ElseIf LTrim(RTrim(txtSearch.Value)) <> "" Then
             cboSearch.Items.Clear()
             cboSearch.Items.Add("* Select Insured *")
             Dim dt As DataTable = GET_INSURED(txtSearch.Value.Trim()).Tables(0)
@@ -536,7 +619,13 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
         'DdnClaimType.SelectedIndex = 0
         DdnSysModule.SelectedIndex = 0
         txtClaimDec.Text = ""
-
+        txtMemberName.Text = ""
+        txtTotPrem.Text = "0.00"
+        txtTotSA.Text = "0.00"
+        txtFreeCovLmt.Text = "0.00"
+        txtRetention.Text = "0.00"
+        txtPremiumLoadedFC.Text = "0.00"
+        txtPremiumLoadedLC.Text = "0.00"
     End Sub
 
     Protected Sub cboSearch_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboSearch.SelectedIndexChanged
@@ -577,8 +666,22 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
                 strErrMsg = "true"
 
                 txtPolicyNumber.Text = RTrim(CType(objOledr("TBIL_POLY_POLICY_NO") & vbNullString, String))
+                txtFileNum.Text = RTrim(CType(objOledr("TBIL_POLY_FILE_NO") & vbNullString, String))
+                txtQuote_Num.Text = RTrim(CType(objOledr("TBIL_POLY_PROPSAL_NO") & vbNullString, String))
                 txtUWY.Text = CType(objOledr("TBIL_POLY_UNDW_YR") & vbNullString, String)
                 txtProductCode.Text = CType(objOledr("TBIL_POLY_PRDCT_CD") & vbNullString, String)
+
+                If Not IsDBNull(objOledr("TBIL_POLY_MED_COVER_LMT")) Then
+                    txtFreeCovLmt.Text = Format(objOledr("TBIL_POLY_MED_COVER_LMT"), "Standard")
+                Else
+                    txtFreeCovLmt.Text = "0.00"
+                End If
+
+                If Not IsDBNull(objOledr("TBIL_POLY_RETENTION")) Then
+                    txtRetention.Text = Format(objOledr("TBIL_POLY_RETENTION"), "Standard")
+                Else
+                    txtRetention.Text = "0.00"
+                End If
                 'txtProductCode0.Text = CType(objOledr("TBIL_PRDCT_DTL_DESC") & vbNullString, String)
 
                 If IsDate(objOledr("TBIL_POL_PRM_FROM")) Then
@@ -596,6 +699,7 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
                 End If
 
                 _rtnMessage = "Policy record retrieved!"
+                Cal_SA_Premium_Total()
             Else
                 _rtnMessage = "Unable to retrieve record. Invalid CLAIMS NUMBER!"
             End If
@@ -659,8 +763,11 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
                 DdnLossType.SelectedValue = CType(objOledr("TBIL_GRP_CLM_RPTD_LOSS_TYPE") & vbNullString, String)
                 txtClaimDec.Text = CType(objOledr("TBIL_GRP_CLM_RPTD_DESC") & vbNullString, String)
                 txtRemark.Text = CType(objOledr("TBIL_GRP_CLM_RPTD_REMARK") & vbNullString, String)
-
+                txtRecNo.Text = CType(objOledr("TBIL_GRP_CLM_MEM_REC_ID") & vbNullString, String)
+                txtMemStaffNo.Text = CType(objOledr("TBIL_GRP_CLM_MEM_STAFF_NO") & vbNullString, String)
                 _rtnMessage = "Claims record retrieved!"
+                Cal_SA_Premium_Total()
+                strStatus = GetPolicyDetailsByNumber(txtPolicyNumber.Text)
 
             Else
                 _rtnMessage = "Unable to retrieve record. Invalid POLICY NUMBER!"
@@ -685,10 +792,10 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
     End Sub
 
     Sub ClearFormControls()
-        txtUWY.Text = ""
-        txtProductCode.Text = ""
-        txtPolicyStartDate.Text = ""
-        txtPolicyEndDate.Text = ""
+        'txtUWY.Text = ""
+        'txtProductCode.Text = ""
+        'txtPolicyStartDate.Text = ""
+        'txtPolicyEndDate.Text = ""
         txtNotificationDate.Text = ""
         txtDateOfDeath.Text = ""
         txtBasicSumClaimsFC.Text = ""
@@ -700,7 +807,9 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
         'DdnClaimType.SelectedIndex = 0
         DdnLossType.SelectedIndex = 0
         txtClaimDec.Text = ""
-
+        txtMemberName.Text = ""
+        txtPremiumLoadedFC.Text = "0.00"
+        txtPremiumLoadedLC.Text = "0.00"
     End Sub
 
     Protected Sub cmdClaimNoGet_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdClaimNoGet.Click
@@ -719,7 +828,7 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
                        ByVal polEndDate As DateTime, ByVal notificationDate As DateTime, ByVal dateOfDeath As DateTime, ByVal basicSumClc As Decimal, _
                        ByVal basicSumCfc As Decimal, ByVal premiumPaidLc As Decimal, ByVal premiumPaidFc As Decimal, ByVal premiumLoadedLc As Decimal, ByVal premiumLoadedFc As Decimal, _
                        ByVal claimDescription As String, ByVal claimRemark As String, ByVal memberName As String, ByVal assuredAge As Int16, _
-                       ByVal flag As String, ByVal dDate As DateTime, ByVal userId As String) As String
+                       ByVal flag As String, ByVal dDate As DateTime, ByVal userId As String, ByVal memberRecId As String, ByVal memberStaffNo As String) As String
 
         Dim mystrConn As String = CType(Session("connstr"), String)
         Dim conn As OleDbConnection
@@ -749,7 +858,8 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
         cmd.Parameters.AddWithValue("@TBIL_GRP_CLM_RPTD_LOSS_TYPE", lossType)
         cmd.Parameters.AddWithValue("@TBIL_GRP_CLM_RPTD_DESC", claimDescription)
         cmd.Parameters.AddWithValue("@TBIL_GRP_CLM_RPTD_REMARK", claimRemark)
-
+        cmd.Parameters.AddWithValue("@TBIL_GRP_CLM_MEM_REC_ID", memberRecId)
+        cmd.Parameters.AddWithValue("@TBIL_GRP_CLM_MEM_STAFF_NO", memberStaffNo)
         'cmd.Parameters.AddWithValue("@TBIL_GRP_CLM_RPTD_FLAG", flag)
         cmd.Parameters.AddWithValue("@TBIL_GRP_CLM_RPTD_KEYDTE", dDate)
         cmd.Parameters.AddWithValue("@TBIL_GRP_CLM_RPTD_OPERID", userId)
@@ -948,6 +1058,31 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
             Exit Sub
         End If
 
+        If txtDateOfDeath.Text <> "" Then
+            Dim ctrlId As Control = FindControl("txtDateOfDeath")
+            str = MOD_GEN.DoDate_Process(txtDateOfDeath.Text, ctrlId)
+
+            If str(2) = Nothing Then
+                Dim errMsg = str(0).Insert(18, " Date of death, ")
+                lblMsg.Text = errMsg.Replace("Javascript:alert('", "").Replace("');", "")
+                FirstMsg = errMsg
+                txtDateOfDeath.Focus()
+                Exit Sub
+
+            Else
+                txtDateOfDeath.Text = str(2).ToString()
+            End If
+        Else
+
+            If DdnLossType.SelectedItem.Text <> "DEATH" Then
+                txtDateOfDeath.Text = "01/01/2014"
+            Else
+                lblMsg.Text = "Date of death field is required!"
+                FirstMsg = lblMsg.Text
+                txtDateOfDeath.Focus()
+                Exit Sub
+            End If
+        End If
         'end date validation
 
         If txtBasicSumClaimsLC.Text = "" Then
@@ -1049,32 +1184,46 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
         Dim dateAdded As DateTime = Now
         Dim operatorId As String = CType(Session("MyUserIDX"), String)
 
+        Try
 
-        Dim rtn As String = AddNewClaimsRequest( _
-        Convert.ToString(DdnSysModule.SelectedItem.Value), Convert.ToString(txtPolicyNumber.Text), _
-        Convert.ToString(txtClaimsNo.Text), Convert.ToString(txtUWY.Text), _
-        Convert.ToString(txtProductCode.Text), Convert.ToString(DdnLossType.SelectedItem.Value), _
-        Convert.ToDateTime(MOD_GEN.DoConvertToDbDateFormat(txtPolicyStartDate.Text)), _
-        Convert.ToDateTime(MOD_GEN.DoConvertToDbDateFormat(txtPolicyEndDate.Text)), _
-        Convert.ToDateTime(MOD_GEN.DoConvertToDbDateFormat(txtNotificationDate.Text)), _
-        Convert.ToDateTime(MOD_GEN.DoConvertToDbDateFormat(txtDateOfDeath.Text)), _
-        Convert.ToDecimal(txtBasicSumClaimsLC.Text), Convert.ToDecimal(txtBasicSumClaimsFC.Text), _
-        Convert.ToDecimal(txtPremPaidLC.Text), Convert.ToDecimal(txtPremPaidFC.Text), Convert.ToDecimal(txtPremiumLoadedLC.Text), _
-        Convert.ToDecimal(txtPremiumLoadedFC.Text), Convert.ToString(txtClaimDec.Text), Convert.ToString(txtRemark.Text), _
-        Convert.ToString(txtMemberName.Text), Convert.ToInt16(txtAssuredAge.Text), flag, dateAdded, operatorId)
+            Dim rtn As String = AddNewClaimsRequest( _
+            Convert.ToString(DdnSysModule.SelectedItem.Value), Convert.ToString(txtPolicyNumber.Text), _
+            Convert.ToString(txtClaimsNo.Text), Convert.ToString(txtUWY.Text), _
+            Convert.ToString(txtProductCode.Text), Convert.ToString(DdnLossType.SelectedItem.Value), _
+            Convert.ToDateTime(MOD_GEN.DoConvertToDbDateFormat(txtPolicyStartDate.Text)), _
+            Convert.ToDateTime(MOD_GEN.DoConvertToDbDateFormat(txtPolicyEndDate.Text)), _
+            Convert.ToDateTime(MOD_GEN.DoConvertToDbDateFormat(txtNotificationDate.Text)), _
+            Convert.ToDateTime(MOD_GEN.DoConvertToDbDateFormat(txtDateOfDeath.Text)), _
+            Convert.ToDecimal(txtBasicSumClaimsLC.Text), Convert.ToDecimal(txtBasicSumClaimsFC.Text), _
+            Convert.ToDecimal(txtPremPaidLC.Text), Convert.ToDecimal(txtPremPaidFC.Text), Convert.ToDecimal(txtPremiumLoadedLC.Text), _
+            Convert.ToDecimal(txtPremiumLoadedFC.Text), Convert.ToString(txtClaimDec.Text), Convert.ToString(txtRemark.Text), _
+            Convert.ToString(txtMemberName.Text), Convert.ToInt16(txtAssuredAge.Text), flag, dateAdded, operatorId, txtRecNo.Text, txtMemStaffNo.Text)
 
-        If True Then
-            rtn = "Entry Successful!"
-            Me.lblMsg.Text = "New Record Saved to Database Successfully."
-        Else
-            Me.lblMsg.Text = "Record Update Successfully."
-        End If
+
+            If True Then
+                rtn = "Entry Successful!"
+                Me.lblMsg.Text = "New Record Saved to Database Successfully."
+            Else
+                Me.lblMsg.Text = "Record Update Successfully."
+            End If
+
+            'If DdnLossType.SelectedItem.Text = "DEATH" Then
+            '    Proc_Death_Record()
+            'End If
+            Select Case Trim(DdnLossType.SelectedValue)
+                Case "003", "009", "LOSTYP003", "LOSTYP009" 'All different kind of death code
+                    Proc_Death_Record()
+                Case Else
+            End Select
+        Catch ex As Exception
+
+        End Try
 
         FirstMsg = "javascript:alert('" + lblMsg.Text + "');"
 
 
         ClearFormControls()
-
+        Proc_DataBindGrid()
     End Sub
 
     Protected Sub cmdNew_ASP_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdNew_ASP.Click
@@ -1279,11 +1428,15 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
     End Function
 
     Protected Sub searchBtn_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles searchBtn.Click
-
-        If txtPolicyNumber.Text <> "" And txtSvalue.Text <> "" Then
-            DoFilter(txtPolicyNumber.Text, txtSvalue.Text, DdnFilter.SelectedIndex)
+        If DdnFilter.SelectedIndex = 0 Then
+            If txtPolicyNumber.Text <> "" Then
+                DoFilter(txtPolicyNumber.Text, txtSvalue.Text, DdnFilter.SelectedIndex)
+            End If
+        Else
+            If txtPolicyNumber.Text <> "" And txtSvalue.Text <> "" Then
+                DoFilter(txtPolicyNumber.Text, txtSvalue.Text, DdnFilter.SelectedIndex)
+            End If
         End If
-
     End Sub
 
     Public Sub DoFilter(ByVal polyNumber As String, ByVal memberName As String, ByVal sType As Integer)
@@ -1319,5 +1472,247 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
             txtSvalue.Text = ""
         End If
 
+    End Sub
+
+    Protected Sub Proc_Death_Record()
+        Dim intC As Long = 0
+
+        Dim mystrCONN As String = CType(Session("connstr"), String)
+        Dim objOLEConn As New OleDbConnection(mystrCONN)
+
+        Try
+            'open connection to database
+            objOLEConn.Open()
+        Catch ex As Exception
+            Me.lblMsg.Text = "Unable to connect to database. Reason: " & ex.Message
+            objOLEConn = Nothing
+            Exit Sub
+        End Try
+
+        strSQL = ""
+        'Delete record i.e. move 'D' to the dead record flag
+        '==============================================
+        strSQL = ""
+        strSQL = "Update TBIL_GRP_POLICY_MEMBERS"
+        strSQL = strSQL & " SET TBIL_POL_MEMB_FLAG = 'D'"
+        strSQL = strSQL & " WHERE TBIL_POL_MEMB_POLY_NO = '" & RTrim(txtPolicyNumber.Text) & "'"
+        strSQL = strSQL & " AND TBIL_POL_MEMB_REC_ID = " & Val(RTrim(Me.txtRecNo.Text)) & ""
+
+        Dim objOLECmd2 As OleDbCommand = New OleDbCommand()
+
+        Try
+            With objOLECmd2
+                .Connection = objOLEConn
+                .CommandType = CommandType.Text
+                .CommandText = strSQL
+            End With
+            intC = objOLECmd2.ExecuteNonQuery()
+
+            If intC >= 1 Then
+                'Call Proc_DoNew()
+                'Me.lblMsg.Text = "Record deleted successfully."
+                'FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+            Else
+                'Me.lblMsg.Text = "Sorry!. Record not deleted..."
+                'FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+            End If
+
+        Catch ex As Exception
+            Me.lblMsg.Text = "Error has occured. Reason: " & ex.Message
+            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+        End Try
+
+        objOLECmd2.Dispose()
+        objOLECmd2 = Nothing
+
+        If objOLEConn.State = ConnectionState.Open Then
+            objOLEConn.Close()
+        End If
+        objOLEConn = Nothing
+    End Sub
+
+    Private Sub Cal_SA_Premium_Total()
+        strTable = "TBIL_GRP_POLICY_MEMBERS"
+        Dim dblLoading_Prem As Double = 0.0
+        Dim mystrCONN As String = CType(Session("connstr"), String)
+        Dim objOLEConn As New OleDbConnection(mystrCONN)
+
+        Try
+            'open connection to database
+            objOLEConn.Open()
+        Catch ex As Exception
+            Me.lblMsg.Text = "Unable to connect to database. Reason: " & ex.Message
+            objOLEConn = Nothing
+            Exit Sub
+        End Try
+        strSQL = ""
+        strSQL = strSQL & "SELECT SUM(TBIL_POL_MEMB_TOT_SA) AS TOT_SA"
+        strSQL = strSQL & " , SUM(isnull(TBIL_POL_MEMB_PRO_RATE_PREM,0)) AS TOT_PREM"
+        strSQL = strSQL & " , SUM(isnull(TBIL_POL_MEMB_LOAD,0)) AS TOT_LOADING"
+        strSQL = strSQL & " FROM " & strTable & ""
+        'strSQL = strSQL & " AND TBIL_FUN_POLY_NO = '" & RTrim(strP_ID) & "'"
+        strSQL = strSQL & " WHERE TBIL_POL_MEMB_POLY_NO = '" & RTrim(txtPolicyNumber.Text) & "'"
+        strSQL = strSQL & " AND TBIL_POL_MEMB_MDLE IN('G') AND TBIL_POL_MEMB_FLAG NOT IN('D','W')"
+
+
+        Dim objMem_Cmd As OleDbCommand = New OleDbCommand(strSQL, objOLEConn)
+        objMem_Cmd.CommandType = CommandType.Text
+        Dim objMem_DR As OleDbDataReader
+        objMem_DR = objMem_Cmd.ExecuteReader()
+        If (objMem_DR.Read()) Then
+            Me.txtTotSA.Text = Format(objMem_DR("TOT_SA"), "Standard")
+            Me.txtTotPrem.Text = Format(objMem_DR("TOT_PREM"), "Standard")
+            dblLoading_Prem = Format(objMem_DR("TOT_LOADING"), "Standard")
+        Else
+            Me.txtTotSA.Text = Val(0).ToString
+            Me.txtTotPrem.Text = Val(0).ToString
+            dblLoading_Prem = Val(0)
+        End If
+        objMem_DR.Close()
+        objMem_Cmd.Dispose()
+        objMem_Cmd = Nothing
+        If objOLEConn.State = ConnectionState.Open Then
+            objOLEConn.Close()
+        End If
+        objOLEConn = Nothing
+    End Sub
+
+    Public Function Cal_Med_Prem_Load(ByVal policyNo As String, ByVal batchNo As String, ByVal prodCode As String, _
+                                      ByVal myAmt As Double, ByVal mySA_Amt As Double, ByVal totPrem_Amt As Double, ByVal totSA_Amt As Double) As Double
+        Dim my_Rate_Type As String = ""
+        Dim my_Applied_On As String = ""
+        Dim my_Load_Amt As Double = 0
+        Dim myResult As Double = 0
+        Dim myPer As Double = 0
+        Dim myRate As Double = 0
+        Dim myPercent As Double = 0
+        Dim myRatePer As Double = 0
+
+
+        Dim mystrCONN As String = CType(Session("connstr"), String)
+        Dim objOLEConn As New OleDbConnection()
+        objOLEConn.ConnectionString = mystrCONN
+        Try
+            'open connection to database
+            objOLEConn.Open()
+        Catch ex As Exception
+            Me.lblMsg.Text = "Unable to connect to database. Reason: " & ex.Message
+            'FirstMsg = "Javascript:alert('" & Me.txtMsg.Text & "')"
+            objOLEConn = Nothing
+            Exit Function
+        End Try
+
+        strTable = "TBIL_GRP_POLICY_ADD_PREM"
+
+        strSQL = ""
+        strSQL = strSQL & "SELECT AD.*"
+        strSQL = strSQL & " FROM " & strTable & " AS AD"
+        strSQL = strSQL & " WHERE AD.TBIL_POL_ADD_POLY_NO = '" & RTrim(policyNo) & "'"
+        strSQL = strSQL & " AND AD.TBIL_POL_ADD_BATCH_NO = '" & RTrim(batchNo) & "'"
+        strSQL = strSQL & " AND AD.TBIL_POL_ADD_COVER_CD = 'G001-4'" 'G001-4 Medical cover
+        strSQL = strSQL & " AND AD.TBIL_POL_ADD_MDLE IN('G')"
+
+        Dim objOLECmd_DL As OleDbCommand = New OleDbCommand(strSQL, objOLEConn)
+        objOLECmd_DL.CommandType = CommandType.Text
+        Dim objOLEDR_DL As OleDbDataReader
+
+        objOLEDR_DL = objOLECmd_DL.ExecuteReader()
+
+        Do While objOLEDR_DL.Read()
+            my_Rate_Type = CType(objOLEDR_DL("TBIL_POL_ADD_PREM_RT_AMT_CD") & vbNullString, String)
+            'my_Grp_Mem = CType(objOLEDR_DL("TBIL_POL_ADD_PREM_SA_GRP_MEMB") & vbNullString, String)
+            my_Applied_On = CType(objOLEDR_DL("TBIL_POL_ADD_RATE_APPLY") & vbNullString, String)
+
+            If IsNumeric(CType(objOLEDR_DL("TBIL_POL_ADD_PREM_FX_RT") & vbNullString, String)) Then
+                myPercent = CType(objOLEDR_DL("TBIL_POL_ADD_PREM_FX_RT") & vbNullString, Double)
+            End If
+
+            If IsNumeric(CType(objOLEDR_DL("TBIL_POL_ADD_RATE") & vbNullString, String)) Then
+                myRate = CType(objOLEDR_DL("TBIL_POL_ADD_RATE") & vbNullString, Double)
+            End If
+            If IsNumeric(CType(objOLEDR_DL("TBIL_POL_ADD_PREM_FX_RT_PER") & vbNullString, String)) Then
+                myPer = CType(objOLEDR_DL("TBIL_POL_ADD_PREM_FX_RT_PER") & vbNullString, Double)
+            End If
+            If IsNumeric(CType(objOLEDR_DL("TBIL_POL_ADD_RATE_PER") & vbNullString, String)) Then
+                myRatePer = CType(objOLEDR_DL("TBIL_POL_ADD_RATE_PER") & vbNullString, Double)
+            End If
+
+
+            Select Case UCase(Trim(CType(objOLEDR_DL("TBIL_POL_ADD_PREM_SA_GRP_MEMB") & vbNullString, String)))
+                Case "I"    ' INDIVIDUAL
+                    Select Case UCase(Trim(CType(objOLEDR_DL("TBIL_POL_ADD_PREM_RT_AMT_CD") & vbNullString, String)))
+                        Case "A"    'USE FIXED AMOUNT
+                            If IsNumeric(CType(objOLEDR_DL("TBIL_POL_ADD_PREM_AMT") & vbNullString, String)) Then
+                                myResult = CType(objOLEDR_DL("TBIL_POL_ADD_PREM_AMT") & vbNullString, Double)
+                            End If
+                        Case "F"    'USE FIXED RATE
+                            Select Case UCase(Trim(CType(objOLEDR_DL("TBIL_POL_ADD_RATE_APPLY") & vbNullString, String)))
+                                Case "S"    ' SUM ASSURED
+                                    If mySA_Amt <> 0 And myRate <> 0 And myPer <> 0 Then
+                                        myResult = mySA_Amt * myPercent / myPer
+                                    End If
+                                Case "P"    ' BASIC PREMIUM
+                                    If myAmt <> 0 And myPercent <> 0 And myPer <> 0 Then
+                                        myResult = myAmt * myPercent / myPer
+                                    End If
+                            End Select
+
+                        Case "R"    'USE RATE RATE
+                            Select Case UCase(Trim(CType(objOLEDR_DL("TBIL_POL_ADD_RATE_APPLY") & vbNullString, String)))
+                                Case "S"    ' SUM ASSURED
+                                    If mySA_Amt <> 0 And myRate <> 0 And myRatePer <> 0 Then
+                                        myResult = mySA_Amt * myRate / myRatePer
+                                    End If
+                                Case "P"    ' LOADING
+                                    If myAmt <> 0 And myRate <> 0 And myRatePer <> 0 Then
+                                        myResult = myAmt * myRate / myRatePer
+                                    End If
+                            End Select
+
+                    End Select
+
+
+                Case "G"    ' GROUP
+                    Select Case UCase(Trim(CType(objOLEDR_DL("TBIL_POL_ADD_PREM_RT_AMT_CD") & vbNullString, String)))
+                        Case "A"    'USE FIXED AMOUNT
+                            If IsNumeric(CType(objOLEDR_DL("TBIL_POL_ADD_PREM_AMT") & vbNullString, String)) Then
+                                myResult = CType(objOLEDR_DL("TBIL_POL_ADD_PREM_AMT") & vbNullString, Double)
+                            End If
+
+                        Case "F"    'USE FIXED RATE
+                            If Val(totPrem_Amt) <> 0 And Val(myPercent) <> 0 And Val(myPer) <> 0 Then
+                                myResult = totPrem_Amt * myPercent / myPer
+                            End If
+
+                        Case "R"    'USE TABLE RATE
+                            If Val(totPrem_Amt) <> 0 And Val(myRate) <> 0 And Val(myRatePer) <> 0 Then
+                                myResult = totPrem_Amt * myRate / myRatePer
+                            End If
+                    End Select
+            End Select
+        Loop
+
+        objOLECmd_DL = Nothing
+        objOLEDR_DL = Nothing
+        Return myResult
+    End Function
+
+    Protected Sub Cmd_Add_Benfry_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles Cmd_Add_Benfry.Click
+        If txtMemberName.Text = "" Then
+            lblMsg.Text = "Please select a member"
+            FirstMsg = "Javascript:alert('" + lblMsg.Text + "')"
+            Exit Sub
+        End If
+        Session("optfileid") = Trim(Me.txtFileNum.Text).ToString
+        Session("optquotid") = Trim(Me.txtQuote_Num.Text).ToString
+        Session("optpolid") = Trim(Me.txtPolicyNumber.Text).ToString
+        Session("optmemno") = Trim(Me.txtMemStaffNo.Text).ToString
+        Session("optrecid") = Trim(Me.txtRecNo.Text).ToString
+        Dim pvURL As String = ""
+        'pvURL = "prg_li_grp_poly_medic_info.aspx?q=x"
+        'pvURL = "prg_li_grp_add_members.aspx?q=x"
+        pvURL = "~/Policy/PRG_LI_GRP_POLY_BENEFRY.aspx?q=x"
+        Response.Redirect(pvURL)
+        'Response.Redirect("~/Policy/PRG_LI_GRP_POLY_BENEFRY.aspx")
     End Sub
 End Class

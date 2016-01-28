@@ -451,7 +451,7 @@
                                     <tr>
                                         <td align="left" valign="top">
                                             <asp:Label ID="lblCompShare" 
-                                                Text="CAI Share %:" runat="server"></asp:Label></td>
+                                                Text="CLA Share %:" runat="server"></asp:Label></td>
                                         <td align="left" valign="top" colspan="3">
                                                     <asp:TextBox ID="txtCompShare" Visible="true" Enabled="true" 
                                                 MaxLength="25" Width="53px" runat="server"></asp:TextBox>
