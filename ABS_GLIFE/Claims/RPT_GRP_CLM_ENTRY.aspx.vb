@@ -38,7 +38,7 @@ Partial Class Claims_RPT_GRP_CLM_ENTRY
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         PageLinks = ""
         'PageLinks = PageLinks & "<a href='javascript:window.close();' runat='server'>Close...</a>"
-        PageLinks = "<a href='../MENU_GL.aspx?menu=GL_UND' class='a_sub_menu'>Return to Menu</a>&nbsp;"
+        PageLinks = "<a href='../MENU_GL.aspx?menu=GL_CLAIM' class='a_sub_menu'>Return to Menu</a>&nbsp;"
 
     End Sub
 

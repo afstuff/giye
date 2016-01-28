@@ -15,11 +15,11 @@
 
     <link rel="Stylesheet" href="../SS_ILIFE.css" type="text/css" />
     <style type="text/css">
-        .auto-style1 {
-            width: 238px;
-        }
         .auto-style2 {
             font-weight: bold;
+        }
+        .auto-style3 {
+            width: 211px;
         }
     </style>
 </head>
@@ -66,9 +66,9 @@
                         <td colspan="2"><hr /></td>
                     </tr>
                     <tr>
-                        <td align="right" valign="top" dir="ltr">
+                        <td align="right" valign="top" dir="ltr" class="auto-style3">
                             <asp:Label ID="Label1" runat="server" Text="Claim Number:"></asp:Label>
-                            &nbsp;</td>                           
+                            </td>                           
                         <td align="left" valign="top">
                             <asp:TextBox ID="txtClaimNumber" runat="server" Width="250px"></asp:TextBox>
                             <asp:Button ID="cmdPrint_ASP" Enabled="true" Font-Bold="true" 
@@ -76,7 +76,7 @@
                         </td>                           
                     </tr>
                     <tr>
-                        <td align="right" valign="top" class="auto-style1">
+                        <td align="right" valign="top" class="auto-style3">
                             <asp:Label ID="Label8" runat="server" Text="Policy Number:"></asp:Label>
                             </td>
                         <td align="left" valign="top">
@@ -86,7 +86,7 @@
 
 
                     <tr>
-                        <td align="right" valign="top" class="auto-style1">&nbsp;</td>
+                        <td align="right" valign="top" class="auto-style3">&nbsp;</td>
                         <td align="left" valign="top">&nbsp;</td>
                     </tr>                    
 

@@ -391,10 +391,10 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
                 Me.txtPremPaidFC.Text = Format(objOLEDR("TBIL_POL_MEMB_PREM"), "Standard")
             End If
             Dim batchNo As String
-            batchNo = objOLEDR("TBIL_POL_MEMB_BATCH_NO")
-            txtPremiumLoadedLC.Text = Cal_Med_Prem_Load(txtPolicyNumber.Text, batchNo, txtProductCode.Text, _
-                                                    CDbl(txtPremPaidLC.Text), CDbl(txtBasicSumClaimsLC.Text), _
-                                                    CDbl(txtTotPrem.Text), CDbl(txtTotSA.Text))
+            batchNo = CType(objOLEDR("TBIL_POL_MEMB_BATCH_NO"), String)
+            txtPremiumLoadedLC.Text = CType(Cal_Med_Prem_Load(txtPolicyNumber.Text, batchNo, txtProductCode.Text, _
+                                                              CDbl(txtPremPaidLC.Text), CDbl(txtBasicSumClaimsLC.Text), _
+                                                              CDbl(txtTotPrem.Text), CDbl(txtTotSA.Text)), String)
             txtPremiumLoadedFC.Text = txtPremiumLoadedLC.Text
             'Me.txtData_Source_SW.Text = RTrim(CType(objOLEDR("TBIL_POL_MEMB_FILE_UPLOAD_SW") & vbNullString, String))
             'Call gnProc_DDL_Get(Me.cboData_Source, RTrim(Me.txtData_Source_SW.Text))
@@ -477,7 +477,7 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
             'End If
 
             strOPT = "2"
-            Me.lblMsg.Text = "Status: Data Modification"
+            lblMsg.Text = "Status: Data Modification"
 
         Else
             'Me.lblFileNum.Enabled = True
@@ -492,7 +492,7 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
             'Me.cmdNext.Enabled = False
 
             strOPT = "1"
-            Me.lblMsg.Text = "Status: New Entry..."
+            lblMsg.Text = "Status: New Entry..."
 
         End If
 
@@ -549,8 +549,8 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
         '    'Call gnProc_Populate_Box("PRO_ASSURED_HELP_SP", "001", Me.cboSearch, RTrim(Me.txtSearch.Value))
         '    Call gnProc_Populate_Box("GL_ASSURED_HELP_SP", "001", Me.cboSearch, RTrim(Me.txtSearch.Value))
         'End If
-        If LTrim(RTrim(Me.txtSearch.Value)) = "Search..." Then
-        ElseIf LTrim(RTrim(Me.txtSearch.Value)) <> "" Then
+        If LTrim(RTrim(txtSearch.Value)) = "Search..." Then
+        ElseIf LTrim(RTrim(txtSearch.Value)) <> "" Then
             cboSearch.Items.Clear()
             cboSearch.Items.Add("* Select Insured *")
             Dim dt As DataTable = GET_INSURED(txtSearch.Value.Trim()).Tables(0)
