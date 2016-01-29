@@ -30,8 +30,10 @@ Partial Class GRP_DISCHARGE_VOUCHER
     Dim strErrMsg As String
 
     'Protected FirstMsg As String
-
+    Dim rParams As String() = {"nw", "nw", "nw", "nw", "nw", "nw", "new", "new"}
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
+        cmdPrint_ASP.Enabled = False
+
         PageLinks = ""
         'PageLinks = PageLinks & "<a href='javascript:window.close();' runat='server'>Close...</a>"
         PageLinks = "<a href='../MENU_GL.aspx?menu=GL_UND' class='a_sub_menu' style='float:right;'>Return to Menu</a>&nbsp;<br/>"
@@ -39,6 +41,8 @@ Partial Class GRP_DISCHARGE_VOUCHER
     End Sub
 
     Protected Sub cmdSearch_Click(sender As Object, e As EventArgs) Handles cmdSearch.Click
+        cmdPrint_ASP.Enabled = False
+
         If LTrim(RTrim(Me.txtSearch.Value)) = "Search..." Then
         ElseIf LTrim(RTrim(Me.txtSearch.Value)) <> "" Then
             cboSearch.Items.Clear()
@@ -98,7 +102,7 @@ Partial Class GRP_DISCHARGE_VOUCHER
                     lblGroup.Text = dr1("NAME").ToString()
                     lblClaim.Text = dr("TBIL_GRP_CLM_RPTD_CLM_NO").ToString()
                     lblPolicy.Text = dr("TBIL_GRP_CLM_RPTD_POLY_NO").ToString()
-                    'lblQuotation.Text = dr("TBIL_GRP_CLAIM_REPTED_REC_ID").ToString()
+                    lblMemNum.Text = dr("TBIL_GRP_CLM_MEM_STAFF_NO").ToString()
 
 
                 End If
@@ -288,12 +292,24 @@ Partial Class GRP_DISCHARGE_VOUCHER
             conn.Open()
             Dim saved As Int16 = CType(cmd.ExecuteScalar(), Short)
 
+            cmdPrint_ASP.Enabled = True
+
             conn.Close()
             lblMessage.Text = ""
-            lblMessage.Text = "Entry successful!"
-            FirstMsg = "javascript:alert('" + lblMessage.Text + "')"
+            lblMessage.Text = "Entry successful, !!! click print button to print voucher !!!"
+            FirstMsg = "javascript:confirm('" + lblMessage.Text + "')"
+
+            'ScriptManager.RegisterStartupScript(Me, Me.GetType(), "Message", "return confirm(Are you sure!)", True)
+            'Dim confirmValue As String = Request.Form("confirm_value")
+            'If confirmValue = "Yes" Then
+            '    ClientScript.RegisterStartupScript(Me.[GetType](), "alert", "alert('You clicked YES!')", True)
+            'Else
+            '    ClientScript.RegisterStartupScript(Me.[GetType](), "alert", "alert('You clicked NO!')", True)
+            'End If
+
 
         Catch ex As Exception
+            cmdPrint_ASP.Enabled = False
             lblMessage.Text = ""
             lblMessage.Text = "Entry failed!"
             FirstMsg = "javascript:alert('" + lblMessage.Text + "')"
@@ -304,9 +320,27 @@ Partial Class GRP_DISCHARGE_VOUCHER
     End Sub
 
 
+    Protected Sub cmdPrint_ASP_Click(sender As Object, e As EventArgs) Handles cmdPrint_ASP.Click
+        'blnStatus = Get_Grp_ProposalNo(Trim(Me.lblPolicy.Text))
+
+        'If blnStatus = False Then
+        '    lblMsg.Text = "Invalid Policy number, POLICY NUMBER DOES NOT EXIST!"
+        '    FirstMsg = "javascript:alert('" + lblMsg.Text + "')"
+        '    Exit Sub
+        'End If
+
+        Dim url As String = HttpContext.Current.Request.Url.AbsoluteUri
+        rParams(0) = "rptClmDischargeVouch"
+        rParams(1) = "pClaimNo="
+        rParams(2) = lblClaim.Text + "&"
+        rParams(3) = "pPolicyNo="
+        rParams(4) = lblPolicy.Text + "&"
+        rParams(5) = "pMemStaffNo="
+        rParams(6) = lblMemNum.Text + "&"
+        rParams(7) = url
 
 
-
-
-
+        Session("ReportParams") = rParams
+        Response.Redirect("../PrintView.aspx")
+    End Sub
 End Class
