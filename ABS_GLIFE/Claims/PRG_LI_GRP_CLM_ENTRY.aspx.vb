@@ -218,7 +218,7 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
         'strSQL = strSQL & " AND TBIL_POL_MEMB_PROP_NO = '" & RTrim(strQ_ID) & "'"
         'strSQL = strSQL & " AND TBIL_POL_MEMB_BATCH_NO = '" & RTrim(Me.txtBatch_Num.Text) & "'"
         strSQL = strSQL & " AND TBIL_POL_MEMB_MDLE IN('G')"
-        strSQL = strSQL & " AND TBIL_POL_MEMB_FLAG NOT IN('D','W')" 'do not include dead and withdrawn members
+        'strSQL = strSQL & " AND TBIL_POL_MEMB_FLAG NOT IN('D','W')" 'do not include dead and withdrawn members
         strSQL = strSQL & " ORDER BY TBIL_POL_MEMB_FILE_NO, TBIL_POL_MEMB_BATCH_NO, TBIL_POL_MEMB_SNO"
 
 
@@ -281,6 +281,15 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
             TotTransAmt = (TotTransAmt + TransAmt)
 
         End If
+
+        'If (e.Row.RowType = DataControlRowType.DataRow) Then
+        '    Dim lblPrice As Label = CType(e.Row.FindControl("lblStatus"), Label)
+        '    TransAmt = (DataBinder.Eval(e.Row.DataItem, "TBIL_POL_MEMB_PREM"))
+        '    TotTransAmt = (TotTransAmt + TransAmt)
+
+        'End If
+
+
         If (e.Row.RowType = DataControlRowType.Footer) Then
             Dim lblTotal As Label = CType(e.Row.FindControl("lbltxtTotal"), Label)
             lblTotal.Text = String.Format(System.Globalization.CultureInfo.CurrentCulture, "{0:N}", New Object() {TotTransAmt})
@@ -298,8 +307,23 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
                     cell.Text = String.Format(System.Globalization.CultureInfo.CurrentCulture, "{0:N}", New Object() {iParsedValue})
                 End If
             End If
-        End If
 
+            Dim status As String = DataBinder.Eval(e.Row.DataItem, "TBIL_POL_MEMB_FLAG")
+            Dim DisplayStatus = ""
+            If Not Convert.IsDBNull(status) Then
+                'Dim iParsedValue As Decimal = 0
+                If (status = "A" Or status = "C") Then
+                    DisplayStatus = "Active"
+                ElseIf status = "W" Then
+                    DisplayStatus = "Withdrawn"
+                ElseIf status = "D" Then
+                    DisplayStatus = "Deceased"
+                End If
+                ' If Decimal.TryParse(drv.ToString, iParsedValue) Then
+                Dim mycell As TableCell = ea.Row.Cells(12)
+                mycell.Text = String.Format(System.Globalization.CultureInfo.CurrentCulture, "{0:N}", New Object() {DisplayStatus})
+            End If
+        End If
     End Sub
 
     Protected Sub GridView1_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles GridView1.SelectedIndexChanged
