@@ -104,6 +104,7 @@ Partial Class GRP_DISCHARGE_VOUCHER
                     lblPolicy.Text = dr("TBIL_GRP_CLM_RPTD_POLY_NO").ToString()
                     lblMemNum.Text = dr("TBIL_GRP_CLM_MEM_STAFF_NO").ToString()
 
+                    GetDischargeVoucher(lblClaim.Text)
 
                 End If
             End If
@@ -114,6 +115,42 @@ Partial Class GRP_DISCHARGE_VOUCHER
             'lblMsg.Text = "Error. Reason: " & ex.Message.ToString
         End Try
 
+
+    End Sub
+
+    Private Sub GetDischargeVoucher(ByVal claimNo As String)
+
+        Dim sqlStr As String = "select TBGL_DV_DOC_MCCD,  TBGL_DV_DOC_BURY_CERT, TBGL_DV_DOC_POLICE_REP, TBGL_DV_DOC_DEATH_CERT," _
+                               + " TBGL_DV_DOC_BENEF_KYC, TBGL_DV_DOC_BENEF_BENEF from TBGL_DV_DOC_CHECKLIST a where a.TBGL_DV_DOC_CLAIM_NUMBER = '" + claimNo + "'"
+        Dim mystrConn As String = CType("Provider=SQLOLEDB;" + gnGET_CONN_STRING(), String)
+        Dim conn As OleDbConnection
+        conn = New OleDbConnection(mystrConn)
+        Dim cmd As OleDbCommand = New OleDbCommand()
+        cmd.Connection = conn
+        cmd.CommandText = sqlStr
+        cmd.CommandType = CommandType.Text
+       
+        Try
+            conn.Open()
+            Dim adapter As OleDbDataAdapter = New OleDbDataAdapter()
+            adapter.SelectCommand = cmd
+            Dim ds As DataSet = New DataSet()
+            adapter.Fill(ds)
+            conn.Close()
+            Dim dt As DataTable = ds.Tables(0)
+            Dim dr As DataRow = dt.Rows(0)
+            rbtMCCD.SelectedValue = dr("TBGL_DV_DOC_MCCD").ToString()
+            rbtBurial.SelectedValue = dr("TBGL_DV_DOC_BURY_CERT").ToString()
+            rbtPolice.SelectedValue = dr("TBGL_DV_DOC_POLICE_REP").ToString()
+            rbtDeath.SelectedValue = dr("TBGL_DV_DOC_DEATH_CERT").ToString()
+            rbtKyc.SelectedValue = dr("TBGL_DV_DOC_BENEF_KYC").ToString()
+            rbtBeneficiary.SelectedValue = dr("TBGL_DV_DOC_BENEF_BENEF").ToString()
+
+        Catch ex As Exception
+            '_rtnMessage = "Entry failed! " + ex.Message.ToString()
+
+        End Try
+        
 
     End Sub
 
