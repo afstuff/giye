@@ -307,6 +307,8 @@ Partial Class MENU_GL
                 AddMenuItem("Transactions", "Claim Reported Entry", "Claims/PRG_LI_GRP_CLM_ENTRY.aspx")
                 AddMenuItem("", "", "")
                 AddMenuItem("", "", "") 'blank link
+                AddMenuItem("Reports", "Discharge Voucher", "Claims/GRP_DISCHARGE_VOUCHER.aspx")
+
 
                 AddMenuItem("", "", "") 'blank link
                 'AddMenuItem("Reports", "Claims Reported Report", "")
