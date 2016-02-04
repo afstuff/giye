@@ -10,7 +10,7 @@ Partial Class Reports_PRG_LI_RE_ASSURANCE_CERT_RPT
     Protected strTableName As String
     Dim strTable As String
     Dim strSQL As String
-    Dim rParams As String() = {"nw", "nw", "new", "new"}
+    Dim rParams As String() = {"nw", "nw", "new", "new", "new", "new"}
     Protected PageLinks As String
     Dim strREC_ID As String
     Protected strOPT As String = "0"
@@ -59,6 +59,14 @@ Partial Class Reports_PRG_LI_RE_ASSURANCE_CERT_RPT
             Exit Sub
         End If
 
+        Dim myUserIDX As String = ""
+        Try
+            myUserIDX = CType(Session("MyUserIDX"), String)
+        Catch ex As Exception
+            myUserIDX = ""
+        End Try
+
+
         Dim myResult As Boolean
         myResult = DetermineReInsurance(txtPolicyNo.Text)
         If myResult = False Then
@@ -71,7 +79,9 @@ Partial Class Reports_PRG_LI_RE_ASSURANCE_CERT_RPT
         rParams(0) = "rptReAssuranceCertRpt"
         rParams(1) = "pPolicyNo="
         rParams(2) = txtPolicyNo.Text + "&"
-        rParams(3) = url
+        rParams(3) = "pLoginID="
+        rParams(4) = myUserIDX + "&"
+        rParams(5) = url
         Session("ReportParams") = rParams
 
         Response.Redirect("../PrintView.aspx")
@@ -206,7 +216,7 @@ Partial Class Reports_PRG_LI_RE_ASSURANCE_CERT_RPT
             strSQL = strSQL & " INNER JOIN TBIL_GRP_POLICY_PREM_INFO AS PREM ON DET.TBIL_POLY_POLICY_NO= PREM.TBIL_POL_PRM_POLY_NO"
             strSQL = strSQL & " INNER JOIN [TBIL_GRP_POLICY_MEMBERS] AS MEM ON DET.[TBIL_POLY_POLICY_NO] = MEM.[TBIL_POL_MEMB_POLY_NO]"
             strSQL = strSQL & " WHERE DET.[TBIL_POLY_POLICY_NO] = '" & policyno & "'"
-            strSQL = strSQL & " AND DET.[TBIL_POLY_FLAG] <> 'D'"
+            strSQL = strSQL & " AND DET.[TBIL_POLY_FLAG] <> 'D' AND MEM.[TBIL_POL_MEMB_FLAG] NOT IN ('D','W')"
             'strSQL = strSQL & " AND MEM.[TBIL_POL_MEMB_TOT_SA] > " & 10000000 & ""
             strSQL = strSQL & " AND MEM.[TBIL_POL_MEMB_TOT_SA] * DET.[TBIL_POLY_COMP_SHARE]/100 > DET.[TBIL_POLY_RETENTION]"
 
