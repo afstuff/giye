@@ -66,8 +66,7 @@
                                 <asp:Button ID="cmdDelete_ASP" CssClass="cmd_butt" Enabled="False" runat="server"
                                     Text="Delete Data" OnClientClick="JSDelete_ASP();"></asp:Button>
                                 &nbsp;
-                                <asp:Button ID="cmdPrint_ASP" CssClass="cmd_butt" runat="server" Text="Print" 
-                                    PostBackUrl="~/I_LIFE/PRG_LI_CLM_PART_MATURE_RPT.aspx">
+                                <asp:Button ID="cmdPrint_ASP" CssClass="cmd_butt" runat="server" Text="Print">
                                 </asp:Button>
                             </td>
                         </tr>
@@ -122,10 +121,18 @@
                             </tr>
                             <tr>
                                 <td align="right" nowrap class="auto-style5">
-                                    <asp:Label ID="Label9" runat="server" Text="Assured Name:"></asp:Label>
+                                    <asp:Label ID="Label9" runat="server" Text="Member Name:"></asp:Label>
                                 </td>
                                 <td align="left" nowrap class="auto-style5">
                                     <asp:Label ID="lblAssured" runat="server" Font-Bold="True" ForeColor="Red"></asp:Label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="right" nowrap class="auto-style5">
+                                    <asp:Label ID="Label16" runat="server" Text="Member Number:"></asp:Label>
+                                </td>
+                                <td align="left" nowrap class="auto-style5">
+                                    <asp:Label ID="lblMemNum" runat="server" Font-Bold="True" ForeColor="Red"></asp:Label>
                                 </td>
                             </tr>
                             <tr>
