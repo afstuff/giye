@@ -174,8 +174,8 @@ Partial Class Transaction_PRG_LI_GRP_PREM_DBCR_NOTE_ENTRY
         End If
 
         If Me.txtAction.Text = "Save" Then
-            Call DoSave()
-            Me.txtAction.Text = ""
+            'Call DoSave()
+            'Me.txtAction.Text = ""
         End If
 
         If Me.txtAction.Text = "Delete" Then

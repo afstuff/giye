@@ -36,7 +36,7 @@ Partial Class GRP_DISCHARGE_VOUCHER
 
         PageLinks = ""
         'PageLinks = PageLinks & "<a href='javascript:window.close();' runat='server'>Close...</a>"
-        PageLinks = "<a href='../MENU_GL.aspx?menu=GL_UND' class='a_sub_menu' style='float:right;'>Return to Menu</a>&nbsp;<br/>"
+        PageLinks = "<a href='../MENU_GL.aspx?menu=GL_CLAIM' class='a_sub_menu' style='float:right;'>Return to Menu</a>&nbsp;<br/>"
 
     End Sub
 
@@ -87,6 +87,13 @@ Partial Class GRP_DISCHARGE_VOUCHER
 
     Protected Sub cboSearch_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboSearch.SelectedIndexChanged
         Dim a = cboSearch.SelectedValue
+        rbtMCCD.SelectedIndex = -1
+        rbtBurial.SelectedIndex = -1
+        rbtPolice.SelectedIndex = -1
+        rbtDeath.SelectedIndex = -1
+        rbtKyc.SelectedIndex = -1
+        rbtBeneficiary.SelectedIndex = -1
+
         Try
             If IsPostBack Then
                 If cboSearch.SelectedIndex = -1 Or cboSearch.SelectedIndex = 0 Then
