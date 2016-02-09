@@ -87,13 +87,7 @@ Partial Class GRP_DISCHARGE_VOUCHER
 
     Protected Sub cboSearch_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboSearch.SelectedIndexChanged
         Dim a = cboSearch.SelectedValue
-        rbtMCCD.SelectedIndex = -1
-        rbtBurial.SelectedIndex = -1
-        rbtPolice.SelectedIndex = -1
-        rbtDeath.SelectedIndex = -1
-        rbtKyc.SelectedIndex = -1
-        rbtBeneficiary.SelectedIndex = -1
-
+        InitializeControls()
         Try
             If IsPostBack Then
                 If cboSearch.SelectedIndex = -1 Or cboSearch.SelectedIndex = 0 Then
@@ -386,5 +380,23 @@ Partial Class GRP_DISCHARGE_VOUCHER
 
         Session("ReportParams") = rParams
         Response.Redirect("../PrintView.aspx")
+    End Sub
+
+    Private Sub InitializeControls()
+        rbtMCCD.SelectedIndex = -1
+        rbtBurial.SelectedIndex = -1
+        rbtPolice.SelectedIndex = -1
+        rbtDeath.SelectedIndex = -1
+        rbtKyc.SelectedIndex = -1
+        rbtBeneficiary.SelectedIndex = -1
+        lblGroup.Text = ""
+        lblClaim.Text = ""
+        lblPolicy.Text = ""
+        lblMemNum.Text = ""
+        lblAssured.Text = ""
+    End Sub
+
+    Protected Sub cmdNew_ASP_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdNew_ASP.Click
+        InitializeControls()
     End Sub
 End Class
