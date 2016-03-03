@@ -2557,7 +2557,8 @@ gnGet_SN_End:
                 End If
 
             Case "02"
-                If (Val(strDteYY) \ 4) = 0 Then
+                'If (Val(strDteYY) \ 4) = 0 Then
+                If (Val(strDteYY) Mod 4) = 0 Then
                     If Val(strDteDD) > 29 Then
                         strDteMsg = strDteMsg & _
                             "  -> Invalid day in month. Month <" & strDteMM & ">" & _

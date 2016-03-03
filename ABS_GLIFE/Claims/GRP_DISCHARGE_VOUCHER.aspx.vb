@@ -36,7 +36,7 @@ Partial Class GRP_DISCHARGE_VOUCHER
 
         PageLinks = ""
         'PageLinks = PageLinks & "<a href='javascript:window.close();' runat='server'>Close...</a>"
-        PageLinks = "<a href='../MENU_GL.aspx?menu=GL_UND' class='a_sub_menu' style='float:right;'>Return to Menu</a>&nbsp;<br/>"
+        PageLinks = "<a href='../MENU_GL.aspx?menu=GL_CLAIM' class='a_sub_menu' style='float:right;'>Return to Menu</a>&nbsp;<br/>"
 
     End Sub
 
@@ -87,6 +87,7 @@ Partial Class GRP_DISCHARGE_VOUCHER
 
     Protected Sub cboSearch_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboSearch.SelectedIndexChanged
         Dim a = cboSearch.SelectedValue
+        InitializeControls()
         Try
             If IsPostBack Then
                 If cboSearch.SelectedIndex = -1 Or cboSearch.SelectedIndex = 0 Then
@@ -145,7 +146,7 @@ Partial Class GRP_DISCHARGE_VOUCHER
             rbtDeath.SelectedValue = dr("TBGL_DV_DOC_DEATH_CERT").ToString()
             rbtKyc.SelectedValue = dr("TBGL_DV_DOC_BENEF_KYC").ToString()
             rbtBeneficiary.SelectedValue = dr("TBGL_DV_DOC_BENEF_BENEF").ToString()
-
+            cmdPrint_ASP.Enabled = True
         Catch ex As Exception
             '_rtnMessage = "Entry failed! " + ex.Message.ToString()
 
@@ -365,9 +366,14 @@ Partial Class GRP_DISCHARGE_VOUCHER
         '    FirstMsg = "javascript:alert('" + lblMsg.Text + "')"
         '    Exit Sub
         'End If
-
+        Dim j As Integer
+        j = Determine_ReportType(lblPolicy.Text)
         Dim url As String = HttpContext.Current.Request.Url.AbsoluteUri
-        rParams(0) = "rptClmDischargeVouch"
+        If j > 0 Then
+            rParams(0) = "rptClmDischargeVouch"
+        Else
+            rParams(0) = "rptClmDischargeVouch_NoCoAssurer"
+        End If
         rParams(1) = "pClaimNo="
         rParams(2) = lblClaim.Text + "&"
         rParams(3) = "pPolicyNo="
@@ -380,4 +386,55 @@ Partial Class GRP_DISCHARGE_VOUCHER
         Session("ReportParams") = rParams
         Response.Redirect("../PrintView.aspx")
     End Sub
+
+    Private Sub InitializeControls()
+        rbtMCCD.SelectedIndex = -1
+        rbtBurial.SelectedIndex = -1
+        rbtPolice.SelectedIndex = -1
+        rbtDeath.SelectedIndex = -1
+        rbtKyc.SelectedIndex = -1
+        rbtBeneficiary.SelectedIndex = -1
+        lblGroup.Text = ""
+        lblClaim.Text = ""
+        lblPolicy.Text = ""
+        lblMemNum.Text = ""
+        lblAssured.Text = ""
+    End Sub
+
+    Protected Sub cmdNew_ASP_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdNew_ASP.Click
+        InitializeControls()
+    End Sub
+
+
+    Public Function Determine_ReportType(ByVal polyNumber As String) As Integer
+
+        Dim sqlStr As String = "select * from TBIL_GRP_POLICY_CO_ASSURER_SHARE  WHERE TBIL_POL_CO_ASS_POLY_NO ='" + polyNumber + "'"
+        Dim mystrConn As String = CType("Provider=SQLOLEDB;" + gnGET_CONN_STRING(), String)
+        Dim conn As OleDbConnection
+        conn = New OleDbConnection(mystrConn)
+        Dim cmd As OleDbCommand = New OleDbCommand()
+        cmd.Connection = conn
+        cmd.CommandText = sqlStr
+        cmd.CommandType = CommandType.Text
+        Dim dr As OleDbDataReader
+        Dim i As Integer
+
+        Try
+            conn.Open()
+            dr = cmd.ExecuteReader()
+            If dr.Read() Then
+                i = 1
+            Else
+                i = 0
+            End If
+            conn.Close()
+            Return i
+        Catch ex As Exception
+            '_rtnMessage = "Entry failed! " + ex.Message.ToString()
+
+        End Try
+        Return Nothing
+
+    End Function
+
 End Class

@@ -1269,10 +1269,12 @@ Proc_Skip_Check:
         '    Exit Sub
         'End If
 
-        If Trim(Me.txtAgcyNum.Text) = "" And Trim(Me.txtBrokerNum.Text) = "" Then
-            Me.lblMsg.Text = "Missing Broker Code or Marketer Code. Please enter valid Agency Code... "
-            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
-            Exit Sub
+        If Trim(UCase(cboBusSource.SelectedItem.Text)) <> "DIRECT BUSINESS" Then
+            If Trim(Me.txtAgcyNum.Text) = "" And Trim(Me.txtBrokerNum.Text) = "" Then
+                Me.lblMsg.Text = "Missing Broker Code or Marketer Code. Please enter valid Agency Code... "
+                FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+                Exit Sub
+            End If
         End If
 
         'If Me.txtBrokerNum.Text = "" Then

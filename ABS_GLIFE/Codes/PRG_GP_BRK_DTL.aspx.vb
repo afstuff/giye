@@ -1,5 +1,6 @@
 ﻿Imports System.Data
 Imports System.Data.OleDb
+Imports CustodianGroupLife.Data
 
 Partial Class PRG_GP_BRK_DTl
     Inherits System.Web.UI.Page
@@ -26,6 +27,13 @@ Partial Class PRG_GP_BRK_DTl
     Dim strSQL As String
 
     Dim strErrMsg As String
+    Dim MainAcctCode As String
+    Dim MainAcctDesc As String
+    Dim SubCodeInitial As String
+    Dim AcctLevel As String
+    Dim MainGroup As String
+    Dim LedgerType As String
+    Dim Sub1Group As String
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         strTableName = "TBIL_CUST_DETAIL"
@@ -619,6 +627,38 @@ Partial Class PRG_GP_BRK_DTl
                 'obj_DT.AcceptChanges()
                 intC = objDA.Update(obj_DT)
 
+                'INSERTING INTO ACCOUNT CODES TABLE TBFN_ACCT_CODES
+                MainAcctDesc = ""
+                SubCodeInitial = Left(Me.txtCustNum.Text, 2)
+                AcctLevel = "S"
+                MainGroup = ""
+                LedgerType = ""
+                Sub1Group = ""
+
+                MainAcctCode = hashHelper.GetMainAcctCode(cboCustCateg.SelectedValue, mystrCONN)
+                If SubCodeInitial = "BR" Then
+                    'MainAcctCode = "1020080010"
+                    MainAcctDesc = "TRADE RECEIVABLES - BROKERS"
+                ElseIf SubCodeInitial = "AC" Then
+                    'MainAcctCode = "1020080015"
+                    MainAcctDesc = "TRADE RECEIVABLES - AGENTS"
+                ElseIf SubCodeInitial = "DC" Then
+                    'MainAcctCode = "1020080020"
+                    MainAcctDesc = "TRADE RECEIVABLES - DIRECT CLIENTS"
+                End If
+                'If Left(Trim(cboCustCateg.SelectedItem.Text), 2) = "BR" Then
+                '    'MainAcctCode = "1020080010"
+                '    MainAcctDesc = "TRADE RECEIVABLES - BROKERS"
+                'ElseIf Left(Trim(cboCustCateg.SelectedItem.Text), 2) = "AG" Then
+                '    'MainAcctCode = "1020080015"
+                '    MainAcctDesc = "TRADE RECEIVABLES - AGENTS"
+                'ElseIf Left(Trim(cboCustCateg.SelectedItem.Text), 2) = "DI" Then
+                '    'MainAcctCode = "1020080020"
+                '    MainAcctDesc = "TRADE RECEIVABLES - DIRECT CLIENTS"
+                'End If
+                hashHelper.InsertAcctChart("001", MainAcctCode, Me.txtCustNum.Text, MainAcctDesc, Left(RTrim(Me.txtCustName.Text), 49), AcctLevel, _
+                                         MainGroup, "", LedgerType, Sub1Group, "", "", "", "", "", "", "A", DateTime.Now, "001", mystrCONN)
+
                 drNewRow = Nothing
 
                 Me.lblMessage.Text = "New Record Saved to Database Successfully."
@@ -1051,5 +1091,34 @@ MyRtn_Ok:
             Me.cboTransList.Enabled = True
         End If
     End Sub
+
+    Public Function GetMainAcctCode(ByVal CustCatCode As String) As Integer
+        Dim MainActtCode = ""
+        Dim sqlStr As String = "select * from TBIL_CUST_CAT WHERE TBIL_CUST_CATEG ='" + CustCatCode + "'"
+        Dim mystrConn As String = CType("Provider=SQLOLEDB;" + gnGET_CONN_STRING(), String)
+        Dim conn As OleDbConnection
+        conn = New OleDbConnection(mystrConn)
+        Dim cmd As OleDbCommand = New OleDbCommand()
+        cmd.Connection = conn
+        cmd.CommandText = sqlStr
+        cmd.CommandType = CommandType.Text
+        Dim dr As OleDbDataReader
+        Dim i As Integer
+
+        Try
+            conn.Open()
+            dr = cmd.ExecuteReader()
+            If dr.Read() Then
+                MainActtCode = dr("TBIL_CUST_CAT_CNTRL_ACCT")
+            End If
+            conn.Close()
+            Return MainActtCode
+        Catch ex As Exception
+            '_rtnMessage = "Entry failed! " + ex.Message.ToString()
+
+        End Try
+        Return Nothing
+
+    End Function
 
 End Class

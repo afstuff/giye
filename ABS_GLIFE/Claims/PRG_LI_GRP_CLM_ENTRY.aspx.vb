@@ -1085,6 +1085,29 @@ Partial Class Claims_PRG_LI_GRP_CLM_ENTRY
         End If
         'end date validation
 
+        'Validate date of death is within policy period
+        Dim PolicyStartDate = Convert.ToDateTime(DoConvertToDbDateFormat(txtPolicyStartDate.Text))
+        Dim PolEndDate = Convert.ToDateTime(DoConvertToDbDateFormat(txtPolicyEndDate.Text))
+        Dim NotifyDate = Convert.ToDateTime(DoConvertToDbDateFormat(txtNotificationDate.Text))
+
+        If DdnLossType.SelectedItem.Text = "DEATH" Then
+            Dim DeathDate = Convert.ToDateTime(DoConvertToDbDateFormat(txtDateOfDeath.Text))
+
+            If DeathDate < PolicyStartDate Or DeathDate > PolEndDate Then
+                lblMsg.Text = "Date of death must be within policy year"
+                FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "');"
+                Exit Sub
+            End If
+
+        End If
+        'end Validate date of death is within policy period
+
+        If NotifyDate < PolicyStartDate Then
+            lblMsg.Text = "Notification date must not be earlier than policy start date"
+            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "');"
+            Exit Sub
+        End If
+
         If txtBasicSumClaimsLC.Text = "" Then
             lblMsg.Text = "Basic Sum Claimed LC field is required!"
             txtBasicSumClaimsLC.Focus()
