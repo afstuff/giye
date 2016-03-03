@@ -186,6 +186,7 @@
                                     <asp:RadioButtonList ID="rbtMCCD" runat="server" RepeatDirection="Horizontal" Width="300px">
                                         <asp:ListItem Value="0">Waived</asp:ListItem>
                                         <asp:ListItem Value="1">Submited</asp:ListItem>
+                                        <asp:ListItem Value="2">Awaiting</asp:ListItem>
                                     </asp:RadioButtonList>
                                 </td>
                             </tr>
@@ -197,6 +198,7 @@
                                     <asp:RadioButtonList ID="rbtBurial" runat="server" RepeatDirection="Horizontal" Width="300px">
                                         <asp:ListItem Value="0">Waived</asp:ListItem>
                                         <asp:ListItem Value="1">Submited</asp:ListItem>
+                                           <asp:ListItem Value="2">Awaiting</asp:ListItem>
                                     </asp:RadioButtonList>
                                 </td>
                             </tr>
@@ -208,6 +210,7 @@
                                     <asp:RadioButtonList ID="rbtPolice" runat="server" RepeatDirection="Horizontal" Width="300px">
                                         <asp:ListItem Value="0">Waived</asp:ListItem>
                                         <asp:ListItem Value="1">Submited</asp:ListItem>
+                                           <asp:ListItem Value="2">Awaiting</asp:ListItem>
                                     </asp:RadioButtonList>
                                 </td>
                             </tr>
@@ -219,6 +222,7 @@
                                     <asp:RadioButtonList ID="rbtDeath" runat="server" RepeatDirection="Horizontal" Width="300px">
                                         <asp:ListItem Value="0">Waived</asp:ListItem>
                                         <asp:ListItem Value="1">Submited</asp:ListItem>
+                                           <asp:ListItem Value="2">Awaiting</asp:ListItem>
                                     </asp:RadioButtonList>
                                 </td>
                             </tr>
@@ -230,6 +234,7 @@
                                     <asp:RadioButtonList ID="rbtKyc" runat="server" RepeatDirection="Horizontal" Width="300px">
                                         <asp:ListItem Value="0">Waived</asp:ListItem>
                                         <asp:ListItem Value="1">Submited</asp:ListItem>
+                                           <asp:ListItem Value="2">Awaiting</asp:ListItem>
                                     </asp:RadioButtonList>
                                 </td>
                             </tr>
@@ -241,6 +246,7 @@
                                     <asp:RadioButtonList ID="rbtBeneficiary" runat="server" RepeatDirection="Horizontal" Width="300px">
                                         <asp:ListItem Value="0">Waived</asp:ListItem>
                                         <asp:ListItem Value="1">Submited</asp:ListItem>
+                                           <asp:ListItem Value="2">Awaiting</asp:ListItem>
                                     </asp:RadioButtonList>
                                 </td>
                             </tr>
