@@ -1,5 +1,7 @@
 ﻿Imports System.Data
 Imports System.Data.OleDb
+Imports CustodianGroupLife.Data
+
 
 Partial Class PRG_GP_CUST_DTL
     Inherits System.Web.UI.Page
@@ -26,9 +28,18 @@ Partial Class PRG_GP_CUST_DTL
     Dim strSQL As String
 
     Dim strErrMsg As String
+    Dim MainAcctCode As String
+    Dim SubAcctCode As String
+    Dim MainAcctDesc As String
+    Dim SubCodeInitial As String
+    Dim AcctLevel As String
+    Dim MainGroup As String
+    Dim LedgerType As String
+    Dim Sub1Group As String
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-
+        'This program also writes to the chart of account aside from its primary aim which is to create new assured.
+        'It also consider Assured class for the prefix of the sub acccounts code
         strTableName = "TBIL_INS_DETAIL"
 
         Try
@@ -158,7 +169,8 @@ Partial Class PRG_GP_CUST_DTL
             .txtCustID.Enabled = False
             .chkNum.Checked = True
             .chkNum.Enabled = True
-
+            .chkWrtToChart.Checked = True
+            .chkWrtToChart.Enabled = True
             .txtCustModule.Text = ""
             .txtCustClass.Text = ""
 
@@ -595,6 +607,46 @@ Partial Class PRG_GP_CUST_DTL
                 obj_DT.Rows.Add(drNewRow)
                 'obj_DT.AcceptChanges()
                 intC = objDA.Update(obj_DT)
+
+                If Me.chkWrtToChart.Checked = True Then
+                    'INSERTING INTO ACCOUNT CODES TABLE TBFN_ACCT_CODES
+                    MainAcctDesc = ""
+                    SubAcctCode = ""
+                    SubCodeInitial = Left(Me.txtCustNum.Text, 2)
+                    AcctLevel = "S"
+                    MainGroup = ""
+                    LedgerType = ""
+                    Sub1Group = ""
+
+                    MainAcctCode = hashHelper.GetMainAccountCode(cboCustClass.SelectedValue, mystrCONN)
+                    Dim SubAcctcodeSuffix = Trim(txtCustNum.Text.Substring(2))
+                    Dim SubAcctcodePrefix = Trim(txtCustNum.Text.Substring(0, 2))
+                    'If SubCodeInitial = "BR" Then
+                    '    'MainAcctCode = "1020080010"
+                    '    MainAcctDesc = "TRADE RECEIVABLES - BROKERS"
+                    'ElseIf SubCodeInitial = "AC" Then
+                    '    'MainAcctCode = "1020080015"
+                    '    MainAcctDesc = "TRADE RECEIVABLES - AGENTS"
+                    'ElseIf SubCodeInitial = "DC" Then
+                    '    'MainAcctCode = "1020080020"
+                    '    MainAcctDesc = "TRADE RECEIVABLES - DIRECT CLIENTS"
+                    'End If
+
+                    If cboCustClass.SelectedItem.Text = "BROKER BUSINESS" Then
+                        MainAcctDesc = "TRADE RECEIVABLES - BROKERS"
+                        SubAcctCode = "BR" & SubAcctcodeSuffix
+                    ElseIf cboCustClass.SelectedItem.Text = "AGENTS BUSINESS" Then
+                        MainAcctDesc = "TRADE RECEIVABLES - AGENTS"
+                        SubAcctCode = "AC" & SubAcctcodeSuffix
+                    ElseIf cboCustClass.SelectedItem.Text = "DIRECT BUSINESS" Then
+                        MainAcctDesc = "TRADE RECEIVABLES - DIRECT CLIENTS"
+                        SubAcctCode = "DC" & SubAcctcodeSuffix
+                    End If
+
+
+                    hashHelper.InsertAcctChart("001", MainAcctCode, SubAcctCode, MainAcctDesc, Left(RTrim(Me.txtCustName.Text), 49), AcctLevel, _
+                                             MainGroup, "", LedgerType, Sub1Group, "", "", "", "", "", "", "A", DateTime.Now, "001", mystrCONN)
+                End If
 
                 drNewRow = Nothing
 

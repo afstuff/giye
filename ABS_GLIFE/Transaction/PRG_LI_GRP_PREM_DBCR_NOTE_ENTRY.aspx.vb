@@ -849,15 +849,15 @@ Proc_Skip_Check:
             End If
         End If
 
-        myTrn_Num = RTrim(Me.txtTransNum.Text)
-        If RTrim(Me.txtRefNum.Text) = RTrim(myTrn_Num) Then
-            FirstMsg = "Javascript:alert('Mismatch or Invalid or Incorrect reference number. Please enter correct or valid reference no...');"
-            Me.txtRefNum.Text = ""
-            Me.txtRefCode.Text = ""
-            Me.txtRefDate.Text = ""
-            Me.txtRefNum.Enabled = True
-            Me.txtRefNum.Focus()
-        End If
+        'myTrn_Num = RTrim(Me.txtTransNum.Text)
+        'If RTrim(Me.txtRefNum.Text) = RTrim(myTrn_Num) Then
+        '    FirstMsg = "Javascript:alert('Mismatch or Invalid or Incorrect reference number. Please enter correct or valid reference no...');"
+        '    Me.txtRefNum.Text = ""
+        '    Me.txtRefCode.Text = ""
+        '    Me.txtRefDate.Text = ""
+        '    Me.txtRefNum.Enabled = True
+        '    Me.txtRefNum.Focus()
+        'End If
 
 
         If RTrim(Me.txtRefNum.Text) <> "" Then

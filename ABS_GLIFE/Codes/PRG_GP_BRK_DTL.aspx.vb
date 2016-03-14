@@ -1091,34 +1091,4 @@ MyRtn_Ok:
             Me.cboTransList.Enabled = True
         End If
     End Sub
-
-    Public Function GetMainAcctCode(ByVal CustCatCode As String) As Integer
-        Dim MainActtCode = ""
-        Dim sqlStr As String = "select * from TBIL_CUST_CAT WHERE TBIL_CUST_CATEG ='" + CustCatCode + "'"
-        Dim mystrConn As String = CType("Provider=SQLOLEDB;" + gnGET_CONN_STRING(), String)
-        Dim conn As OleDbConnection
-        conn = New OleDbConnection(mystrConn)
-        Dim cmd As OleDbCommand = New OleDbCommand()
-        cmd.Connection = conn
-        cmd.CommandText = sqlStr
-        cmd.CommandType = CommandType.Text
-        Dim dr As OleDbDataReader
-        Dim i As Integer
-
-        Try
-            conn.Open()
-            dr = cmd.ExecuteReader()
-            If dr.Read() Then
-                MainActtCode = dr("TBIL_CUST_CAT_CNTRL_ACCT")
-            End If
-            conn.Close()
-            Return MainActtCode
-        Catch ex As Exception
-            '_rtnMessage = "Entry failed! " + ex.Message.ToString()
-
-        End Try
-        Return Nothing
-
-    End Function
-
 End Class

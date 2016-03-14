@@ -1561,5 +1561,33 @@ namespace CustodianGroupLife.Data
             }
             return MainActtCode;
         }
+
+        public static string GetMainAccountCode(String CustCatCode, string mystrConn)
+        {
+            string MainActtCode = "";
+            string sqlStr = "select * from TBIL_INS_CLASS WHERE TBIL_INS_CLASS_CD ='" + CustCatCode + "'";
+            OleDbConnection conn;
+            conn = new OleDbConnection(mystrConn);
+            OleDbCommand cmd = new OleDbCommand();
+            cmd.Connection = conn;
+            cmd.CommandText = sqlStr;
+            cmd.CommandType = CommandType.Text;
+            OleDbDataReader dr;
+            try
+            {
+                conn.Open();
+                dr = cmd.ExecuteReader();
+                if (dr.Read())
+                {
+                    MainActtCode = dr["TBIL_INS_CLASS_SHRT_DESC"].ToString();
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return MainActtCode;
+        }
     }
 }

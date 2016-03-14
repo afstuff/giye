@@ -11,6 +11,12 @@
     <link rel="Stylesheet" href="../SS_ILIFE.css" type="text/css" />
    <script language="javascript" type="text/javascript" src="../Script/ScriptJS.js">
    </script>
+    <style type="text/css">
+        .style1
+        {
+            height: 14px;
+        }
+    </style>
 </head>
 <body onload="<%= FirstMsg %>">
     <form id="Form1" name="Form1" runat="server">
@@ -164,12 +170,14 @@
     	                    <td align="right" nowrap><asp:Label ID="lblCustClass" Text="Assured Class:" runat="server"></asp:Label>&nbsp;</td>
         	        	    <td align="left" nowrap colspan="3"><asp:textbox id="txtCustClass" Enabled="false" MaxLength="3" Width="100px" runat="server" EnableViewState="true"></asp:textbox>
                 		        &nbsp;<asp:DropDownList id="cboCustClass" Visible="true" Width="200px" AutoPostBack="true" runat="server"></asp:DropDownList>
+                                <asp:CheckBox id="chkWrtToChart" runat="server" AutoPostBack="true" 
+                                    class="chk_Butt" Text="Write to chart of account?" />
                             </td>
         	        	</tr>
 
                 		<tr>
-    		                <td align="right" nowrap><asp:Label ID="lblCustAddr01" Text="Address Line-1:" runat="server"></asp:Label>&nbsp;</td>
-                		    <td align="left" nowrap colspan="3"><asp:textbox id="txtCustAddr01" MaxLength="39" Width="400px" runat="server" EnableViewState="true" ></asp:textbox></td>
+    		                <td align="right" nowrap class="style1"><asp:Label ID="lblCustAddr01" Text="Address Line-1:" runat="server"></asp:Label>&nbsp;</td>
+                		    <td align="left" nowrap colspan="3" class="style1"><asp:textbox id="txtCustAddr01" MaxLength="39" Width="400px" runat="server" EnableViewState="true" ></asp:textbox></td>
     		            </tr>
                 		<tr>
     		                <td align="right" nowrap><asp:Label ID="lblCustAddr02" Text="Address Line-2:" runat="server"></asp:Label>&nbsp;</td>
