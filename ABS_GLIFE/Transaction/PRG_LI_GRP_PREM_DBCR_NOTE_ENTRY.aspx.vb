@@ -918,10 +918,10 @@ Proc_Skip_Check:
             'Me.txtAgcyRate.Text = "0"
             Exit Sub
         End If
-        If Val(Me.txtAgcyRate.Text) = 0 Then
-            Me.txtAgcyRate.Text = "0"
-            Exit Sub
-        End If
+        'If Val(Me.txtAgcyRate.Text) = 0 Then
+        '    Me.txtAgcyRate.Text = "0"
+        '    Exit Sub
+        'End If
 
         If RTrim(Me.txtTransDescr1.Text) = "" Or RTrim(Me.txtTransDescr1.Text) = "*" Then
             Me.lblMessage.Text = "Missing transaction description..."
