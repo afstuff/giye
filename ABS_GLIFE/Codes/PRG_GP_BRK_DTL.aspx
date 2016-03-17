@@ -153,13 +153,15 @@
         	        	<tr>
     	                    <td align="right" nowrap><asp:Label ID="lblCustModule" Text="Customer Module:" runat="server"></asp:Label>&nbsp;</td>
         	        	    <td align="left" nowrap colspan="3"><asp:textbox id="txtCustModule" Enabled="false" MaxLength="3" Width="100px" runat="server" EnableViewState="true"></asp:textbox>
-                		        &nbsp;<asp:DropDownList id="cboCustModule" Visible="true" Width="200px" AutoPostBack="false" runat="server"></asp:DropDownList>
+                		        &nbsp;<asp:DropDownList id="cboCustModule" Visible="true" Width="200px" 
+                                    AutoPostBack="True" runat="server"></asp:DropDownList>
                             </td>
         	        	</tr>
         	        	<tr>
     	                    <td align="right" nowrap><asp:Label ID="lblCustCateg" Text="Customer Category:" runat="server"></asp:Label>&nbsp;</td>
         	        	    <td align="left" nowrap colspan="3"><asp:textbox id="txtCustCateg" Enabled="false" MaxLength="3" Width="100px" runat="server" EnableViewState="true"></asp:textbox>
-                		        &nbsp;<asp:DropDownList id="cboCustCateg" Visible="true" Width="200px" AutoPostBack="false" runat="server"></asp:DropDownList>
+                		        &nbsp;<asp:DropDownList id="cboCustCateg" Visible="true" Width="200px" 
+                                    AutoPostBack="True" runat="server"></asp:DropDownList>
                             </td>
         	        	</tr>
 

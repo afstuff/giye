@@ -632,7 +632,7 @@ Partial Class PRG_GP_BRK_DTl
                 SubCodeInitial = Left(Me.txtCustNum.Text, 2)
                 AcctLevel = "S"
                 MainGroup = ""
-                LedgerType = ""
+                LedgerType = "T"
                 Sub1Group = ""
 
                 MainAcctCode = hashHelper.GetMainAcctCode(cboCustCateg.SelectedValue, mystrCONN)

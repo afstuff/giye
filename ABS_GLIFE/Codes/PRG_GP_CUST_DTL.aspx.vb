@@ -608,7 +608,7 @@ Partial Class PRG_GP_CUST_DTL
                 'obj_DT.AcceptChanges()
                 intC = objDA.Update(obj_DT)
 
-                'Assured or scheme name does not write to the chart of account.
+                'Assured code does not write to the chart of account.
                 'If Me.chkWrtToChart.Checked = True Then
                 '    'INSERTING INTO ACCOUNT CODES TABLE TBFN_ACCT_CODES
                 '    MainAcctDesc = ""
