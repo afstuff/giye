@@ -347,7 +347,7 @@
                                                 <asp:TextBox ID="txtMember_DOB" MaxLength="10" Width="100px" 
                                                     ToolTip="Date of Birth(dd/mm/yyyy)" runat="server" Visible="False" 
                                                         AutoPostBack="True"></asp:TextBox>
-                                                    <asp:TextBox ID="txtDOB_ANB" Enabled="False" 
+                                                    <asp:TextBox ID="txtDOB_ANB" 
                                                     Width="40px" runat="server" Visible="False"></asp:TextBox>
                                                 </td>
                                         </tr>
@@ -428,10 +428,10 @@
                               <!--  <tr style="font-size: small>-->
                                  <tr>
                                     <td align="left" colspan="1">
-                                        <asp:TextBox ID="txtPrem_Rate_Code" Visible="False" 
+                                        <asp:TextBox ID="txtPrem_Rate_Code" 
                                             Enabled="false" Width="80px" runat="server"></asp:TextBox>
                                         <asp:TextBox ID="txtPrem_Rate_CodeName" Visible="false" Enabled="false" Width="30px" runat="server"></asp:TextBox>
-                                        <asp:TextBox ID="txtPrem_Rate_TypeNum" Visible="False" Enabled="false" 
+                                        <asp:TextBox ID="txtPrem_Rate_TypeNum" Enabled="false" 
                                             MaxLength="1" Width="16px" runat="server"></asp:TextBox>
                                     <td align="left" class="style25">
                                         <asp:TextBox ID="txtPrem_Rate" Enabled="false" Width="90px" ToolTip="" 
