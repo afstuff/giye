@@ -171,7 +171,7 @@
         	        	    <td align="left" nowrap colspan="3"><asp:textbox id="txtCustClass" Enabled="false" MaxLength="3" Width="100px" runat="server" EnableViewState="true"></asp:textbox>
                 		        &nbsp;<asp:DropDownList id="cboCustClass" Visible="true" Width="200px" AutoPostBack="true" runat="server"></asp:DropDownList>
                                 <asp:CheckBox id="chkWrtToChart" runat="server" AutoPostBack="true" 
-                                    class="chk_Butt" Text="Write to chart of account?" />
+                                    class="chk_Butt" Text="Write to chart of account?" Visible="False" />
                             </td>
         	        	</tr>
 

@@ -608,45 +608,46 @@ Partial Class PRG_GP_CUST_DTL
                 'obj_DT.AcceptChanges()
                 intC = objDA.Update(obj_DT)
 
-                If Me.chkWrtToChart.Checked = True Then
-                    'INSERTING INTO ACCOUNT CODES TABLE TBFN_ACCT_CODES
-                    MainAcctDesc = ""
-                    SubAcctCode = ""
-                    SubCodeInitial = Left(Me.txtCustNum.Text, 2)
-                    AcctLevel = "S"
-                    MainGroup = ""
-                    LedgerType = ""
-                    Sub1Group = ""
+                'Assured or scheme name does not write to the chart of account.
+                'If Me.chkWrtToChart.Checked = True Then
+                '    'INSERTING INTO ACCOUNT CODES TABLE TBFN_ACCT_CODES
+                '    MainAcctDesc = ""
+                '    SubAcctCode = ""
+                '    SubCodeInitial = Left(Me.txtCustNum.Text, 2)
+                '    AcctLevel = "S"
+                '    MainGroup = ""
+                '    LedgerType = ""
+                '    Sub1Group = ""
 
-                    MainAcctCode = hashHelper.GetMainAccountCode(cboCustClass.SelectedValue, mystrCONN)
-                    Dim SubAcctcodeSuffix = Trim(txtCustNum.Text.Substring(2))
-                    Dim SubAcctcodePrefix = Trim(txtCustNum.Text.Substring(0, 2))
-                    'If SubCodeInitial = "BR" Then
-                    '    'MainAcctCode = "1020080010"
-                    '    MainAcctDesc = "TRADE RECEIVABLES - BROKERS"
-                    'ElseIf SubCodeInitial = "AC" Then
-                    '    'MainAcctCode = "1020080015"
-                    '    MainAcctDesc = "TRADE RECEIVABLES - AGENTS"
-                    'ElseIf SubCodeInitial = "DC" Then
-                    '    'MainAcctCode = "1020080020"
-                    '    MainAcctDesc = "TRADE RECEIVABLES - DIRECT CLIENTS"
-                    'End If
+                '    MainAcctCode = hashHelper.GetMainAccountCode(cboCustClass.SelectedValue, mystrCONN)
+                '    Dim SubAcctcodeSuffix = Trim(txtCustNum.Text.Substring(2))
+                '    Dim SubAcctcodePrefix = Trim(txtCustNum.Text.Substring(0, 2))
+                '    'If SubCodeInitial = "BR" Then
+                '    '    'MainAcctCode = "1020080010"
+                '    '    MainAcctDesc = "TRADE RECEIVABLES - BROKERS"
+                '    'ElseIf SubCodeInitial = "AC" Then
+                '    '    'MainAcctCode = "1020080015"
+                '    '    MainAcctDesc = "TRADE RECEIVABLES - AGENTS"
+                '    'ElseIf SubCodeInitial = "DC" Then
+                '    '    'MainAcctCode = "1020080020"
+                '    '    MainAcctDesc = "TRADE RECEIVABLES - DIRECT CLIENTS"
+                '    'End If
 
-                    If cboCustClass.SelectedItem.Text = "BROKER BUSINESS" Then
-                        MainAcctDesc = "TRADE RECEIVABLES - BROKERS"
-                        SubAcctCode = "BR" & SubAcctcodeSuffix
-                    ElseIf cboCustClass.SelectedItem.Text = "AGENTS BUSINESS" Then
-                        MainAcctDesc = "TRADE RECEIVABLES - AGENTS"
-                        SubAcctCode = "AC" & SubAcctcodeSuffix
-                    ElseIf cboCustClass.SelectedItem.Text = "DIRECT BUSINESS" Then
-                        MainAcctDesc = "TRADE RECEIVABLES - DIRECT CLIENTS"
-                        SubAcctCode = "DC" & SubAcctcodeSuffix
-                    End If
+                '    If cboCustClass.SelectedItem.Text = "BROKER BUSINESS" Then
+                '        MainAcctDesc = "TRADE RECEIVABLES - BROKERS"
+                '        SubAcctCode = "BR" & SubAcctcodeSuffix
+                '    ElseIf cboCustClass.SelectedItem.Text = "AGENTS BUSINESS" Then
+                '        MainAcctDesc = "TRADE RECEIVABLES - AGENTS"
+                '        SubAcctCode = "AC" & SubAcctcodeSuffix
+                '    ElseIf cboCustClass.SelectedItem.Text = "DIRECT BUSINESS" Then
+                '        MainAcctDesc = "TRADE RECEIVABLES - DIRECT CLIENTS"
+                '        SubAcctCode = "DC" & SubAcctcodeSuffix
+                '    End If
 
 
-                    hashHelper.InsertAcctChart("001", MainAcctCode, SubAcctCode, MainAcctDesc, Left(RTrim(Me.txtCustName.Text), 49), AcctLevel, _
-                                             MainGroup, "", LedgerType, Sub1Group, "", "", "", "", "", "", "A", DateTime.Now, "001", mystrCONN)
-                End If
+                '    hashHelper.InsertAcctChart("001", MainAcctCode, SubAcctCode, MainAcctDesc, Left(RTrim(Me.txtCustName.Text), 49), AcctLevel, _
+                '                             MainGroup, "", LedgerType, Sub1Group, "", "", "", "", "", "", "A", DateTime.Now, "001", mystrCONN)
+                'End If
 
                 drNewRow = Nothing
 
