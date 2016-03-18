@@ -53,6 +53,7 @@ Partial Class Policy_PRG_LI_GRP_QUOT_SCHEDULE
     Protected BufferStr As String
 
     Dim strErrMsg As String
+    Dim rParams As String() = {"nw", "nw", "new", "nw", "nw", "new", "new", "new", "nw", "nw", "new", "new"}
 
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
@@ -212,6 +213,7 @@ Partial Class Policy_PRG_LI_GRP_QUOT_SCHEDULE
         End If
 
 
+
         strRptName = "PG_ERR"
         Select Case UCase(Trim(strOPT))
             Case "QUOT_SCHDLE", "POLY_SCHDLE"
@@ -322,6 +324,7 @@ Partial Class Policy_PRG_LI_GRP_QUOT_SCHEDULE
                 myArrList_DB.Insert(2, RTrim(Me.txtFileNum.Text))
                 myArrList_DB.Insert(3, RTrim(strBatNum))
                 myArrList_DB.Insert(4, RTrim("0"))
+                Dim myArrL = myArrList_DB(1)
 
             Case "POLY_SCHDLE", "POLY_SCHDLE_DEL"
                 myArrList_RPT.Insert(0, RTrim(gnCOMP_NAME))
@@ -361,18 +364,36 @@ Partial Class Policy_PRG_LI_GRP_QUOT_SCHEDULE
         'myArrList_DB.Clear()
         'myArrList_DB = Nothing
 
-
+        'CRYSTAL REPORT START HERE
         Dim mystrURL As String = ""
-        Try
-            '    'OK
-            '    'mystrURL = "window.open('" & "CRViewer.aspx?rptname=" & RTrim(strReportFile) & strReportParam & "','frmDoc','left=50,top=50,width=1024,height=650,titlebar=yes,z-lock=yes,address=yes,channelmode=1,fullscreen=no,directories=yes,location=yes,toolbar=yes,menubar=yes,status=yes,scrollbars=1,resizable=yes');"
-            mystrURL = "window.open('" & "../CRViewerN.aspx?rptname=" & RTrim(strReportFile) & strReportParam & "','','left=50,top=10,width=1024,height=600,titlebar=yes,z-lock=yes,address=yes,channelmode=1,fullscreen=0,directories=yes,location=yes,toolbar=yes,menubar=yes,status=yes,scrollbars=1,resizable=yes');"
-            '    'FirstMsg = "javascript:window.close();" & mystrURL
-            FirstMsg = "javascript:" & mystrURL
-        Catch ex As Exception
-            Me.lblMsg.Text = "<br />Unable to connect to report viewer. <br />Reason: " & ex.Message.ToString
+        'Try
+        '    '    'OK
+        '    '    'mystrURL = "window.open('" & "CRViewer.aspx?rptname=" & RTrim(strReportFile) & strReportParam & "','frmDoc','left=50,top=50,width=1024,height=650,titlebar=yes,z-lock=yes,address=yes,channelmode=1,fullscreen=no,directories=yes,location=yes,toolbar=yes,menubar=yes,status=yes,scrollbars=1,resizable=yes');"
+        '    mystrURL = "window.open('" & "../CRViewerN.aspx?rptname=" & RTrim(strReportFile) & strReportParam & "','','left=50,top=10,width=1024,height=600,titlebar=yes,z-lock=yes,address=yes,channelmode=1,fullscreen=0,directories=yes,location=yes,toolbar=yes,menubar=yes,status=yes,scrollbars=1,resizable=yes');"
+        '    '    'FirstMsg = "javascript:window.close();" & mystrURL
+        '    FirstMsg = "javascript:" & mystrURL
+        'Catch ex As Exception
+        '    Me.lblMsg.Text = "<br />Unable to connect to report viewer. <br />Reason: " & ex.Message.ToString
 
-        End Try
+        'End Try
+        'CRYSTAL REPORT COMMENT ENDS HERE
+
+        Dim url As String = HttpContext.Current.Request.Url.AbsoluteUri
+        rParams(0) = strRptName
+        rParams(1) = "PT_GET_BY_FLAG="
+        rParams(2) = myArrList_DB(0) + "&"
+        rParams(3) = "PT_KEY_VALUE="
+        rParams(4) = myArrList_DB(1) + "&"
+        rParams(5) = "PARAM_FILE_NUM="
+        rParams(6) = myArrList_DB(2) + "&"
+        rParams(7) = "PARAM_BATCH_NUM="
+        rParams(8) = myArrList_DB(3) + "&"
+        rParams(9) = "PT_REC_NO="
+        rParams(10) = myArrList_DB(4) + "&"
+        rParams(11) = url
+        Session("ReportParams") = rParams
+
+        Response.Redirect("../PrintView.aspx")
 
     End Sub
 
