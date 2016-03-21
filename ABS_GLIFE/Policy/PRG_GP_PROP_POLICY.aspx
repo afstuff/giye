@@ -26,7 +26,8 @@
             <asp:Panel ID="menuPanel" CssClass="menuPanel" runat="server">&nbsp;&nbsp;
                 &nbsp;<asp:LinkButton ID="LNK_QUOTE" Enabled="true" Font-Bold="true" runat="server" Text="Quotation Entry" PostBackUrl="PRG_GP_PROP_POLICY.aspx?menu=GL_QUOTE"></asp:LinkButton>&nbsp;
                 &nbsp;<asp:LinkButton ID="LNK_DOC" Visible="false" Enabled="true" Font-Bold="true" runat="server" Text="Policy Document" PostBackUrl="PRG_GP_PROP_POLICY.aspx?menu=GL_DOCUMENT"></asp:LinkButton>&nbsp;
-                &nbsp;<asp:LinkButton ID="LNK_DOCX" Enabled="true" Font-Bold="true" runat="server" Text="Policy Document" PostBackUrl="PD_GL001.aspx?opt=I001"></asp:LinkButton>&nbsp;
+                <%--&nbsp;<asp:LinkButton ID="LNK_DOCX" Enabled="true" Font-Bold="true" runat="server" Text="Policy Document" PostBackUrl="PD_GL001.aspx?opt=I001"></asp:LinkButton>&nbsp;--%>
+                  &nbsp;<asp:LinkButton ID="LinkButton1" Enabled="true" Font-Bold="true" runat="server" Text="Policy Document" PostBackUrl="PRG_LI_GRP_QUOT_SCHEDULE.aspx?opt=POLY_SCHDLE"></asp:LinkButton>&nbsp;
                 &nbsp;<a class="HREF_MENU2" href="../MENU_GL.aspx?menu=HOME">Return to Main Menu</a>&nbsp;
         </asp:Panel>
         <div style="display: none;">

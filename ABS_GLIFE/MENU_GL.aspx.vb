@@ -75,6 +75,7 @@ Partial Class MENU_GL
                 AddMenuItem("", "Product Master", "menu_gl.aspx?menu=gl_code_prod")
                 AddMenuItem("", "", "") 'blank link
                 AddMenuItem("", "Underwriting Codes Masters", "menu_gl.aspx?menu=gl_code_und")
+                AddMenuItem("", "Co-Assurer Data Entry", "Reinsurance/GRP_REINSURANCE.aspx?optid=CO")
                 AddMenuItem("", "Reinsurance Codes Masters", "menu_gl.aspx?menu=gl_code_reins")
                 AddMenuItem("", "", "") 'blank link
                 AddMenuItem("", "UNDER_LINE", "") 'blank link
@@ -327,7 +328,7 @@ Partial Class MENU_GL
                 AddMenuItem("", "UNDER_LINE", "") 'blank link
                 AddMenuItem("", "", "") 'blank link
                 'AddMenuItem("", "MENU CAPTION", "PAGE URL")
-                AddMenuItem("Transactions", "ReAssurer Data Entry", "Reinsurance/GRP_REINSURANCE.aspx")
+                AddMenuItem("Transactions", "ReAssurer Data Entry", "Reinsurance/GRP_REINSURANCE.aspx?optid=RE")
                 'AddMenuItem("Transactions", "ReAssurer Data Entry", "")
                 'AddMenuItem("", "Facultative Data Entry", "")
                 AddMenuItem("", "", "") 'blank link

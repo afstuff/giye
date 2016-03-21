@@ -312,7 +312,8 @@ Partial Class Policy_PRG_LI_GRP_QUOT_SCHEDULE
 
 
         'myArrList_DB.Insert(0, RTrim("QUO"))
-
+        Dim url As String = HttpContext.Current.Request.Url.AbsoluteUri
+        rParams(0) = strRptName
         Select Case UCase(Trim(strOPT))
             Case "QUOT_SCHDLE", "QUOT_SCHDLE_DEL"
                 myArrList_RPT.Insert(0, RTrim(gnCOMP_NAME))
@@ -324,7 +325,18 @@ Partial Class Policy_PRG_LI_GRP_QUOT_SCHEDULE
                 myArrList_DB.Insert(2, RTrim(Me.txtFileNum.Text))
                 myArrList_DB.Insert(3, RTrim(strBatNum))
                 myArrList_DB.Insert(4, RTrim("0"))
-                Dim myArrL = myArrList_DB(1)
+
+                rParams(1) = "PT_GET_BY_FLAG="
+                rParams(2) = myArrList_DB(0) + "&"
+                rParams(3) = "PT_KEY_VALUE="
+                rParams(4) = myArrList_DB(1) + "&"
+                rParams(5) = "PARAM_FILE_NUM="
+                rParams(6) = myArrList_DB(2) + "&"
+                rParams(7) = "PARAM_BATCH_NUM="
+                rParams(8) = myArrList_DB(3) + "&"
+                rParams(9) = "PT_REC_NO="
+                rParams(10) = myArrList_DB(4) + "&"
+                rParams(11) = url
 
             Case "POLY_SCHDLE", "POLY_SCHDLE_DEL"
                 myArrList_RPT.Insert(0, RTrim(gnCOMP_NAME))
@@ -336,6 +348,18 @@ Partial Class Policy_PRG_LI_GRP_QUOT_SCHEDULE
                 myArrList_DB.Insert(2, RTrim(Me.txtFileNum.Text))
                 myArrList_DB.Insert(3, RTrim(strBatNum))
                 myArrList_DB.Insert(4, RTrim("0"))
+
+                rParams(1) = "PT_GET_BY_FLAG="
+                rParams(2) = myArrList_DB(0) + "&"
+                rParams(3) = "PT_KEY_VALUE="
+                rParams(4) = myArrList_DB(1) + "&"
+                rParams(5) = "PARAM_FILE_NUM="
+                rParams(6) = myArrList_DB(2) + "&"
+                rParams(7) = "PARAM_BATCH_NUM="
+                rParams(8) = myArrList_DB(3) + "&"
+                rParams(9) = "PT_REC_NO="
+                rParams(10) = myArrList_DB(4) + "&"
+                rParams(11) = url
 
             Case "QUOT_INVOICE"
                 myArrList_RPT.Insert(0, RTrim(gnCOMP_NAME))
@@ -350,6 +374,18 @@ Partial Class Policy_PRG_LI_GRP_QUOT_SCHEDULE
                 myArrList_DB.Insert(2, RTrim(strBatNum))
                 myArrList_DB.Insert(3, RTrim("G"))
 
+
+                rParams(1) = "PARAM_PROP_NUM="
+                rParams(2) = myArrList_DB(0) + "&"
+                rParams(3) = "PARAM_FILE_NUM="
+                rParams(4) = myArrList_DB(1) + "&"
+                rParams(5) = "PARAM_BATCH_NUM="
+                rParams(6) = myArrList_DB(2) + "&"
+                rParams(7) = "PARAM_MODULE="
+                rParams(8) = myArrList_DB(3) + "&"
+                rParams(9) = url + "&"
+                rParams(10) = url + "&"
+                rParams(11) = url
             Case Else
                 myArrList_DB.Insert(0, RTrim("XYZ"))
 
@@ -377,22 +413,7 @@ Partial Class Policy_PRG_LI_GRP_QUOT_SCHEDULE
 
         'End Try
         'CRYSTAL REPORT COMMENT ENDS HERE
-
-        Dim url As String = HttpContext.Current.Request.Url.AbsoluteUri
-        rParams(0) = strRptName
-        rParams(1) = "PT_GET_BY_FLAG="
-        rParams(2) = myArrList_DB(0) + "&"
-        rParams(3) = "PT_KEY_VALUE="
-        rParams(4) = myArrList_DB(1) + "&"
-        rParams(5) = "PARAM_FILE_NUM="
-        rParams(6) = myArrList_DB(2) + "&"
-        rParams(7) = "PARAM_BATCH_NUM="
-        rParams(8) = myArrList_DB(3) + "&"
-        rParams(9) = "PT_REC_NO="
-        rParams(10) = myArrList_DB(4) + "&"
-        rParams(11) = url
         Session("ReportParams") = rParams
-
         Response.Redirect("../PrintView.aspx")
 
     End Sub

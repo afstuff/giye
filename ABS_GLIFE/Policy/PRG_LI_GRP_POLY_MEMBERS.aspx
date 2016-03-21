@@ -432,7 +432,7 @@
                                             Enabled="false" Width="80px" runat="server"></asp:TextBox>
                                         <asp:TextBox ID="txtPrem_Rate_CodeName" Visible="false" Enabled="false" Width="30px" runat="server"></asp:TextBox>
                                         <asp:TextBox ID="txtPrem_Rate_TypeNum" Enabled="false" 
-                                            MaxLength="1" Width="16px" runat="server"></asp:TextBox>
+                                            MaxLength="1" Width="16px" runat="server" Visible="false"></asp:TextBox>
                                     <td align="left" class="style25">
                                         <asp:TextBox ID="txtPrem_Rate" Enabled="false" Width="90px" ToolTip="" 
                                             runat="server" Visible="False"></asp:TextBox></td>
