@@ -42,7 +42,8 @@
                                     onfocus="if (this.value == 'Search...') {this.value = '';}"
                                     onblur="if (this.value == '') {this.value = 'Search...';}" />
                                 &nbsp;<asp:Button ID="cmdSearch" Text="Search" runat="server" />
-    	                        &nbsp;<asp:DropDownList ID="cboSearch" AutoPostBack="true" Width="250px" runat="server"></asp:DropDownList>
+    	                        &nbsp;<asp:DropDownList ID="cboSearch" AutoPostBack="true" Width="250px" 
+                                    runat="server" AppendDataBoundItems="True"></asp:DropDownList>
     	                        &nbsp;<asp:TextBox ID="txtCode" Visible="false" Width="40px" runat="server"></asp:TextBox>
                             </td>
                             <td align="right" colspan="1" valign="top" style="display:none;">    
@@ -97,64 +98,15 @@
        		        &nbsp;<asp:Label ID="lblTransNum_Remarks" ForeColor="Red" Text="Note: DN/CN is Auto Generated" runat="server"></asp:Label>
     		    </td>
     		</tr>
-    		<tr>
-    	        <td nowrap align="left"><asp:Label ID="lblTransType" runat="server">Transaction Type:</asp:Label></td>
-    	        <td nowrap align="left">    	            
-    		        <asp:DropDownList id="cboTransType" runat="server" Width="180px"></asp:DropDownList>
-    		        &nbsp;<asp:textbox id="txtTransType" Visible="false" Enabled="false" MaxLength="1" Width="30px" runat="server" EnableViewState="true"></asp:textbox>
-    		        &nbsp;<asp:TextBox ID="txtTransTypeName" Visible="false" Enabled="false" Width="30px" runat="server"></asp:TextBox>
-    		    </td>
-    	        <td nowrap align="left" colspan="1">
-    	            <asp:Label ID="lblTransCode" runat="server">DN/CN Code:</asp:Label></td>
-    	        <td nowrap align="left" colspan="1">
-    	            <asp:DropDownList id="cboTransCode" runat="server" Width="120px"></asp:DropDownList>
-    	            &nbsp;<asp:textbox id="txtTransCode" Visible="false" Enabled="false" MaxLength="2" Width="30px"  runat="server" EnableViewState="true"></asp:textbox>    		        
-    	            &nbsp;<asp:TextBox ID="txtTransCodeName" Visible="false" Enabled="false" Width="30px" runat="server"></asp:TextBox>
-    		        &nbsp;<asp:TextBox ID="txtRecNo" Visible="false" Enabled="false" MaxLength="18" Width="40" runat="server"></asp:TextBox>
-    		    </td>
-    		</tr>
-
-	        <tr>
-    	        <td nowrap align="left"><asp:Label ID="lblBusType" runat="server">Business Type:</asp:Label></td>
-    		    <td nowrap align="left">
-    		        <asp:DropDownList id="cboBusType" runat="server" Width="140px"></asp:DropDownList>
-    		        &nbsp;<asp:textbox id="txtBusType" Visible="false" Enabled="false" MaxLength="2" Width="30px" runat="server" EnableViewState="true"></asp:textbox>&nbsp;<asp:textbox id="txtBusTypeName" Visible="false" Enabled="false" MaxLength="2" Width="30px" runat="server" EnableViewState="true"></asp:textbox></td>
-    	        <td nowrap align="left" colspan="1"><asp:Label ID="lblRefNum" Enabled="false" runat="server">Ref. DN/CN No:</asp:Label></td>
-    		    <td nowrap align="left">
-    	            <asp:textbox id="txtRefNum"  Enabled="true" ToolTip="** Enter the reference no of the debit note or credit note you want to reverse or return **" MaxLength="10" Width="100px" AutoPostBack="true" runat="server" EnableViewState="true"></asp:textbox>
-    	            &nbsp;<asp:TextBox ID="txtRefCode" MaxLength="2" Enabled="true"  Width="30px" runat="server" EnableViewState="true"></asp:TextBox>&nbsp;<asp:textbox id="txtRefDate" Enabled="true" MaxLength="10" Width="100px" runat="server" EnableViewState="true"></asp:textbox></td>
-    		</tr>
-
-    		<tr>
-    		    <td nowrap align="left" colspan="1"><asp:Label ID="lblSecNum" runat="server">Sectors:</asp:Label></td>
-    		    <td nowrap align="left" colspan="3">
-    		        <asp:DropDownList id="cboSecName" Width="250px" runat="server"></asp:DropDownList>
-                    &nbsp;<asp:textbox id="txtSecNum" Visible="false" MaxLength="5" Width="30px" runat="server" EnableViewState="true"></asp:textbox>                    
-    		        &nbsp;<asp:textbox id="txtSecName" Visible="false" MaxLength="30" Enabled="false" Width="40px" runat="server" EnableViewState="true" ></asp:textbox>
-    		    </td>
-    	    </tr>
-
-    		<tr>
-    	        <td nowrap align="left"><asp:Label ID="lblTransDate" runat="server">Billing Date:</asp:Label>&nbsp;</td>
-    		    <td nowrap align="left">
-    		        <asp:textbox id="txtTransDate" MaxLength="10" Width="100px" runat="server" EnableViewState="false"></asp:textbox>
-    		        &nbsp;<input id="PickTransDate" name="cmdTransDte" type="button" value="..." runat="server" />
-    		        &nbsp;<asp:Label ID="lblTransDate_Format" ForeColor="Blue" Text="dd/mm/yyyy" runat="server"></asp:Label>
-    		    </td>
-    	        <td nowrap align="left"><asp:Label ID="lblBraNum" runat="server">Branch Code:</asp:Label>&nbsp;</td>
-    		    <td nowrap align="left">
-    		        <asp:DropDownList id="cboBranchName" Width="200px" runat="server"></asp:DropDownList>
-    		        &nbsp;<asp:textbox id="txtBraNum" Visible="false" MaxLength="5" Width="40px" runat="server" EnableViewState="true"></asp:textbox>&nbsp;<asp:textbox id="txtLocNum" Visible="false" Enabled="false" MaxLength="5" Width="20px" runat="server" EnableViewState="true"></asp:textbox>&nbsp;<asp:textbox id="txtBraName" Visible="false" Enabled="false" MaxLength="30" Width="40px" runat="server" EnableViewState="true" ></asp:textbox>&nbsp;
-    		    </td>
-    		</tr>    
-    		<tr>
+    		    		<tr>
     	        <td nowrap align="left"><asp:Label ID="lblPolNum" runat="server">Policy Number:</asp:Label>&nbsp;</td>
     		    <td nowrap align="left" colspan="3">
     		        <asp:textbox id="txtPolNum" AutoPostBack="true" MaxLength="35" Width="200px" runat="server" EnableViewState="true" OnTextChanged="DoProc_Validate_Policy"></asp:textbox>
     		        &nbsp;<asp:textbox id="txtRiskNum" Enabled="false" Visible="false" MaxLength="5" Width="20px" runat="server" EnableViewState="true"></asp:textbox>
     		        &nbsp;Find:&nbsp;<asp:textbox id="txtInsuredName" MaxLength="50" Width="120px" runat="server" EnableViewState="true"></asp:textbox>
-    		        &nbsp;<asp:Button ID="cmdInsuredSearch" Text="Search" runat="server" OnClick="DoProc_Insured_Search" />
-    		        &nbsp;<asp:DropDownList id="cboInsuredName" AutoPostBack="true" runat="server" Width="220px" OnTextChanged="DoProc_Insured_Change"></asp:DropDownList>
+    		        &nbsp;<asp:Button ID="cmdInsuredSearch" Text="Search" runat="server" /><%--OnClick="DoProc_Insured_Search"--%>
+    		        &nbsp;<asp:DropDownList id="cboInsuredName" AutoPostBack="true" runat="server" 
+                        Width="220px" AppendDataBoundItems="True"></asp:DropDownList>
                 </td>    		        
     		</tr>
 
@@ -203,6 +155,61 @@
 
 
     		<tr>
+    	        <td nowrap align="left"><asp:Label ID="lblTransType" runat="server">Transaction Type:</asp:Label></td>
+    	        <td nowrap align="left">    	            
+    		        <asp:DropDownList id="cboTransType" runat="server" Width="180px"></asp:DropDownList>
+    		        &nbsp;<asp:textbox id="txtTransType" Enabled="false" MaxLength="1" Width="30px" 
+                        runat="server" EnableViewState="true" Visible="False"></asp:textbox>
+    		        &nbsp;<asp:TextBox ID="txtTransTypeName" Enabled="false" Width="30px" 
+                        runat="server" Visible="False"></asp:TextBox>
+    		    </td>
+    	        <td nowrap align="left" colspan="1">
+    	            <asp:Label ID="lblTransCode" runat="server">DN/CN Code:</asp:Label></td>
+    	        <td nowrap align="left" colspan="1">
+    	            <asp:DropDownList id="cboTransCode" runat="server" Width="120px"></asp:DropDownList>
+    	            &nbsp;<asp:textbox id="txtTransCode" Visible="false" Enabled="false" MaxLength="2" Width="30px"  runat="server" EnableViewState="true"></asp:textbox>    		        
+    	            &nbsp;<asp:TextBox ID="txtTransCodeName" Visible="false" Enabled="false" Width="30px" runat="server"></asp:TextBox>
+    		        &nbsp;<asp:TextBox ID="txtRecNo" Visible="false" Enabled="false" MaxLength="18" Width="40" runat="server"></asp:TextBox>
+    		    </td>
+    		</tr>
+
+	        <tr>
+    	        <td nowrap align="left"><asp:Label ID="lblBusType" runat="server">Business Type:</asp:Label></td>
+    		    <td nowrap align="left">
+    		        <asp:DropDownList id="cboBusType" runat="server" Width="140px"></asp:DropDownList>
+    		        &nbsp;<asp:textbox id="txtBusType" Visible="false" Enabled="false" MaxLength="2" Width="30px" runat="server" EnableViewState="true"></asp:textbox>&nbsp;<asp:textbox id="txtBusTypeName" Visible="false" Enabled="false" MaxLength="2" Width="30px" runat="server" EnableViewState="true"></asp:textbox></td>
+    	        <td nowrap align="left" colspan="1"><asp:Label ID="lblRefNum" Enabled="false" runat="server">Ref. DN/CN No:</asp:Label></td>
+    		    <td nowrap align="left">
+    	            <asp:textbox id="txtRefNum"  Enabled="true" ToolTip="** Enter the reference no of the debit note or credit note you want to reverse or return **" MaxLength="10" Width="100px" AutoPostBack="true" runat="server" EnableViewState="true"></asp:textbox>
+    	            &nbsp;<asp:TextBox ID="txtRefCode" MaxLength="2" Enabled="true"  Width="30px" runat="server" EnableViewState="true"></asp:TextBox>&nbsp;<asp:textbox id="txtRefDate" Enabled="true" MaxLength="10" Width="100px" runat="server" EnableViewState="true"></asp:textbox></td>
+    		</tr>
+
+    		<tr style="display:none;">
+    		    <td nowrap align="left" colspan="1"><asp:Label ID="lblSecNum" runat="server">Sectors:</asp:Label></td>
+    		    <td nowrap align="left" colspan="3">
+    		        <asp:DropDownList id="cboSecName" Width="250px" runat="server"></asp:DropDownList>
+                    &nbsp;<asp:textbox id="txtSecNum" MaxLength="5" Width="30px" runat="server" 
+                        EnableViewState="true"></asp:textbox>                    
+    		        &nbsp;<asp:textbox id="txtSecName" MaxLength="30" Enabled="false" Width="40px" 
+                        runat="server" EnableViewState="true" ></asp:textbox>
+    		    </td>
+    	    </tr>
+
+    		<tr>
+    	        <td nowrap align="left"><asp:Label ID="lblTransDate" runat="server">Billing Date:</asp:Label>&nbsp;</td>
+    		    <td nowrap align="left">
+    		        <asp:textbox id="txtTransDate" MaxLength="10" Width="100px" runat="server" EnableViewState="false"></asp:textbox>
+    		        &nbsp;<input id="PickTransDate" name="cmdTransDte" type="button" value="..." runat="server" />
+    		        &nbsp;<asp:Label ID="lblTransDate_Format" ForeColor="Blue" Text="dd/mm/yyyy" runat="server"></asp:Label>
+    		    </td>
+    	        <td nowrap align="left"><asp:Label ID="lblBraNum" runat="server">Branch Code:</asp:Label>&nbsp;</td>
+    		    <td nowrap align="left">
+    		        <asp:DropDownList id="cboBranchName" Width="200px" runat="server"></asp:DropDownList>
+    		        &nbsp;<asp:textbox id="txtBraNum" Visible="false" MaxLength="5" Width="40px" runat="server" EnableViewState="true"></asp:textbox>&nbsp;<asp:textbox id="txtLocNum" Visible="false" Enabled="false" MaxLength="5" Width="20px" runat="server" EnableViewState="true"></asp:textbox>&nbsp;<asp:textbox id="txtBraName" Visible="false" Enabled="false" MaxLength="30" Width="40px" runat="server" EnableViewState="true" ></asp:textbox>&nbsp;
+    		    </td>
+    		</tr>    
+
+    		<tr>
     	        <td nowrap align="left"><asp:Label ID="lblTrans_Full_SI" runat="server">Full Sum Assured:</asp:Label></td>
     	        <td nowrap align="left" colspan="1">
     	            <asp:textbox id="txtTrans_Full_SI" MaxLength="13" Width="100px" runat="server" EnableViewState="true"></asp:textbox>
@@ -244,8 +251,13 @@
                 <td nowrap align="left"><asp:CheckBox ID="chkProrataYN" ForeColor="Red" Text="Prorate Premium" AutoPostBack="true" runat="server" />&nbsp;</td>
                 <td nowrap align="left" colspan="3">
                     <asp:Label ID="lblProRataNDay" Enabled="false" runat="server">No of Day(s) to Pro-rate:</asp:Label>
-                    <asp:textbox id="txtProRataNDay" Enabled="false" MaxLength="5" Width="50px" runat="server" EnableViewState="true"></asp:textbox>
-    	            &nbsp;<asp:Label ID="lblProRataRDay" Enabled="false" runat="server">Total Risk Day(s):</asp:Label>&nbsp;<asp:textbox id="txtProRataRDay" Enabled="false" MaxLength="5" Width="50px" runat="server" EnableViewState="true"></asp:textbox>&nbsp;<asp:Label ID="lblTransAmt" Enabled="false" runat="server">Prorata Premium:</asp:Label>&nbsp;<asp:textbox id="txtTransAmt" Enabled="false" MaxLength="13" Width="100px" runat="server" EnableViewState="true"></asp:textbox></td>
+                    <asp:textbox id="txtProRataNDay" MaxLength="5" Width="50px" runat="server" 
+                        EnableViewState="true"></asp:textbox>
+    	            &nbsp;<asp:Label ID="lblProRataRDay" Enabled="false" runat="server">Total Risk Day(s):</asp:Label>&nbsp;<asp:textbox 
+                        id="txtProRataRDay" MaxLength="5" Width="50px" runat="server" 
+                        EnableViewState="true"></asp:textbox>&nbsp;<asp:Label ID="lblTransAmt" Enabled="false" runat="server">Prorata Premium:</asp:Label>&nbsp;<asp:textbox 
+                        id="txtTransAmt" MaxLength="13" Width="100px" runat="server" 
+                        EnableViewState="true"></asp:textbox></td>
     		</tr>
     		<tr>
     	        <td nowrap align="left"><asp:Label ID="lblTransDescr1" runat="server">Description Line-1:</asp:Label></td>

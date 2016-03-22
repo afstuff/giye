@@ -96,18 +96,24 @@ Partial Class Transaction_PRG_LI_GRP_PREM_DBCR_NOTE_ENTRY
 
         If Not (Page.IsPostBack) Then
             Call gnProc_Populate_Box("SECTOR_CODE", "001", Me.cboSecName)
+            cboSecName.SelectedValue = 8
+            txtSecNum.Text = 8
 
             Call gnProc_Populate_Box("IL_CODE_LIST", "003", Me.cboBranchName)
+            cboBranchName.SelectedValue = "1501"
 
             Me.cboTransType.Items.Clear()
             Call gnPopulate_DropDownList("UND_RECORD_TYPE", Me.cboTransType, "", "", "(Select item)", "*")
+            cboTransType.SelectedValue = "A"
 
             Me.cboTransCode.Items.Clear()
             Call gnPopulate_DropDownList("D-NOTE_C-NOTE", Me.cboTransCode, "", "", "(Select item)", "*")
+            cboTransCode.SelectedValue = "D"
 
             'Populate box with business type
             Me.cboBusType.Items.Clear()
             Call gnPopulate_DropDownList("UND_BUS_TYPE", Me.cboBusType, "", "", "(Select item)", "*")
+            cboBusType.SelectedValue = "NB"
 
             Try
                 _strTranType = Request.QueryString("transtype")
@@ -187,22 +193,46 @@ Partial Class Transaction_PRG_LI_GRP_PREM_DBCR_NOTE_ENTRY
     End Sub
 
     Protected Sub cmdSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdSearch.Click
+        'DoProc_Insured_DrCrNoteSearch()
+        If LTrim(RTrim(Me.txtSearch.Value)) = "Search..." Then
+        ElseIf LTrim(RTrim(Me.txtSearch.Value)) <> "" Then
+            cboSearch.Items.Clear()
+            cboSearch.Items.Add("* Select Insured *")
+            Dim dt As DataTable = GET_INSURED_DCNOTE(txtSearch.Value.Trim(), "AL").Tables(0)
 
+            Dim dr As DataRow = dt.NewRow()
+            'dr(0) = "* Select Insured *"
+            'dr(1) = "*"
+            'dt.Rows.InsertAt(dr, 0)
+            cboSearch.DataSource = dt
+            cboSearch.DataValueField = "TBIL_POL_PRM_DCN_TRANS_NO"
+            cboSearch.DataTextField = "MyFld_Text"
+            cboSearch.DataBind()
+        End If
     End Sub
 
     Protected Sub cboSearch_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboSearch.SelectedIndexChanged
-        Me.txtCode.Text = ""
-        Try
-            Me.txtCode.Text = cboSearch.SelectedItem.Value
-        Catch ex As Exception
-            Me.txtCode.Text = ""
-        End Try
+        strStatus = ""
 
-        If RTrim(Me.txtCode.Text) <> "" Then
-            Me.txtTransNum.Text = RTrim(Me.txtCode.Text)
-            strREC_ID = RTrim(Me.txtTransNum.Text)
-            strErrMsg = Proc_OpenRecord("BY_TRANS_NO", Me.txtTransNum.Text)
-        End If
+        Try
+            If Me.cboSearch.SelectedIndex = -1 Or Me.cboSearch.SelectedIndex = 0 Or _
+            Me.cboSearch.SelectedItem.Value = "" Or Me.cboSearch.SelectedItem.Value = "*" Then
+                Me.txtFileNum.Text = ""
+                'Me.txtQuote_Num.Text = ""
+                'Me.txtPolNum.Text = ""
+                'Me.txtSearch.Value = ""
+            Else
+                Me.txtTransNum.Text = Me.cboSearch.SelectedItem.Value
+                If LTrim(RTrim(Me.txtTransNum.Text)) <> "" Then
+                    'strStatus = Proc_DoOpenRecord(RTrim(myTType), Me.txtTransNum.Text, RTrim("0"))
+                    strErrMsg = Proc_OpenRecord("BY_TRANS_NO", Me.txtTransNum.Text)
+                    If Trim(strStatus) = "true" Then
+                    End If
+                End If
+            End If
+        Catch ex As Exception
+            Me.lblMessage.Text = "Error. Reason: " & ex.Message.ToString
+        End Try
 
     End Sub
 
@@ -249,12 +279,21 @@ Partial Class Transaction_PRG_LI_GRP_PREM_DBCR_NOTE_ENTRY
     End Sub
 
     Protected Sub cmdInsuredSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdInsuredSearch.Click
+        'If LTrim(RTrim(Me.txtInsuredName.Text)) = "Search..." Then
+        'ElseIf LTrim(RTrim(Me.txtInsuredName.Text)) <> "" Then
+        '    'Call gnProc_Populate_Box("GL_ASSURED_HELP_SP", "001", Me.cboInsuredName, RTrim(Me.txtInsuredName.Text))
+        '    Call gnProc_Populate_Box("GL_ASSURED_HELP_SP_DNCN", "001", Me.cboInsuredName, RTrim(Me.txtInsuredName.Text))
+        'End If
         If LTrim(RTrim(Me.txtInsuredName.Text)) = "Search..." Then
         ElseIf LTrim(RTrim(Me.txtInsuredName.Text)) <> "" Then
-            'Call gnProc_Populate_Box("GL_ASSURED_HELP_SP", "001", Me.cboInsuredName, RTrim(Me.txtInsuredName.Text))
-            Call gnProc_Populate_Box("GL_ASSURED_HELP_SP_DNCN", "001", Me.cboInsuredName, RTrim(Me.txtInsuredName.Text))
+            cboInsuredName.Items.Clear()
+            cboInsuredName.Items.Add("* Select Insured *")
+            Dim dt As DataTable = GET_INSURED(Me.txtInsuredName.Text.Trim()).Tables(0)
+            cboInsuredName.DataSource = dt
+            cboInsuredName.DataValueField = "TBIL_POLY_POLICY_NO"
+            cboInsuredName.DataTextField = "MyFld_Text"
+            cboInsuredName.DataBind()
         End If
-
     End Sub
 
     Protected Sub cmdSave_ASP_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdSave_ASP.Click
@@ -315,11 +354,11 @@ Partial Class Transaction_PRG_LI_GRP_PREM_DBCR_NOTE_ENTRY
         Call Proc_DDL_Get(Me.cboTransType, RTrim("*"))
         Call Proc_DDL_Get(Me.cboBusType, RTrim("*"))
         Call Proc_DDL_Get(Me.cboTransCode, RTrim("*"))
-        Call Proc_DDL_Get(Me.cboSecName, RTrim("*"))
+        Call Proc_DDL_Get(Me.cboSecName, RTrim(8))
         Call Proc_DDL_Get(Me.cboAgcyName, RTrim("*"))
         'Call Proc_DDL_Get(Me.cboSubRiskName, RTrim("*"))
         Call Proc_DDL_Get(Me.cboBranchName, RTrim("*"))
-        Call Proc_DDL_Get(Me.cboInsuredName, RTrim("*"))
+        'Call Proc_DDL_Get(Me.cboInsuredName, RTrim("*"))
         Call Proc_DDL_Get(Me.cboMemberBatchNum, RTrim("*"))
 
         With Me
@@ -339,7 +378,7 @@ Partial Class Transaction_PRG_LI_GRP_PREM_DBCR_NOTE_ENTRY
             .txtLocNum.Text = ""
             .txtFileNum.Text = ""
             .txtQuote_Num.Text = ""
-            .txtPolNum.Text = ""
+            ' .txtPolNum.Text = ""
             .txtInsuredName.Text = ""
             .txtInsuredNum.Text = ""
             .txtRiskNum.Text = ""
@@ -388,7 +427,12 @@ Partial Class Transaction_PRG_LI_GRP_PREM_DBCR_NOTE_ENTRY
             .txtFacBal_Rate.Text = "0"
             .txtTreatyRef_Num.Text = ""
             .txtTreatyRef_Descr.Text = ""
-
+            cboSecName.SelectedValue = 8
+            txtSecNum.Text = 8
+            cboBranchName.SelectedValue = "1501"
+            cboTransType.SelectedValue = "A"
+            cboTransCode.SelectedValue = "D"
+            cboBusType.SelectedValue = "NB"
             .cmdDelete_ASP.Enabled = False
             .lblMessage.Text = "Status: New Entry..."
         End With
@@ -550,13 +594,14 @@ Proc_Skip_Check:
             Exit Sub
         End If
 
-        Call DoGet_SelectedItem(Me.cboSecName, Me.txtSecNum, Me.txtSecName, Me.lblMessage)
-        If Me.txtSecNum.Text = "" Or Val(Me.txtSecNum.Text) = 0 Then
-            'Me.lblMessage.Text = "Missing " & Me.lblSecNum.Text
-            Me.lblMessage.Text = "Missing or Invalid business sector code. Required Numeric data..."
-            FirstMsg = "Javascript:alert('" & Me.lblMessage.Text & "')"
-            Exit Sub
-        End If
+        'Commented because the control as been hidden
+        'Call DoGet_SelectedItem(Me.cboSecName, Me.txtSecNum, Me.txtSecName, Me.lblMessage)
+        'If Me.txtSecNum.Text = "" Or Val(Me.txtSecNum.Text) = 0 Then
+        '    'Me.lblMessage.Text = "Missing " & Me.lblSecNum.Text
+        '    Me.lblMessage.Text = "Missing or Invalid business sector code. Required Numeric data..."
+        '    FirstMsg = "Javascript:alert('" & Me.lblMessage.Text & "')"
+        '    Exit Sub
+        'End If
 
 
         Call DoGet_SelectedItem(Me.cboTransType, Me.txtTransType, Me.txtTransTypeName, Me.lblMessage)
@@ -840,7 +885,7 @@ Proc_Skip_Check:
 
         If Trim(Me.txtBusType.Text) = "RV" Or RTrim(Me.txtBusType.Text) = "RN" Then
             _strCNCode = CType(Session("_strCNCode"), String) ' do not check this ref num if it is a returned prem credit note as a result of membership withdrawal
-            If _strCNCode.Trim = String.Empty Then
+            If _strCNCode.Trim = "" Then
                 If Trim(Me.txtRefNum.Text) = "" Then
                     Me.lblMessage.Text = "Missing reference number. Enter valid reference number..."
                     FirstMsg = "Javascript:alert('" & Me.lblMessage.Text & "')"
@@ -1655,7 +1700,13 @@ Proc_Skip_Check:
 
     End Sub
 
+    'Protected Sub DoProc_Insured_DrCrNoteSearch()
+    '    If LTrim(RTrim(Me.txtSearch.Value)) <> "" Then
+    '        Call gnProc_Populate_Box("GL_ASSURED_HELP_SP_DNCN", "001", Me.cboSearch, RTrim(Me.txtSearch.Value))
+    '    End If
+    'End Sub
     Protected Sub DoProc_Validate_Broker()
+        lblMessage.Text = ""
         If Trim(Me.txtAgcyNum.Text) = "" Then
             Me.txtAgcyName.Text = ""
         Else
@@ -1673,6 +1724,7 @@ Proc_Skip_Check:
     End Sub
 
     Protected Sub DoProc_Validate_Policy()
+        lblMessage.Text = ""
         If RTrim(Me.txtPolNum.Text) = "" Then
             Me.txtInsuredNum.Text = ""
             Me.txtInsuredName.Text = ""
@@ -1726,7 +1778,8 @@ Proc_Skip_Check:
                     Me.txtAgcyNum.Text = oAL.Item(29)
                 End If
                 Me.txtAgcyRate.Text = oAL.Item(32).ToString
-
+                Me.txtTrans_Rate.Text = oAL.Item(35) 'COMPANY SHARE
+                Me.txtTransDescr1.Text = "BEING PREMIUM PAYABLE BY " & txtInsuredName.Text.ToUpper
                 ' get list of batches in the policy
                 Call Proc_Batch()
 
@@ -1971,25 +2024,16 @@ Proc_Skip_Check:
 
             Me.txtAgcyNum.Text = RTrim(CType(objOLEDR("TBIL_POL_PRM_DCN_BRK_CODE") & vbNullString, String))
             Call Proc_DDL_Get(Me.cboAgcyName, RTrim(Me.txtAgcyNum.Text))
-            'Me.txtAgcyType.Text = RTrim(CType(objOLEDR("DNCN_BUS_SOURCE") & vbNullString, String))
-            'Me.txtAgcyName.Text = RTrim(CType(objOLEDR("CTAGCY_NAME") & vbNullString, String))
-
-
             Me.txtAgcyRate.Text = CType(objOLEDR("TBIL_POL_PRM_DCN_COMM_RT") & vbNullString, String)
-
             Me.txtTrans_Rate.Text = CType(objOLEDR("TBIL_POL_PRM_DCN_COY_SHARE") & vbNullString, String)
             Me.txtTrans_Full_SI.Text = CType(objOLEDR("TBIL_POL_PRM_DCN_FULL_SA") & vbNullString, String)
             Me.txtTrans_Full_Prem.Text = CType(objOLEDR("TBIL_POL_PRM_DCN_FULL_PREM") & vbNullString, String)
-
             Me.txtSumIns.Text = CType(objOLEDR("TBIL_POL_PRM_DCN_SA_LC") & vbNullString, String)
             Me.txtGrsPrem.Text = CType(objOLEDR("TBIL_POL_PRM_DCN_AMT_LC") & vbNullString, String)
-
-            'Me.txtTransAmt.Text = CType(objOLEDR("DNCN_TRANS_AMT") & vbNullString, String)
-
-            Me.txtProRataNDay.Text = CType(objOLEDR("TBIL_POL_PRM_DCN_PERIOD_DAYS") & vbNullString, String)
-            Me.txtProRataRDay.Text = CType(objOLEDR("TBIL_POL_PRM_DCN_PRO_RATA_DAYS") & vbNullString, String)
+            Me.txtProRataRDay.Text = CType(objOLEDR("TBIL_POL_PRM_DCN_PERIOD_DAYS") & vbNullString, String)
+            Me.txtProRataNDay.Text = CType(objOLEDR("TBIL_POL_PRM_DCN_PRO_RATA_DAYS") & vbNullString, String)
             Me.txtTransAmt.Text = CType(objOLEDR("TBIL_POL_PRM_DCN_PRO_RATA_AMT") & vbNullString, String)
-
+            Me.txtInsuredName.Text = RTrim(CType(objOLEDR("T_INSURED_NAME") & vbNullString, String))
             If Val(Me.txtProRataNDay.Text) <> 0 Then
                 Me.chkProrataYN.Checked = True
                 Me.lblProRataNDay.Enabled = True
@@ -2437,18 +2481,6 @@ Proc_Skip_Check:
 
 
     End Sub
-
-    Protected Sub cboTransType_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboTransType.SelectedIndexChanged
-
-    End Sub
-
-    Protected Sub cmdGetBatchList_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdGetBatchList.Click
-
-    End Sub
-
-    Protected Sub DoProc_Insured_Search(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdInsuredSearch.Click
-
-    End Sub
     Protected Sub GetPolicyDetails()
         Dim e As EventArgs = Nothing
         'Dim oAL As ArrayList = MOD_GEN.gnGET_RECORD("GET_GL_POLICY_BY_POLICY_NO", RTrim(txtPolNum.Text), RTrim(""), RTrim(""))
@@ -2485,18 +2517,27 @@ Proc_Skip_Check:
     End Sub
 
     Protected Sub cboInsuredName_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboInsuredName.SelectedIndexChanged
-
-    End Sub
-
-    Protected Sub cboBranchName_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboBranchName.SelectedIndexChanged
-
-    End Sub
-
-    Protected Sub chkProrataYN_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkProrataYN.CheckedChanged
-
-    End Sub
-
-    Protected Sub cmdDelete_ASP_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdDelete_ASP.Click
+        strStatus = ""
+        DoNew()
+        Try
+            If Me.cboInsuredName.SelectedIndex = -1 Or Me.cboInsuredName.SelectedIndex = 0 Or _
+            Me.cboInsuredName.SelectedItem.Value = "" Or Me.cboInsuredName.SelectedItem.Value = "*" Then
+                Me.txtFileNum.Text = ""
+                'Me.txtQuote_Num.Text = ""
+                'Me.txtPolNum.Text = ""
+                'Me.txtSearch.Value = ""
+            Else
+                Me.txtPolNum.Text = Me.cboInsuredName.SelectedItem.Value
+                If LTrim(RTrim(Me.txtPolNum.Text)) <> "" Then
+                    'strStatus = Proc_DoOpenRecord(RTrim(myTType), Me.txtTransNum.Text, RTrim("0"))
+                    DoProc_Validate_Policy()
+                    If Trim(strStatus) = "true" Then
+                    End If
+                End If
+            End If
+        Catch ex As Exception
+            Me.lblMessage.Text = "Error. Reason: " & ex.Message.ToString
+        End Try
 
     End Sub
 End Class

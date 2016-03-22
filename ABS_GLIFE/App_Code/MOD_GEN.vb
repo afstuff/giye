@@ -808,6 +808,10 @@ Public Module MOD_GEN
                             .Insert(31, RTrim(myole_DR("TBIL_POLY_DEPT_CD").ToString & vbNullString))
                             .Insert(32, RTrim(myole_DR("TBIL_CUST_CAT_COMM_RT").ToString & vbNullString))
 
+                            .Insert(33, RTrim(myole_DR("TBIL_POLY_MED_COVER_LMT").ToString & vbNullString))
+                            .Insert(34, RTrim(myole_DR("TBIL_POLY_RETENTION").ToString & vbNullString))
+                            .Insert(35, RTrim(myole_DR("TBIL_POLY_COMP_SHARE").ToString & vbNullString))
+
                         End With
 
                     Case Else
@@ -3576,5 +3580,4 @@ gnUpdate_Trt_Err:
         Return Nothing
 
     End Function
-
 End Module
