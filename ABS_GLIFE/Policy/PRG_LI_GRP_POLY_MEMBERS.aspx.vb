@@ -1898,7 +1898,7 @@ Proc_Skip_ANB:
 
         'intDays_Diff = Val(DateDiff(DateInterval.Day, MemJoin_Date, GenEnd_Date)) + 0
         'intDays_Diff = Val(DateDiff(DateInterval.Day, my_Dte_Start, my_Dte_End))
-        intDays_Diff = Val(DateDiff(DateInterval.Day, dteStart, dteEnd))
+        intDays_Diff = Val(DateDiff(DateInterval.Day, dteStart, dteEnd)) + 1 ' PLUS 1 WILL ADD THE START DATE
 
         'Added by Azeez 
         'Initially both MemJoin_Date and GenStart_Date looses their value 

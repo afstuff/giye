@@ -222,11 +222,11 @@ Partial Class Policy_PRG_LI_GRP_POLY_MEMBERS_ADD
             HideRow3.Visible = False
             cboMedical_YN.SelectedValue = "N"
             Call Proc_DoNew()
-            If DateTime.IsLeapYear(Year(DateTime.Now)) Then
-                Me.txtRisk_Days.Text = "366"
-            Else
-                Me.txtRisk_Days.Text = "365"
-            End If
+            'If DateTime.IsLeapYear(Year(DateTime.Now)) Then
+            '    Me.txtRisk_Days.Text = "366"
+            'Else
+            '    Me.txtRisk_Days.Text = "365"
+            'End If
             'Me.txtRisk_Days.Text = "365"
             Me.txtDOB_ANB.Text = "0"
             Me.txtData_Source_SW.Text = ""
@@ -283,6 +283,11 @@ Partial Class Policy_PRG_LI_GRP_POLY_MEMBERS_ADD
                         Me.txtEnd_Date.Text = Format(GenEnd_Date, "dd/MM/yyyy")
                         txtPolEnd_Date.Text = Me.txtEnd_Date.Text
                     End If
+
+                    If Trim(oAL.Item(20).ToString) <> "" And Trim(oAL.Item(21).ToString) <> "" Then
+                        txtRisk_Days.Text = Val(DateDiff(DateInterval.Day, GenStart_Date, GenEnd_Date)) + 1
+                    End If
+
                     Me.txtPrem_Rate.Text = oAL.Item(22)
                     Me.txtPrem_Rate_Per.Text = oAL.Item(23)
                     Me.txtPrem_SA_Factor.Text = oAL.Item(24)
@@ -296,6 +301,7 @@ Partial Class Policy_PRG_LI_GRP_POLY_MEMBERS_ADD
                         Case "N"
                             Me.lblPrem_Rate_X.Enabled = False
                             Me.cboPrem_Rate_Code.Enabled = False
+                               txtPrem_Amt.Enabled = True 'Added this
                         Case "T"
                             Me.lblPrem_Rate_X.Enabled = False
                             Me.cboPrem_Rate_Code.Enabled = False
@@ -1018,79 +1024,77 @@ Partial Class Policy_PRG_LI_GRP_POLY_MEMBERS_ADD
         'tr_file_upload.Visible = True
 
     End Sub
-
     Protected Sub DoProc_Premium_Code_Change()
         'Added by Azeez bcos  "txtPrem_Rate_Code.Text" is sending a empty value
-        txtPrem_Rate_Code.Text = Me.cboPrem_Rate_Code.SelectedValue
-        Call gnProc_DDL_Get(Me.cboPrem_Rate_Code, RTrim(Me.txtPrem_Rate_Code.Text))
-        Call DoGet_SelectedItem(Me.cboPrem_Rate_Code, Me.txtPrem_Rate_Code, Me.txtPrem_Rate_CodeName, Me.lblMsg)
-        If Trim(Me.txtPrem_Rate_Code.Text) = "" Then
-            Me.cboPrem_Rate_Code.Enabled = True
-            Me.txtPrem_Rate.Text = "0.00"
-            Me.txtPrem_Rate_Per.Text = "0"
-            Exit Sub
-        End If
-
-        Dim myRetValue As String = "0"
-        Dim myTerm As String = ""
-        myTerm = Me.txtPrem_Period_Yr.Text
-        Select Case UCase(Me.txtProduct_Num.Text)
-            Case "P005"
-                myTerm = "1"
-            Case "F001", "F002"
-                myTerm = "1"
-        End Select
-
-
-        'myRetValue = MOD_GEN.gnGET_RATE("GET_IL_PREMIUM_RATE", "IND", Me.txtPrem_Rate_Code.Text, Me.txtProduct_Num.Text, myTerm, Me.txtDOB_ANB.Text, Me.lblMsg, Me.txtPrem_Rate_Per)
-        myRetValue = MOD_GEN.gnGET_RATE("GET_GL_PREMIUM_RATE", "GRP", Me.txtPrem_Rate_Code.Text, Me.txtProduct_Num.Text, myTerm, Val(Me.txtDOB_ANB.Text), Me.lblMsg, Me.txtPrem_Rate_Per)
-
-        'Response.Write("<BR/>Rate Code: " & Me.txtPrem_Rate_Code.Text)
-        'Response.Write("<BR/>Product Code: " & Me.txtProduct_Num.Text)
-        'Response.Write("<BR/>Period: " & myTerm)
-        'Response.Write("<BR/>Age: " & Me.txtDOB_ANB.Text)
-        'Response.Write("<BR/>Value: " & myRetValue)
-
-        If Left(LTrim(myRetValue), 3) = "ERR" Then
-            Me.cboPrem_Rate_Code.SelectedIndex = -1
-            Me.cboPrem_Rate_Code.Enabled = True
-            Me.txtPrem_Rate.Text = "0.00"
-            Me.txtPrem_Rate_Per.Text = "0"
-        Else
-            Me.txtPrem_Rate.Text = myRetValue.ToString
-            If txtTotal_Emolument.Text = "" Then
-                lblMsg.Text = "Total Emolument must no be empty"
-                FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+        If txtPrem_Rate_TypeNum.Text = "T" Then
+            txtPrem_Rate_Code.Text = Me.cboPrem_Rate_Code.SelectedValue
+            Call gnProc_DDL_Get(Me.cboPrem_Rate_Code, RTrim(Me.txtPrem_Rate_Code.Text))
+            Call DoGet_SelectedItem(Me.cboPrem_Rate_Code, Me.txtPrem_Rate_Code, Me.txtPrem_Rate_CodeName, Me.lblMsg)
+            If Trim(Me.txtPrem_Rate_Code.Text) = "" Then
+                Me.cboPrem_Rate_Code.Enabled = True
+                Me.txtPrem_Rate.Text = "0.00"
+                Me.txtPrem_Rate_Per.Text = "0"
                 Exit Sub
             End If
 
-            Me.txtPrem_Rate.Text = myRetValue.ToString
+            Dim myRetValue As String = "0"
+            Dim myTerm As String = ""
+            myTerm = Me.txtPrem_Period_Yr.Text
+            Select Case UCase(Me.txtProduct_Num.Text)
+                Case "P005"
+                    myTerm = "1"
+                Case "F001", "F002"
+                    myTerm = "1"
+            End Select
+            'myRetValue = MOD_GEN.gnGET_RATE("GET_IL_PREMIUM_RATE", "IND", Me.txtPrem_Rate_Code.Text, Me.txtProduct_Num.Text, myTerm, Me.txtDOB_ANB.Text, Me.lblMsg, Me.txtPrem_Rate_Per)
+            myRetValue = MOD_GEN.gnGET_RATE("GET_GL_PREMIUM_RATE", "GRP", Me.txtPrem_Rate_Code.Text, Me.txtProduct_Num.Text, myTerm, Val(Me.txtDOB_ANB.Text), Me.lblMsg, Me.txtPrem_Rate_Per)
 
-            dblPrem_Amt = 0
-            dblPrem_Amt_ProRata = 0
-            dblTotal_SA = 0
+            'Response.Write("<BR/>Rate Code: " & Me.txtPrem_Rate_Code.Text)
+            'Response.Write("<BR/>Product Code: " & Me.txtProduct_Num.Text)
+            'Response.Write("<BR/>Period: " & myTerm)
+            'Response.Write("<BR/>Age: " & Me.txtDOB_ANB.Text)
+            'Response.Write("<BR/>Value: " & myRetValue)
 
-            dblTotal_Salary = CDbl(Trim(Me.txtTotal_Emolument.Text))
-            dblTotal_Salary = CDbl(Trim(Me.txtTotal_Emolument.Text))
+            If Left(LTrim(myRetValue), 3) = "ERR" Then
+                Me.cboPrem_Rate_Code.SelectedIndex = -1
+                Me.cboPrem_Rate_Code.Enabled = True
+                Me.txtPrem_Rate.Text = "0.00"
+                Me.txtPrem_Rate_Per.Text = "0"
+                Exit Sub 'Added to allow futher processing since data for calculation is zero
+            Else
+                If txtTotal_Emolument.Text = "" Then
+                    lblMsg.Text = "Total Emolument must no be empty"
+                    FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+                    Exit Sub
+                End If
 
-            dblTotal_SA = dblTotal_Salary
-            If Val(Me.txtPrem_SA_Factor.Text) <> 0 Then
-                dblTotal_SA = dblTotal_Salary * Val(Trim(Me.txtPrem_SA_Factor.Text))
-            End If
-
-            Me.txtSum_Assured.Text = dblTotal_SA.ToString
-
-
-            dblPrem_Rate = CDbl(Trim(Me.txtPrem_Rate.Text))
-            dblPrem_Rate_Per = CDbl(Trim(Me.txtPrem_Rate_Per.Text))
-            If dblTotal_SA <> 0 And dblPrem_Rate <> 0 And dblPrem_Rate_Per <> 0 Then
-                dblPrem_Amt = dblTotal_SA * dblPrem_Rate / dblPrem_Rate_Per
-                dblPrem_Amt_ProRata = dblPrem_Amt
-                txtPrem_Amt.Text = dblPrem_Amt
+                Me.txtPrem_Rate.Text = myRetValue.ToString
             End If
         End If
-    End Sub
+        dblPrem_Amt = 0
+        dblPrem_Amt_ProRata = 0
+        dblTotal_SA = 0
 
+        dblTotal_Salary = CDbl(Trim(Me.txtTotal_Emolument.Text))
+        dblTotal_Salary = CDbl(Trim(Me.txtTotal_Emolument.Text))
+
+        dblTotal_SA = dblTotal_Salary
+        If Val(Me.txtPrem_SA_Factor.Text) <> 0 Then
+            dblTotal_SA = dblTotal_Salary * Val(Trim(Me.txtPrem_SA_Factor.Text))
+        End If
+
+        Me.txtSum_Assured.Text = dblTotal_SA.ToString
+
+
+        dblPrem_Rate = CDbl(Trim(Me.txtPrem_Rate.Text))
+        dblPrem_Rate_Per = CDbl(Trim(Me.txtPrem_Rate_Per.Text))
+        If dblTotal_SA <> 0 And dblPrem_Rate <> 0 And dblPrem_Rate_Per <> 0 Then
+            dblPrem_Amt = dblTotal_SA * dblPrem_Rate / dblPrem_Rate_Per
+            dblPrem_Amt_ProRata = dblPrem_Amt
+            txtPrem_Amt.Text = dblPrem_Amt
+            'End If  This was moved upward to allow calculating premium for Fixed and No rate type
+        End If
+    End Sub
     Private Sub Proc_DoDelete()
 
         If Trim(Me.txtFileNum.Text) = "" Then
@@ -1902,7 +1906,7 @@ Proc_Skip_ANB:
 
         'intDays_Diff = Val(DateDiff(DateInterval.Day, MemJoin_Date, GenEnd_Date)) + 0
         'intDays_Diff = Val(DateDiff(DateInterval.Day, my_Dte_Start, my_Dte_End))
-        intDays_Diff = Val(DateDiff(DateInterval.Day, dteStart, dteEnd))
+        intDays_Diff = Val(DateDiff(DateInterval.Day, dteStart, dteEnd)) + 1 ' PLUS 1 WILL ADD THE START DATE
 
         'Added by Azeez
         'Initially both MemJoin_Date and GenStart_Date looses their value 
@@ -5280,6 +5284,7 @@ MyLoop_End:
         Dim ea As GridViewRowEventArgs = CType(e, GridViewRowEventArgs)
         If (ea.Row.RowType = DataControlRowType.DataRow) Then
             Dim drv As Decimal = Convert.ToDecimal(DataBinder.Eval(e.Row.DataItem, "TBIL_POL_MEMB_PRO_RATE_PREM"))
+            Dim age As Integer = Convert.ToDecimal(DataBinder.Eval(e.Row.DataItem, "TBIL_POL_MEMB_AGE"))
 
             If Not Convert.IsDBNull(drv) Then
                 Dim iParsedValue As Decimal = 0
@@ -5288,9 +5293,19 @@ MyLoop_End:
                     cell.Text = String.Format(System.Globalization.CultureInfo.CurrentCulture, "{0:N}", New Object() {iParsedValue})
                 End If
             End If
+
+            If Not Convert.IsDBNull(age) Then
+                Dim iParsedValue As Integer
+                If Integer.TryParse(age.ToString, iParsedValue) Then
+                    If age > 80 Then
+                        Dim cell As TableCell = ea.Row.Cells(6)
+                        'cell.Text = String.Format(System.Globalization.CultureInfo.CurrentCulture, "{0:N}", New Object() {iParsedValue})
+                        cell.Text = ""
+                    End If
+                End If
+            End If
+
         End If
-
-
     End Sub
 
     Protected Sub GridView1_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles GridView1.SelectedIndexChanged
