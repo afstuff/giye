@@ -894,7 +894,7 @@ namespace CustodianGroupLife.Data
                                 myarrData = _memend_date.Split('/');
                                 _memend_date = myarrData[2] + "/" + myarrData[1] + "/" + myarrData[0];
 
-                                _days_diff = Convert.ToInt16(DateDifference(_memjoin_date, _memend_date));
+                                _days_diff = Convert.ToInt16(DateDifference(_memjoin_date, _memend_date)) + 1;
 
 
                                 //Azeez: Test if member policy period is within general policy period

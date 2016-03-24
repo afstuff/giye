@@ -1800,7 +1800,7 @@ Proc_Skip_Check:
 
                 'Me.lblMessage.Text = "Invalid Policy Number. Please enter valid policy number..."
                 'FirstMsg = "Javascript:alert('" & Me.lblMessage.Text & "')"
-                FirstMsg = "Javascript:alert('" & "Unable to get policy details..." & "')"
+                'FirstMsg = "Javascript:alert('" & "Unable to get policy details..." & "')"
             End If
             oAL = Nothing
         End If

@@ -1620,11 +1620,13 @@ Partial Class Policy_PRG_LI_GRP_POLY_MEMBERS_ADD
         '    Me.txtMember_DOB.Text = Format(dteDOB, "dd/MM/yyyy")
         'End If
         If RTrim(Me.txtMember_DOB.Text) = "" Then
-            Me.lblMsg.Text = "Missing Date of Birth or Age ... "
-            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+            'Me.lblMsg.Text = "Missing Date of Birth or Age ... "
+            'FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
             'GoTo Proc_Skip_ANB
-            Exit Sub
+            'Exit Sub
+            txtMember_DOB.Text = "01/01/1900" 'For blank DOB supplied by scheme
         End If
+
 
         If RTrim(Me.txtMember_DOB.Text) = "" Or Len(Trim(Me.txtMember_DOB.Text)) <> 10 Then
             Me.lblMsg.Text = "Missing or Invalid date - " & Me.lblMember_DOB.Text

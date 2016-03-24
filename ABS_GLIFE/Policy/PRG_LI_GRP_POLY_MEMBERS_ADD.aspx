@@ -239,7 +239,7 @@
                                             <td align="left" valign="top"><asp:TextBox ID="txtMember_DOB" MaxLength="10" 
                                                     Width="100px" ToolTip="Date of Birth(dd/mm/yyyy)" runat="server" 
                                                     AutoPostBack="True" Visible="False"></asp:TextBox>
-                                                &nbsp;<asp:TextBox ID="txtDOB_ANB" Enabled="False" Width="40px" runat="server" 
+                                                &nbsp;<asp:TextBox ID="txtDOB_ANB" Width="40px" runat="server" 
                                                     Visible="False"></asp:TextBox></td>
                                         </tr>
                                         
