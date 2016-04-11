@@ -37,7 +37,7 @@ Partial Class PRG_LI_GRP_POLY_PREM
     Dim myarrData() As String
 
     Dim strErrMsg As String
-
+    Dim strSKIP As String
     ' additional premium variable
     Dim dblAdd_Prem_Amt As Double = 0
     Dim dblAdd_Prem_Rate As Double = 0
@@ -55,7 +55,6 @@ Partial Class PRG_LI_GRP_POLY_PREM
     Dim dblAnnual_Basic_Prem_FC As Double = 0
 
     Dim dblTmp_Amt As Double = 0
-    Dim strSKIP As String
 
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
@@ -2355,7 +2354,11 @@ Skip_C001:
                 txtPrem_Start_Date.Focus()
                 Exit Sub
             Else
-                txtPrem_End_Date.Text = DateAdd(DateInterval.Day, 365, CDate(DoConvertToDbDateFormat(txtPrem_Start_Date.Text)))
+                If DateTime.IsLeapYear(Year(CDate(DoConvertToDbDateFormat(txtPrem_Start_Date.Text)))) Then
+                    txtPrem_End_Date.Text = DateAdd(DateInterval.Day, 365, CDate(DoConvertToDbDateFormat(txtPrem_Start_Date.Text)))
+                Else
+                    txtPrem_End_Date.Text = DateAdd(DateInterval.Day, 364, CDate(DoConvertToDbDateFormat(txtPrem_Start_Date.Text)))
+                End If
                 txtPrem_End_Date.Text = DoConvertToDMY(txtPrem_End_Date.Text)
             End If
         End If
