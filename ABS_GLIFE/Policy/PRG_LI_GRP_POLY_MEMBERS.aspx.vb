@@ -1591,7 +1591,9 @@ Partial Class PRG_LI_GRP_POLY_MEMBERS
             'FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
             'GoTo Proc_Skip_ANB
             'Exit Sub
-            txtMember_DOB.Text = "01/01/1900" 'For blank DOB supplied by scheme
+            Dim CurrentYear = Year(DateTime.Now)
+            Dim AssuredBirthYear = CurrentYear - Int(txtDOB_ANB.Text)
+            txtMember_DOB.Text = "01/01/" & AssuredBirthYear 'For blank DOB supplied by scheme
         End If
 
         If RTrim(Me.txtMember_DOB.Text) = "" Or Len(Trim(Me.txtMember_DOB.Text)) <> 10 Then
@@ -4529,14 +4531,14 @@ MyLoop_End:
         lblPrem_Period_Yr.Visible = True
         lblTotal_Emolument.Visible = True
         'lblMedical_YN.Visible = True
-        lblPrem_Rate_X.Visible = True
+        'lblPrem_Rate_X.Visible = True
         txtStart_Date.Visible = True
         txtEnd_Date.Visible = True
         txtPrem_Period_Yr.Visible = True
         txtTotal_Emolument.Visible = True
         'cboMedical_YN.Visible = True
-        cboPrem_Rate_Code.Visible = True
-        lblPrem_Rate_Code.Visible = True
+        ' cboPrem_Rate_Code.Visible = True
+        ' lblPrem_Rate_Code.Visible = True
         txtPrem_Rate_Code.Visible = True
         txtPrem_Rate.Visible = True
         txtPrem_Rate_Per.Visible = True
