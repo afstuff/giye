@@ -52,6 +52,8 @@ Partial Class Reports_PRG_LI_GRP_DN_RPT
     Protected BufferStr As String
 
     Dim strErrMsg As String
+    Dim rParams As String() = {"nw", "nw", "new", "nw", "nw", "new", "new", "new", "nw", "nw", "new", "new"}
+
 
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
@@ -250,6 +252,8 @@ Partial Class Reports_PRG_LI_GRP_DN_RPT
 
 
         'myArrList_DB.Insert(0, RTrim("QUO"))
+        Dim url As String = HttpContext.Current.Request.Url.AbsoluteUri
+        rParams(0) = strRptName
 
         Select Case UCase(Trim(myTType))
             Case "DN", "DNNOCOM"
@@ -263,6 +267,8 @@ Partial Class Reports_PRG_LI_GRP_DN_RPT
                 myArrList_DB.Insert(1, RTrim("D"))
                 myArrList_DB.Insert(2, RTrim("D"))
                 myArrList_DB.Insert(3, RTrim(strTransNum))
+
+               
 
             Case "CN", "CNNOCOM"
                 myArrList_RPT.Insert(0, RTrim(gnCOMP_NAME))
@@ -284,7 +290,16 @@ Partial Class Reports_PRG_LI_GRP_DN_RPT
         Session("rptparams") = myArrList_RPT
         Session("dbparams") = myArrList_DB
 
-
+        rParams(0) = strRptName
+        rParams(1) = "P_FLAG="
+        rParams(2) = myArrList_DB(0) + "&"
+        rParams(3) = "P_DN="
+        rParams(4) = myArrList_DB(1) + "&"
+        rParams(5) = "P_CN="
+        rParams(6) = myArrList_DB(2) + "&"
+        rParams(7) = "P_VAL_01="
+        rParams(8) = myArrList_DB(3) + "&"
+        rParams(9) = url
         'param 1 = 
 
 
@@ -299,19 +314,21 @@ Partial Class Reports_PRG_LI_GRP_DN_RPT
         'myArrList_DB.Clear()
         'myArrList_DB = Nothing
 
+        ''Comments start here 
+        'Dim mystrURL As String = ""
+        'Try
+        '    '    'OK
+        '    '    'mystrURL = "window.open('" & "CRViewer.aspx?rptname=" & RTrim(strReportFile) & strReportParam & "','frmDoc','left=50,top=50,width=1024,height=650,titlebar=yes,z-lock=yes,address=yes,channelmode=1,fullscreen=no,directories=yes,location=yes,toolbar=yes,menubar=yes,status=yes,scrollbars=1,resizable=yes');"
+        '    mystrURL = "window.open('" & "../CRViewerN.aspx?rptname=" & RTrim(strReportFile) & strReportParam & "','','left=50,top=10,width=1024,height=600,titlebar=yes,z-lock=yes,address=yes,channelmode=1,fullscreen=0,directories=yes,location=yes,toolbar=yes,menubar=yes,status=yes,scrollbars=1,resizable=yes');"
+        '    '    'FirstMsg = "javascript:window.close();" & mystrURL
+        '    FirstMsg = "javascript:" & mystrURL
+        'Catch ex As Exception
+        '    Me.lblMsg.Text = "<br />Unable to connect to report viewer. <br />Reason: " & ex.Message.ToString
 
-        Dim mystrURL As String = ""
-        Try
-            '    'OK
-            '    'mystrURL = "window.open('" & "CRViewer.aspx?rptname=" & RTrim(strReportFile) & strReportParam & "','frmDoc','left=50,top=50,width=1024,height=650,titlebar=yes,z-lock=yes,address=yes,channelmode=1,fullscreen=no,directories=yes,location=yes,toolbar=yes,menubar=yes,status=yes,scrollbars=1,resizable=yes');"
-            mystrURL = "window.open('" & "../CRViewerN.aspx?rptname=" & RTrim(strReportFile) & strReportParam & "','','left=50,top=10,width=1024,height=600,titlebar=yes,z-lock=yes,address=yes,channelmode=1,fullscreen=0,directories=yes,location=yes,toolbar=yes,menubar=yes,status=yes,scrollbars=1,resizable=yes');"
-            '    'FirstMsg = "javascript:window.close();" & mystrURL
-            FirstMsg = "javascript:" & mystrURL
-        Catch ex As Exception
-            Me.lblMsg.Text = "<br />Unable to connect to report viewer. <br />Reason: " & ex.Message.ToString
-
-        End Try
-
+        'End Try
+        ''Comments ends here 
+        Session("ReportParams") = rParams
+        Response.Redirect("../PrintView.aspx")
     End Sub
 
     Private Sub Create_Excel_Quot_Invoice()
