@@ -52,7 +52,7 @@ Partial Class Reports_PRG_LI_GRP_DN_RPT
     Protected BufferStr As String
 
     Dim strErrMsg As String
-    Dim rParams As String() = {"nw", "nw", "new", "nw", "nw", "new", "new", "new", "nw", "nw", "new", "new"}
+    Dim rParams As String() = {"nw", "nw", "new", "nw", "nw", "new", "new", "new", "nw", "nw"}
 
 
 
