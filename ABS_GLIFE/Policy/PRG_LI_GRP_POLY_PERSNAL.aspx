@@ -197,7 +197,7 @@
                                         </td>
                                     </tr>
 
-                                    <tr class="tr_frame_02">
+                                 <%--   <tr class="tr_frame_02">
                                         <td nowrap align="left" valign="top"><asp:Label ID="lblAgcy_Search" Text="Search for Marketer:" runat="server"></asp:Label></td>
                                         <td align="left" valign="top" colspan="3"><asp:TextBox ID="txtAgcy_Search" runat="server"></asp:TextBox>
                                             &nbsp;<asp:Button ID="cmdAgcy_Search" Text="Search..." runat="server" OnClick="DoProc_Agcy_Search" />
@@ -215,7 +215,7 @@
                                             &nbsp;<input type="button" id="cmdAgcy_Browse" name="cmdAgcy_Browse" visible="false" style="display: none;" value="Browse..." onclick="javascript:Sel_Func_Open('MKT','../WebForm3.aspx?popup=YES','Form1','txtAgcyNum','txtAgcyName')" />
                                             &nbsp;<input type="button" id="btnAgcy_Browse" name="btnAgcy_Browse" visible="true" value="Browse..." onclick="javascript:ShowPopup('MKT','../WebFormX.aspx?popup=NO','Form1','txtAgcyNum','txtAgcyName');" />
                                         </td>
-                                    </tr>
+                                    </tr>--%>
 
                                     <tr style="display: none;">
                                         <td align="left" colspan="4" valign="top" class="myMenu_Title">Assured/Customer Info</td>

@@ -109,6 +109,13 @@
                             </td>
                 		</tr>
 
+                		<tr>
+                		    <td align="right" nowrap><asp:Label ID="lblCommRate" runat="server">Commission Rate:</asp:Label></td>
+    		                <td align="left" nowrap colspan="3"><asp:textbox id="txtCommRate"
+                                    MaxLength="10" Width="100px" runat="server" EnableViewState="true"></asp:textbox>
+                            </td>
+                		</tr>
+
                     <tr>
                         <td colspan="4">&nbsp;</td>
                     </tr>
@@ -116,9 +123,6 @@
                     
                     <tr>
                     <td align="center" colspan="4" valign="top">
-                    <table align="center" style="background-color: White; width: 95%;">
-                        <tr>
-                            <td align="left" colspan="4" valign="top">
                                 <asp:GridView id="GridView1" CellPadding="2" runat="server" CssClass="grd_ctrl"
                                     DataKeyNames="TBIL_CUST_CAT_REC_ID" HorizontalAlign="Left"
                                     AutoGenerateColumns="False" AllowPaging="True" AllowSorting="false" PageSize="10"
@@ -155,10 +159,14 @@
                                         <asp:BoundField readonly="true" DataField="TBIL_CUST_CATEG" HeaderText="Code" HeaderStyle-HorizontalAlign="Left" convertemptystringtonull="true" />
                                         <asp:BoundField readonly="true" DataField="TBIL_CUST_CAT_DESC" HeaderText="Trans Description" HeaderStyle-HorizontalAlign="Left" convertemptystringtonull="true" />
                                         <asp:BoundField readonly="true" DataField="TBIL_CUST_CAT_CNTRL_ACCT" HeaderText="G/L Account" HeaderStyle-HorizontalAlign="Left" convertemptystringtonull="true" />
+                                         <asp:BoundField readonly="true" DataField="TBIL_CUST_CAT_COMM_RT" HeaderText="Comm. Rate" HeaderStyle-HorizontalAlign="Left" convertemptystringtonull="true" />
                                     </Columns>
    
                                 </asp:GridView>
-                            </td>
+                    <table align="center" style="background-color: White; width: 95%;">
+                        <tr>
+                            <td align="left" colspan="4" valign="top">
+                                &nbsp;</td>
                         </tr>
                     
                     </table>

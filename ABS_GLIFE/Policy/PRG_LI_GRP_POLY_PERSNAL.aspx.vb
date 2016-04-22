@@ -356,17 +356,17 @@ Partial Class PRG_LI_GRP_POLY_PERSNAL
     End Sub
 
 
-    Protected Sub DoProc_Agcy_Change()
-        Call DoGet_SelectedItem(Me.cboAgcy_Search, Me.txtAgcyNum, Me.txtAgcyName, Me.lblMsg)
-        Me.txtAgcy_Search.Text = ""
-    End Sub
+    'Protected Sub DoProc_Agcy_Change()
+    '    Call DoGet_SelectedItem(Me.cboAgcy_Search, Me.txtAgcyNum, Me.txtAgcyName, Me.lblMsg)
+    '    Me.txtAgcy_Search.Text = ""
+    'End Sub
 
-    Protected Sub DoProc_Agcy_Search()
-        If RTrim(Me.txtAgcy_Search.Text) <> "" Then
-            Call gnProc_Populate_Box("IL_MARKETERS_LIST", "001", Me.cboAgcy_Search, RTrim(Me.txtAgcy_Search.Text))
-        End If
+    'Protected Sub DoProc_Agcy_Search()
+    '    If RTrim(Me.txtAgcy_Search.Text) <> "" Then
+    '        Call gnProc_Populate_Box("IL_MARKETERS_LIST", "001", Me.cboAgcy_Search, RTrim(Me.txtAgcy_Search.Text))
+    '    End If
 
-    End Sub
+    'End Sub
 
     Protected Sub DoProc_Assured_Change()
         Call DoGet_SelectedItem(Me.cboAssured_Search, Me.txtAssured_Num, Me.txtAssured_Name, Me.lblMsg)
@@ -625,21 +625,21 @@ Partial Class PRG_LI_GRP_POLY_PERSNAL
 
     End Sub
 
-    Protected Sub DoProc_Validate_Agency()
-        If Trim(Me.txtAgcyNum.Text) = "" Then
-            Me.txtAgcyName.Text = ""
-        Else
-            blnStatus = gnValidate_Codes("AGENCY_UND_LIFE", Me.txtAgcyNum, Me.txtAgcyName)
-            If blnStatus = False Then
-                Me.lblMsg.Text = "Invalid Agency Code: " & Me.txtAgcyNum.Text
-                Me.txtAgcyNum.Text = ""
-                Me.txtAgcyName.Text = ""
-                'Me.lblMsg.Text = "<script type='text/javascript'>myShowDialogue('" & strParam1 & "','" & strParam2 & "'" & ");</script>"
-                ClientScript.RegisterStartupScript(Me.GetType(), "Popup_Validation", "ShowPopup_Message('" & Me.lblMsg.Text & "');", True)
-            End If
-        End If
+    'Protected Sub DoProc_Validate_Agency()
+    '    If Trim(Me.txtAgcyNum.Text) = "" Then
+    '        Me.txtAgcyName.Text = ""
+    '    Else
+    '        blnStatus = gnValidate_Codes("AGENCY_UND_LIFE", Me.txtAgcyNum, Me.txtAgcyName)
+    '        If blnStatus = False Then
+    '            Me.lblMsg.Text = "Invalid Agency Code: " & Me.txtAgcyNum.Text
+    '            Me.txtAgcyNum.Text = ""
+    '            Me.txtAgcyName.Text = ""
+    '            'Me.lblMsg.Text = "<script type='text/javascript'>myShowDialogue('" & strParam1 & "','" & strParam2 & "'" & ");</script>"
+    '            ClientScript.RegisterStartupScript(Me.GetType(), "Popup_Validation", "ShowPopup_Message('" & Me.lblMsg.Text & "');", True)
+    '        End If
+    '    End If
 
-    End Sub
+    'End Sub
 
     Protected Sub DoProc_Validate_Assured()
         If Trim(Me.txtAssured_Num.Text) = "" Then
@@ -1270,8 +1270,10 @@ Proc_Skip_Check:
         'End If
 
         If Trim(UCase(cboBusSource.SelectedItem.Text)) <> "DIRECT BUSINESS" Then
-            If Trim(Me.txtAgcyNum.Text) = "" And Trim(Me.txtBrokerNum.Text) = "" Then
-                Me.lblMsg.Text = "Missing Broker Code or Marketer Code. Please enter valid Agency Code... "
+            '  If Trim(Me.txtAgcyNum.Text) = "" And Trim(Me.txtBrokerNum.Text) = "" Then
+            If Trim(Me.txtBrokerNum.Text) = "" Then
+                '  Me.lblMsg.Text = "Missing Broker Code or Marketer Code. Please enter valid Agency Code... "
+                Me.lblMsg.Text = "Missing Broker Code. Please enter valid Agency Code... "
                 FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
                 Exit Sub
             End If
@@ -1674,7 +1676,7 @@ SKIP_Next_88:
 
                 drNewRow("TBIL_POLY_CUST_CODE") = RTrim(Me.txtBrokerNum.Text)
                 drNewRow("TBIL_POLY_SOURC_BIZ") = RTrim(Me.txtBusSource.Text)
-                drNewRow("TBIL_POLY_AGCY_CODE") = RTrim(Me.txtAgcyNum.Text)
+                'drNewRow("TBIL_POLY_AGCY_CODE") = RTrim(Me.txtAgcyNum.Text)
                 drNewRow("TBIL_POLY_ASSRD_CD") = RTrim(Me.txtAssured_Num.Text)
 
                 drNewRow("TBIL_POLY_RETIREMENT_AGE") = Val(Trim(Me.txtRetirement_Age.Text))
@@ -1755,7 +1757,7 @@ SKIP_Next_88:
 
                     .Rows(0)("TBIL_POLY_CUST_CODE") = RTrim(Me.txtBrokerNum.Text)
                     .Rows(0)("TBIL_POLY_SOURC_BIZ") = RTrim(Me.txtBusSource.Text)
-                    .Rows(0)("TBIL_POLY_AGCY_CODE") = RTrim(Me.txtAgcyNum.Text)
+                    ' .Rows(0)("TBIL_POLY_AGCY_CODE") = RTrim(Me.txtAgcyNum.Text)
                     .Rows(0)("TBIL_POLY_ASSRD_CD") = RTrim(Me.txtAssured_Num.Text)
 
                     .Rows(0)("TBIL_POLY_RETIREMENT_AGE") = Val(Trim(Me.txtRetirement_Age.Text))
@@ -2245,8 +2247,8 @@ PUpdate_Date1:
             Me.txtBusSource.Text = RTrim(CType(objOLEDR("TBIL_POLY_SOURC_BIZ") & vbNullString, String))
             Call gnProc_DDL_Get(Me.cboBusSource, RTrim(Me.txtBusSource.Text))
 
-            Me.txtAgcyNum.Text = RTrim(CType(objOLEDR("TBIL_POLY_AGCY_CODE") & vbNullString, String))
-            Me.txtAgcyName.Text = RTrim(CType(objOLEDR("TBIL_AGCY_AGENT_NAME") & vbNullString, String))
+            'Me.txtAgcyNum.Text = RTrim(CType(objOLEDR("TBIL_POLY_AGCY_CODE") & vbNullString, String))
+            'Me.txtAgcyName.Text = RTrim(CType(objOLEDR("TBIL_AGCY_AGENT_NAME") & vbNullString, String))
 
             Me.txtAssured_Num.Text = RTrim(CType(objOLEDR("TBIL_POLY_ASSRD_CD") & vbNullString, String))
             Me.txtAssured_Name.Text = RTrim(CType(objOLEDR("TBIL_INSRD_NAME") & vbNullString, String))

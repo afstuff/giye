@@ -130,7 +130,7 @@ Partial Class PRG_GP_BRK_CAT
             .txtCustType.Enabled = False
             .txtCustType.Text = "*"
             .txtGLAccCode.Text = ""
-
+            .txtCommRate.Text = ""
             .cmdDelete_ASP.Enabled = False
             .textMessage.Text = "Status: New Entry..."
         End With
@@ -169,7 +169,7 @@ Partial Class PRG_GP_BRK_CAT
 
         strTable = strTableName
         strSQL = ""
-        strSQL = strSQL & "SELECT TBIL_CUST_CAT_REC_ID, TBIL_CUST_CAT_ID, TBIL_CUST_CATEG, TBIL_CUST_CAT_DESC, TBIL_CUST_CAT_CNTRL_ACCT"
+        strSQL = strSQL & "SELECT TBIL_CUST_CAT_REC_ID, TBIL_CUST_CAT_ID, TBIL_CUST_CATEG, TBIL_CUST_CAT_DESC, TBIL_CUST_CAT_CNTRL_ACCT, TBIL_CUST_CAT_COMM_RT"
         strSQL = strSQL & " FROM " & strTable & " "
         strSQL = strSQL & " WHERE TBIL_CUST_CAT_ID = '" & RTrim(Me.txtRecID.Text) & "'"
         strSQL = strSQL & " ORDER BY TBIL_CUST_CAT_ID, TBIL_CUST_CATEG"
@@ -256,6 +256,15 @@ Partial Class PRG_GP_BRK_CAT
 
         If Trim(Me.txtCustName.Text) = "" Or RTrim(Me.txtCustName.Text) = "*" Then
             Me.textMessage.Text = "Missing/Invalid " & Me.lblCustName.Text
+            FirstMsg = "Javascript:alert('" & Me.textMessage.Text & "')"
+            Exit Sub
+        End If
+
+        If Trim(Me.txtCommRate.Text) = "" Then
+            Me.txtCommRate.Text = 0
+        ElseIf Not IsNumeric(Me.txtCommRate.Text) Then
+            Me.textMessage.Text = "Missing/Invalid " & Me.lblCommRate.Text
+            txtCommRate.Focus()
             FirstMsg = "Javascript:alert('" & Me.textMessage.Text & "')"
             Exit Sub
         End If
@@ -381,6 +390,7 @@ Partial Class PRG_GP_BRK_CAT
             strSQL = strSQL & ",TBIL_CUST_CAT_TYPE = '" & RTrim(strTmp_CustType) & "'"
             strSQL = strSQL & ",TBIL_CUST_CAT_CNTRL_ACCT = '" & RTrim(Me.txtGLAccCode.Text) & "'"
             strSQL = strSQL & ",TBIL_CUST_CAT_FLAG = '" & RTrim("C") & "'"
+            strSQL = strSQL & ",TBIL_CUST_CAT_COMM_RT = " & Val(RTrim(Me.txtCommRate.Text)) & ""
             strSQL = strSQL & " WHERE TBIL_CUST_CATEG = '" & RTrim(Me.txtCustNum.Text) & "'"
             strSQL = strSQL & " AND TBIL_CUST_CAT_ID = '" & RTrim(Me.txtRecID.Text) & "'"
 
@@ -399,7 +409,7 @@ Partial Class PRG_GP_BRK_CAT
             'Specify the database fields
             strmyFields = ""
             strmyFields = strmyFields & "TBIL_CUST_CAT_ID,TBIL_CUST_CATEG,TBIL_CUST_CAT_DESC,TBIL_CUST_CAT_SHRT_DESC"
-            strmyFields = strmyFields & ",TBIL_CUST_CAT_TYPE,TBIL_CUST_CAT_CNTRL_ACCT"
+            strmyFields = strmyFields & ",TBIL_CUST_CAT_TYPE,TBIL_CUST_CAT_CNTRL_ACCT,TBIL_CUST_CAT_COMM_RT"
             strmyFields = strmyFields & ",TBIL_CUST_CAT_FLAG,TBIL_CUST_CAT_KEYDTE,TBIL_CUST_CAT_OPERID"
 
 
@@ -433,7 +443,7 @@ Partial Class PRG_GP_BRK_CAT
                 .InsertParameters.Add("TBIL_CUST_CAT_SHRT_DESC", Left(RTrim(Me.txtShortName.Text), 18))
                 .InsertParameters.Add("TBIL_CUST_CAT_TYPE", RTrim(strTmp_CustType))
                 .InsertParameters.Add("TBIL_CUST_CAT_CNTRL_ACCT", RTrim(Me.txtGLAccCode.Text))
-
+                .InsertParameters.Add("TBIL_CUST_CAT_COMM_RT", Val(RTrim(Me.txtCommRate.Text)))
                 .InsertParameters.Add("TBIL_CUST_CAT_FLAG", RTrim("A"))
                 .InsertParameters.Add("TBIL_CUST_CAT_KEYDTE", CType(Format(Now, "MM/dd/yyyy"), Date))
                 .InsertParameters.Add("TBIL_CUST_CAT_OPERID", RTrim(myUserIDX))
@@ -655,6 +665,7 @@ Partial Class PRG_GP_BRK_CAT
             Call Proc_DDL_Get_Select(Me.selCustType, RTrim(Me.txtCustType.Text))
 
             Me.txtGLAccCode.Text = RTrim(CType(objOLEDR("TBIL_CUST_CAT_CNTRL_ACCT") & vbNullString, String))
+            Me.txtCommRate.Text = RTrim(CType(objOLEDR("TBIL_CUST_CAT_COMM_RT") & vbNullString, String))
             Call Proc_DDL_Get(Me.cboGLAccCode, RTrim(Me.txtGLAccCode.Text))
 
 
