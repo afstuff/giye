@@ -1053,6 +1053,13 @@ Proc_Skip_Check:
         'Dte_Commence = Now
         Dte_Commence = Dte_Proposal
 
+        If Dte_Proposal > Now Then
+            Me.lblMsg.Text = "Proposal date must not be greater than today"
+            txtTrans_Date.Focus()
+            FirstMsg = "Javascript:alert('" & Me.lblMsg.Text & "')"
+            Exit Sub
+        End If
+
         If Trim(Me.txtUWYear.Text) = "" Then
             Me.txtUWYear.Text = Format(Dte_Proposal, "yyyy")
         End If

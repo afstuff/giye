@@ -445,7 +445,10 @@
                                         <asp:TextBox ID="txtPrem_Amt" Visible="False" Enabled="false" 
                                             MaxLength="15" runat="server"></asp:TextBox></td>
                                     <td align="left" class="style11">
-                                        &nbsp;</td>
+                                        <asp:TextBox ID="txtQuoDate" MaxLength="10" 
+                                                    Width="100px" ToolTip="Start Date (dd/mm/yyyy)" runat="server" 
+                                            AutoPostBack="True" Enabled="False" Visible="false"></asp:TextBox>
+                                        </td>
                                     <td align="left" colspan="1" class="style4">
                                         <asp:DropDownList ID="cboErr_List" Visible="false" Width="200px" runat="server"></asp:DropDownList>
                                      </td>

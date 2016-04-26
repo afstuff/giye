@@ -811,7 +811,11 @@ Public Module MOD_GEN
                             .Insert(33, RTrim(myole_DR("TBIL_POLY_MED_COVER_LMT").ToString & vbNullString))
                             .Insert(34, RTrim(myole_DR("TBIL_POLY_RETENTION").ToString & vbNullString))
                             .Insert(35, RTrim(myole_DR("TBIL_POLY_COMP_SHARE").ToString & vbNullString))
-
+                            If IsDate(myole_DR("TBIL_POLY_PRPSAL_ISSUE_DATE")) Then
+                                .Insert(36, Format(CType(myole_DR("TBIL_POLY_PRPSAL_ISSUE_DATE"), DateTime), "dd/MM/yyyy"))
+                            Else
+                                .Insert(36, "")
+                            End If
                         End With
 
                     Case Else

@@ -100,7 +100,7 @@ Partial Class PRG_LI_GRP_POLY_MEMBERS
 
     Protected GenStart_Date As Date = Now
     Protected GenEnd_Date As Date = Now
-
+    Protected GenQuo_Date As Date = Now
     Protected MemJoin_Date As Date = Now
     Protected MemExpiry_Date As Date = Now
 
@@ -318,6 +318,14 @@ Partial Class PRG_LI_GRP_POLY_MEMBERS
                         Me.txtEnd_Date.Text = Format(GenEnd_Date, "dd/MM/yyyy")
                         txtPolEnd_Date.Text = Me.txtEnd_Date.Text
                     End If
+
+                    If Trim(oAL.Item(36).ToString) <> "" Then
+                        'GenEnd_Date = CDate(oAL.Item(21).ToString)
+                        myarrData = Split(Trim(oAL.Item(36).ToString), "/")
+                        GenQuo_Date = CDate(Format(Val(myarrData(1)), "00") & "/" & Format(Val(myarrData(0)), "00") & "/" & Format(Val(myarrData(2)), "0000"))
+                        Me.txtQuoDate.Text = Format(GenQuo_Date, "dd/MM/yyyy")
+                    End If
+
 
                     If Trim(oAL.Item(20).ToString) <> "" And Trim(oAL.Item(21).ToString) <> "" Then
                         txtRisk_Days.Text = Val(DateDiff(DateInterval.Day, GenStart_Date, GenEnd_Date)) + 1
@@ -1428,6 +1436,7 @@ Partial Class PRG_LI_GRP_POLY_MEMBERS
                            subctrl.ID = "txtGenStart_DateHidden" Or _
                            subctrl.ID = "txtPrem_Rate" Or _
                            subctrl.ID = "txtPrem_Rate_Per" Or _
+                           subctrl.ID = "txtQuoDate" Or _
                            subctrl.ID = "xyz_123" Then
                             'Control(ID) : txtAction
                             'Control(ID) : txtFileNum
@@ -1634,16 +1643,31 @@ Partial Class PRG_LI_GRP_POLY_MEMBERS
         Dte_DOB = dteDOB
 
         Dte_Current = Now
-        lngDOB_ANB = Val(DateDiff("yyyy", Dte_Current, Dte_DOB))
-        If lngDOB_ANB < 0 Then
-            lngDOB_ANB = lngDOB_ANB * -1
-        End If
+        'lngDOB_ANB = Val(DateDiff("yyyy", Dte_Current, Dte_DOB))
+        'If lngDOB_ANB < 0 Then
+        '    lngDOB_ANB = lngDOB_ANB * -1
+        'End If
 
-        If Dte_Current.Month >= Dte_DOB.Month Then
-            lngDOB_ANB = lngDOB_ANB
+        'If Dte_Current.Month >= Dte_DOB.Month Then
+        '    lngDOB_ANB = lngDOB_ANB
+        'End If
+
+
+        If txtQuoDate.Text <> "" Then
+            GenQuo_Date = Convert.ToDateTime(DoConvertToDbDateFormat(txtQuoDate.Text))
+            lngDOB_ANB = Val(DateDiff("yyyy", GenQuo_Date, Dte_DOB))
+            If lngDOB_ANB < 0 Then
+                lngDOB_ANB = lngDOB_ANB * -1
+            End If
+
+            If GenQuo_Date.Month > Dte_DOB.Month Then
+                lngDOB_ANB = lngDOB_ANB + 1
+            ElseIf GenQuo_Date.Month = Dte_DOB.Month And GenQuo_Date.Day >= Dte_DOB.Day Then
+                lngDOB_ANB = lngDOB_ANB + 1
+            End If
+            ' Me.txtDOB_ANB.Text = Trim(str(lngDOB_ANB))
+            Me.txtDOB_ANB.Text = lngDOB_ANB.ToString()
         End If
-        ' Me.txtDOB_ANB.Text = Trim(str(lngDOB_ANB))
-        Me.txtDOB_ANB.Text = lngDOB_ANB.ToString()
 
 Proc_Skip_ANB:
 

@@ -324,7 +324,11 @@
                                             ToolTip="" runat="server" Visible="False"></asp:TextBox></td>
                                     <td align="left" colspan="2">
                                         <asp:TextBox ID="txtPrem_Rate_Per" Visible="False" Enabled="false" 
-                                            MaxLength="5" Width="60px" ToolTip="" runat="server"></asp:TextBox></td>
+                                            MaxLength="5" Width="60px" ToolTip="" runat="server"></asp:TextBox>
+                                        <asp:TextBox ID="txtQuoDate" MaxLength="10" 
+                                                    Width="100px" ToolTip="Start Date (dd/mm/yyyy)" runat="server" 
+                                            AutoPostBack="True" Enabled="False" Visible="False"></asp:TextBox>
+                                        </td>
                                     <td align="left" colspan="1">
                                         <asp:TextBox ID="txtPrem_Amt" Visible="False" Enabled="false" MaxLength="15" 
                                             runat="server"></asp:TextBox></td>
