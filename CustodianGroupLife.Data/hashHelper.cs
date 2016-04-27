@@ -342,7 +342,7 @@ namespace CustodianGroupLife.Data
             String _prem_sa_factor, String _filenum, String _quote_num, String _poly_num, String _prem_Rate_TypeNum,
             String _prem_rate_per, String _prem_rate_code, String _product_Num, ref List<String> _err_msg,
             ref int _risk_days, ref int _days_diff, string _genstart_date, string _genend_date,
-            string _dtestart, string _dteend, string _memjoin_date, string _data_source_sw, string _prem_Rate, string _entry_Date)
+            string _dtestart, string _dteend, string _memjoin_date, string _data_source_sw, string _prem_Rate, string _entry_Date, string _quo_date)
         {
             string strMyYear = "";
             string strMyMth = "";
@@ -610,9 +610,36 @@ namespace CustodianGroupLife.Data
                                     else
                                         throw new Exception();
 
-                                    string datetoday = removeDateSeperators(DateTime.Now.Date);
-                                    string sAge = ExecuteAdHocQry("SELECT * FROM CiFn_ValidateDOB('" + dobtest + "','" + datetoday + "')", _connstring);
+                                    //string datetoday = removeDateSeperators(DateTime.Now.Date);
+                                    //string sAge = ExecuteAdHocQry("SELECT * FROM CiFn_ValidateDOB('" + dobtest + "','" + datetoday + "')", _connstring);
+                                    //my_AGE = sAge;
+
+
+                                    //Calculate Age Next Birthday Start
+                                    string quo_date = removeDateSeperators(Convert.ToDateTime(_quo_date));
+                                    string sAge = ExecuteAdHocQry("SELECT * FROM CiFn_ValidateDOB('" + dobtest + "','" + quo_date + "')", _connstring);
                                     my_AGE = sAge;
+
+                                    int _quo_date_day, _quo_date_month;
+                                    int my_DOB_day, my_DOB_month;
+
+                                    myarrData = _quo_date.Split('/');
+                                    _quo_date_day = Convert.ToInt16(myarrData[1]);
+                                    _quo_date_month = Convert.ToInt16(myarrData[0]);
+
+                                    my_DOB_day = Convert.ToInt16(strMyDay);
+                                    my_DOB_month = Convert.ToInt16(strMyMth);
+
+
+                                    if (_quo_date_month > my_DOB_month)
+                                    {
+                                        my_AGE = (Convert.ToInt32(sAge) + 1).ToString();
+                                    }
+                                    else if (_quo_date_month == my_DOB_month && _quo_date_day >= my_DOB_day)
+                                    {
+                                        my_AGE = (Convert.ToInt32(sAge) + 1).ToString();
+                                    }
+                                    //Calculate Age Next Birthday Ends
                                 }
                                 catch (Exception e)
                                 {
@@ -953,7 +980,8 @@ namespace CustodianGroupLife.Data
                                     + ",'" + my_Total_Salary.ToString() + "' "
                                     + ",'" + my_Total_SA.ToString() + "' "
                                     + ",'" + my_Medical_YN.ToString() + "' "
-                                     + ",2005 " // rate code default
+                                    // + ",2005 " // rate code default 
+                                    + ",'" + _prem_rate_code.ToString() + "' "
                                     + ",'" + dblPrem_Rate.ToString() + "' "
                                     + ",'" + dblPrem_Rate_Per.ToString() + "' "
                                     + ",'" + dblPrem_Amt.ToString() + "' "

@@ -2565,12 +2565,13 @@ Proc_Skip_ANB:
         'Added by Azeez
         'Initially GenStart_Date looses value 
         GenStart_Date = Convert.ToDateTime(DoConvertToDbDateFormat(txtGenStart_DateHidden.Text))
+        GenQuo_Date = Convert.ToDateTime(DoConvertToDbDateFormat(txtQuoDate.Text))
 
         'call the hashhelper function and pass the form values into it
         hashHelper.postFromExcel(strPATH, txtFile_Upload.Text.Trim, myUserIDX, my_Batch_Num, nROW_MIN, nROW_MAX, Me.txtPrem_Period_Yr.Text, mystr_con, _
        Me.txtPrem_SA_Factor.Text, my_File_Num, my_Prop_Num, my_Poly_Num, txtPrem_Rate_TypeNum.Text, txtPrem_Rate_Per.Text, txtPrem_Rate_Code.Text, _
        txtProduct_Num.Text, lstErrMsgs, Convert.ToInt16(txtRisk_Days.Text), 0, GenStart_Date, GenEnd_Date, txtStart_Date.Text, txtEnd_Date.Text, _
-       MemJoin_Date, txtData_Source_SW.Text, txtPrem_Rate.Text, add_date_added)
+       MemJoin_Date, txtData_Source_SW.Text, txtPrem_Rate.Text, add_date_added, GenQuo_Date)
         GoTo MyLoop_999a
 
 
@@ -4449,11 +4450,12 @@ MyLoop_End:
         'Added by Azeez
         'Initially GenStart_Date looses value 
         GenStart_Date = Convert.ToDateTime(DoConvertToDbDateFormat(txtGenStart_DateHidden.Text))
+        GenQuo_Date = Convert.ToDateTime(DoConvertToDbDateFormat(txtQuoDate.Text))
 
         hashHelper.postFromExcel(strPATH, txtFile_Upload.Text.Trim, myUserIDX, my_Batch_Num, nROW_MIN, nROW_MAX, Me.txtPrem_Period_Yr.Text, mystr_con, _
      Me.txtPrem_SA_Factor.Text, my_File_Num, my_Prop_Num, my_Poly_Num, txtPrem_Rate_TypeNum.Text, txtPrem_Rate_Per.Text, txtPrem_Rate_Code.Text, _
      txtProduct_Num.Text, lstErrMsgs, Convert.ToInt16(txtRisk_Days.Text), 0, GenStart_Date, GenEnd_Date, txtStart_Date.Text, txtEnd_Date.Text, _
-     MemJoin_Date, txtData_Source_SW.Text, txtPrem_Rate.Text, String.Empty)
+     MemJoin_Date, txtData_Source_SW.Text, txtPrem_Rate.Text, String.Empty, GenQuo_Date)
         GoTo MyLoop_999a
 
 
