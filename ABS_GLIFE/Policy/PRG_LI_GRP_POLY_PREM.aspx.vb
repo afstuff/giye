@@ -2355,12 +2355,16 @@ Skip_C001:
                 Exit Sub
             Else
                 If DateTime.IsLeapYear(Year(CDate(DoConvertToDbDateFormat(txtPrem_Start_Date.Text)))) Then
-                    txtPrem_End_Date.Text = DateAdd(DateInterval.Day, 365, CDate(DoConvertToDbDateFormat(txtPrem_Start_Date.Text)))
+                    If Month(CDate(DoConvertToDbDateFormat(txtPrem_Start_Date.Text))) <= 2 Then
+                        txtPrem_End_Date.Text = DateAdd(DateInterval.Day, 365, CDate(DoConvertToDbDateFormat(txtPrem_Start_Date.Text)))
+                    ElseIf Month(CDate(DoConvertToDbDateFormat(txtPrem_Start_Date.Text))) > 2 Then
+                        txtPrem_End_Date.Text = DateAdd(DateInterval.Day, 364, CDate(DoConvertToDbDateFormat(txtPrem_Start_Date.Text)))
+                    End If
                 Else
                     txtPrem_End_Date.Text = DateAdd(DateInterval.Day, 364, CDate(DoConvertToDbDateFormat(txtPrem_Start_Date.Text)))
                 End If
-                txtPrem_End_Date.Text = DoConvertToDMY(txtPrem_End_Date.Text)
-            End If
+                    txtPrem_End_Date.Text = DoConvertToDMY(txtPrem_End_Date.Text)
+                End If
         End If
     End Sub
 
