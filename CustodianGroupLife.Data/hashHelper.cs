@@ -418,6 +418,7 @@ namespace CustodianGroupLife.Data
             mystr_sn_param = "GL_MEMBER_SN";
             int mycnt = 0;
             int tenor;
+            int _cover_days;
             if (_entry_Date == String.Empty)
                 entry_date = "getdate()";
             else
@@ -901,10 +902,29 @@ namespace CustodianGroupLife.Data
                                         break;
                                 }
 
+                                myarrData = _dtestart.Split('/');
+                               string dtestart = myarrData[2] + "/" + myarrData[1] + "/" + myarrData[0];
+
+                                myarrData = _dteend.Split('/');
+                                string dteend = myarrData[2] + "/" + myarrData[1] + "/" + myarrData[0];
+
+                                int riskyear;
+                                _cover_days = Convert.ToInt16(DateDifference(dtestart, dteend)) + 1;
+
+                                if (_cover_days > 366)
+                                {
+                                    riskyear = 366;
+                                }
+                                else
+                                {
+                                    riskyear = 365;
+                                }
+
                                 if (((dblTotal_SA != 0) && ((dblPrem_Rate != 0 && (dblPrem_Rate_Per != 0)))))
                                 {
                                     dblPrem_Amt = (dblTotal_SA
                                                 * (dblPrem_Rate / dblPrem_Rate_Per));
+                                    dblPrem_Amt = dblPrem_Amt * _cover_days / riskyear;
                                     dblPrem_Amt_ProRata = dblPrem_Amt;
                                 }
 

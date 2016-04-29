@@ -1104,11 +1104,24 @@ Partial Class Policy_PRG_LI_GRP_POLY_MEMBERS_ADD
 
         Me.txtSum_Assured.Text = dblTotal_SA.ToString
 
+        GenStart_Date = Convert.ToDateTime(DoConvertToDbDateFormat(txtGenStart_DateHidden.Text))
+        GenEnd_Date = Convert.ToDateTime(DoConvertToDbDateFormat(txtPolEnd_Date.Text))
+        intRisk_Days = Val(DateDiff(DateInterval.Day, GenStart_Date, GenEnd_Date)) + 1
+
+        'Determine Leap year or not from start and end date
+        Dim RiskYear As Integer
+        If (intRisk_Days > 365) Then
+            RiskYear = 366
+        Else
+            RiskYear = 365
+        End If
+
 
         dblPrem_Rate = CDbl(Trim(Me.txtPrem_Rate.Text))
         dblPrem_Rate_Per = CDbl(Trim(Me.txtPrem_Rate_Per.Text))
         If dblTotal_SA <> 0 And dblPrem_Rate <> 0 And dblPrem_Rate_Per <> 0 Then
             dblPrem_Amt = dblTotal_SA * dblPrem_Rate / dblPrem_Rate_Per
+            dblPrem_Amt = dblPrem_Amt * intRisk_Days / RiskYear
             dblPrem_Amt_ProRata = dblPrem_Amt
             txtPrem_Amt.Text = dblPrem_Amt
             'End If  This was moved upward to allow calculating premium for Fixed and No rate type
@@ -1928,21 +1941,35 @@ Proc_Skip_ANB:
 
         Me.txtSum_Assured.Text = dblTotal_SA.ToString
 
+        GenStart_Date = Convert.ToDateTime(DoConvertToDbDateFormat(txtGenStart_DateHidden.Text))
+        GenEnd_Date = Convert.ToDateTime(DoConvertToDbDateFormat(txtPolEnd_Date.Text))
+        intRisk_Days = Val(DateDiff(DateInterval.Day, GenStart_Date, GenEnd_Date)) + 1
+        'intRisk_Days = Val(Me.txtRisk_Days.Text)
+        'tenor = CInt(txtRisk_Days.Text) 'Tenor should be equals to risk days at inception of policy
+        tenor = intRisk_Days
 
-        dblPrem_Rate = CDbl(Trim(Me.txtPrem_Rate.Text))
-        dblPrem_Rate_Per = CDbl(Trim(Me.txtPrem_Rate_Per.Text))
-        If dblTotal_SA <> 0 And dblPrem_Rate <> 0 And dblPrem_Rate_Per <> 0 Then
-            dblPrem_Amt = dblTotal_SA * dblPrem_Rate / dblPrem_Rate_Per
-            dblPrem_Amt_ProRata = dblPrem_Amt
+        'Determine Leap year or not from start and end date
+        Dim RiskYear As Integer
+        If (intRisk_Days > 365) Then
+            RiskYear = 366
+        Else
+            RiskYear = 365
         End If
 
+        If txtPrem_Rate_TypeNum.Text <> "N" Then
+            dblPrem_Rate = CDbl(Trim(Me.txtPrem_Rate.Text))
+            dblPrem_Rate_Per = CDbl(Trim(Me.txtPrem_Rate_Per.Text))
+            If dblTotal_SA <> 0 And dblPrem_Rate <> 0 And dblPrem_Rate_Per <> 0 Then
+                dblPrem_Amt = dblTotal_SA * dblPrem_Rate / dblPrem_Rate_Per
+                dblPrem_Amt = dblPrem_Amt * intRisk_Days / RiskYear
+                dblPrem_Amt_ProRata = dblPrem_Amt
+            End If
+        Else
+            dblPrem_Amt_ProRata = CDbl(txtPrem_Amt.Text)
+        End If
 
         'intRisk_Days = DateDiff(DateInterval.Day, GenStart_Date, GenEnd_Date)
         'intDays_Diff = DateDiff(DateInterval.Day, MemJoin_Date, GenEnd_Date)
-
-        intRisk_Days = Val(DateDiff(DateInterval.Day, GenStart_Date, GenEnd_Date)) + 0
-        intRisk_Days = Val(Me.txtRisk_Days.Text)
-        tenor = CInt(txtRisk_Days.Text) 'Azeez: Tenor should be equals to risk days at inception of policy
 
 
         'intDays_Diff = Val(DateDiff(DateInterval.Day, MemJoin_Date, GenEnd_Date)) + 0
